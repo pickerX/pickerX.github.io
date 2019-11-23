@@ -1,0 +1,777 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Android,">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="Battery HistorianBattery Historian工具能监测一台设备在一段时间内的电量消耗。在整个系统级别，该工具能将系统的日志可视化为电量相关事件的网页展示在一个特定的app级别里，这个工具提供大量的数据，来帮助开发者识别耗电应用的行为。 Install 需要Docker环境支持，Install Docker 并运行. 运行 Battery Historian 镜像，这个镜像需">
+<meta name="keywords" content="Android">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Battery-historian电量优化">
+<meta property="og:url" content="http://yoursite.com/2018/10/14/android/Battery-historian电量优化/index.html">
+<meta property="og:site_name" content="Hello,world">
+<meta property="og:description" content="Battery HistorianBattery Historian工具能监测一台设备在一段时间内的电量消耗。在整个系统级别，该工具能将系统的日志可视化为电量相关事件的网页展示在一个特定的app级别里，这个工具提供大量的数据，来帮助开发者识别耗电应用的行为。 Install 需要Docker环境支持，Install Docker 并运行. 运行 Battery Historian 镜像，这个镜像需">
+<meta property="og:locale" content="default">
+<meta property="og:image" content="https://note.youdao.com/yws/api/personal/file/WEBdbc98d71317d7951c6d6810b73bffb35?method=download&shareKey=0c0c498e1eed053bf3ef61c4da34c869">
+<meta property="og:image" content="https://note.youdao.com/yws/api/personal/file/WEBdb356575e5d6bc12e8e6cffc1cf4fb60?method=download&shareKey=008f240c970ff50a4c03acd274e70028">
+<meta property="og:image" content="https://note.youdao.com/yws/api/personal/file/WEBbcd6db6a55c0e7e57ea1f4a4e52e9ebc?method=download&shareKey=80f0f90ab5538a60d9934141df884d41">
+<meta property="og:image" content="https://note.youdao.com/yws/api/personal/file/WEBd165eaae5f9ee1eb7e7da807714ab870?method=download&shareKey=170611df2452e1ad45e97b8633d1436a">
+<meta property="og:image" content="https://note.youdao.com/yws/api/personal/file/WEB889fd0d6f4c0018d67a32a3c33622fce?method=download&shareKey=28ba15c596238eacc947e816286b0690">
+<meta property="og:image" content="https://note.youdao.com/yws/api/personal/file/WEBe4ee4cf79c26b26a867197eee0e10397?method=download&shareKey=55322adde50b9694772b8f5a77553374">
+<meta property="og:updated_time" content="2019-04-13T13:09:41.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Battery-historian电量优化">
+<meta name="twitter:description" content="Battery HistorianBattery Historian工具能监测一台设备在一段时间内的电量消耗。在整个系统级别，该工具能将系统的日志可视化为电量相关事件的网页展示在一个特定的app级别里，这个工具提供大量的数据，来帮助开发者识别耗电应用的行为。 Install 需要Docker环境支持，Install Docker 并运行. 运行 Battery Historian 镜像，这个镜像需">
+<meta name="twitter:image" content="https://note.youdao.com/yws/api/personal/file/WEBdbc98d71317d7951c6d6810b73bffb35?method=download&shareKey=0c0c498e1eed053bf3ef61c4da34c869">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2018/10/14/android/Battery-historian电量优化/">
+
+
+
+
+
+  <title>Battery-historian电量优化 | Hello,world</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="default">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Hello,world</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            Archives
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/10/14/android/Battery-historian电量优化/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="ticooops">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hello,world">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Battery-historian电量优化</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-10-14T14:40:48+08:00">
+                2018-10-14
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h3 id="Battery-Historian"><a href="#Battery-Historian" class="headerlink" title="Battery Historian"></a>Battery Historian</h3><p>Battery Historian工具能监测一台设备在一段时间内的电量消耗。在整个系统级别，该工具能将系统的日志可视化为电量相关事件的网页展示<br>在一个特定的app级别里，这个工具提供大量的数据，来帮助开发者识别耗电应用的行为。</p>
+<h3 id="Install"><a href="#Install" class="headerlink" title="Install"></a>Install</h3><ol>
+<li>需要Docker环境支持，Install <a href="https://docs.docker.com/install/" target="_blank" rel="noopener">Docker</a> 并运行.</li>
+<li><p>运行 Battery Historian 镜像，这个镜像需要翻墙下载，没有翻墙的可以找找国内的镜像</p>
+<p> docker run -p port:9999 gcr.io/android-battery-historian/stable:3.0 –port 9999</p>
+</li>
+<li><p>使用浏览器打开 <a href="http://localhost:port" target="_blank" rel="noopener">http://localhost:port</a>, 选择步骤二生成的文件即可<br>其他系统的安装方式，详见<a href="https://github.com/google/battery-historian" target="_blank" rel="noopener">https://github.com/google/battery-historian</a></p>
+</li>
+</ol>
+<h3 id="Analyze-power-use"><a href="#Analyze-power-use" class="headerlink" title="Analyze power use"></a>Analyze power use</h3><p>完成上面的操作，可以看到如下类似的图，</p>
+<p><img src="https://note.youdao.com/yws/api/personal/file/WEBdbc98d71317d7951c6d6810b73bffb35?method=download&amp;shareKey=0c0c498e1eed053bf3ef61c4da34c869" alt="Figure1 Battery Historian’s display of system-wide events affecting power consumption."></p>
+<p>横坐标表示时间，纵坐标就有各种各样的参数了 CPU，Screen，GPS等等信息，配上五颜六色的方块，顿时有点懵逼，有没有。 不过，贯穿整张表格的是一条黑线，而这条黑线就是表示设备的电量变化！！</p>
+<p>图二，电量的一个特写</p>
+<p><img src="https://note.youdao.com/yws/api/personal/file/WEBdb356575e5d6bc12e8e6cffc1cf4fb60?method=download&amp;shareKey=008f240c970ff50a4c03acd274e70028" alt="Figure 2 provides a close-up of that part of the display.
+"></p>
+<p>在表示电量消耗折线前端，因为电量明显地下降，表明了三个事情，</p>
+<ol>
+<li>CPU正在运行，</li>
+<li>有应用 acquired 一个 wakelock， </li>
+<li>屏幕是亮的</li>
+</ol>
+<p>在这种情况下，Battery Historian 帮助开发者了解到耗电量高时设备发生了什么事件，然后就可以聚焦在事件行为中，研究是否有优化的空间。</p>
+<p>系统范围的可视化也可以提供其他的线索。比如，图中也展示了手机蜂窝数据被频繁的开关，这些都是可优化的地方，可以通过使用更智能的API来优化，如JobScheduler or Firebase Job Dispatcher.</p>
+<h3 id="View-app-specific-data"><a href="#View-app-specific-data" class="headerlink" title="View app-specific data"></a>View app-specific data</h3><p>除了宏观层(macro-level)的数据可视化外，Battery Historian也提供了一些分类和一些指定应用的可视化数据，数据包括，</p>
+<ul>
+<li>应用的耗电量估算值</li>
+<li>网络信息</li>
+<li>Wakelocks</li>
+<li>Services</li>
+<li>进程信息</li>
+</ul>
+<p>分类有两种标准衡量应用的数据。一个是，查看开发者的应用跟其他应用的耗电排行，选择 Device Power Estimates table 即可. 这个例子检验了一个测试应用Pug Power。</p>
+<p><img src="https://note.youdao.com/yws/api/personal/file/WEBbcd6db6a55c0e7e57ea1f4a4e52e9ebc?method=download&amp;shareKey=80f0f90ab5538a60d9934141df884d41" alt="Figure 3. Investigating which apps consume the most power."><br>图三中，Pug Power测试应用是耗电排行是第九位， 第三大的耗电应用并不是系统的一部分，这些数据表明开发者需要更进一步的查找原因。</p>
+<p>为了查看指定应用的数据，我们在App Selection里选择开发的测试应用即可.</p>
+<p><img src="https://note.youdao.com/yws/api/personal/file/WEBd165eaae5f9ee1eb7e7da807714ab870?method=download&amp;shareKey=170611df2452e1ad45e97b8633d1436a" alt="Figure 4. Entering a specific app whose data to view."></p>
+<p>当选择了特定应用后，系统层级的数据分类就会变成如下的应用数据分类，</p>
+<ul>
+<li>SyncManager.</li>
+<li>Foreground process.</li>
+<li>Userspace Wakelock.</li>
+<li>Top app.</li>
+<li>JobScheduler.</li>
+<li>Activity Manager Proc.</li>
+</ul>
+<p>如果应用执行 syncs 和 jobs 次数过多，SyncManager 和 JobScheduler 可视化数据就会很明显的变化。如果确实如此，应用就要优化 syncs 和jobs 操作来降低电量的使用.<br>开发者除了能查看上面信息外，还能查看额外的信息：Userspace Wakelock. 需要在终端中执行如下命令:</p>
+<pre><code>$ adb shell dumpsys batterystats --enable full-wake-history
+
+Note: From Android 6.0 (API level 23), the platform includes Doze functionality, which imposes certain optimizations on apps. For example, Doze batches jobs to take place during brief maintenance windows, regardless of how JobScheduler has scheduled them.
+</code></pre><p>图5，图6显示的是Pug Power的数据:</p>
+<p><img src="https://note.youdao.com/yws/api/personal/file/WEB889fd0d6f4c0018d67a32a3c33622fce?method=download&amp;shareKey=28ba15c596238eacc947e816286b0690" alt="Figure 5. Visualization of data for fictional app Pug Power."><br><img src="https://note.youdao.com/yws/api/personal/file/WEBe4ee4cf79c26b26a867197eee0e10397?method=download&amp;shareKey=55322adde50b9694772b8f5a77553374" alt="Figure 6. Tabular data for the fictional Pug Power app."></p>
+<p>粗略的看，可视化图表没有很明显的数据变化.JobScheduler 坐标表明没有 Job 需要执行. SyncManager 坐标表示没有任何的 sync 操作.</p>
+<p>然而，看图6，Wakelocks 部分显示了 Pug Power 应用在一个小时里 acquires wakelocks 次数. 对于应用高功耗，这是不正常，也是昂贵的代价. 这部分的信息对开发者定位优化的范围是有很大的帮助的。这这个例子中，开发者就要考虑为什么会有这么多次的 wakelock，要如何才能改善?</p>
+<h3 id="Other-cases-where-Battery-Historian-can-help"><a href="#Other-cases-where-Battery-Historian-can-help" class="headerlink" title="Other cases where Battery Historian can help"></a>Other cases where Battery Historian can help</h3><p>除了上面的内容外，Battery Historian 还能找到很多原因：</p>
+<ul>
+<li>多度频繁的启动 wakeup alarms (每10秒或更短).</li>
+<li>持续性的使用 GPS lock.</li>
+<li>调度 jobs（每30s或者更短）</li>
+<li>执行 syncs （每30s或者更短）</li>
+<li>超过预期，频繁的使用蜂窝数据</li>
+</ul>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div></div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>Donate</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/wechatpay.jpg" alt="ticooops WeChat Pay">
+        <p>WeChat Pay</p>
+      </div>
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/images/alipay.jpg" alt="ticooops Alipay">
+        <p>Alipay</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Android/" rel="tag"># Android</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/10/03/android/Launcher3桌面加载流程分析-2/" rel="next" title="Launcher3桌面加载流程分析-2">
+                <i class="fa fa-chevron-left"></i> Launcher3桌面加载流程分析-2
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/01/02/android/Handler常见应用场景和常见问题分析/" rel="prev" title="Handler常见应用场景和常见问题分析">
+                Handler常见应用场景和常见问题分析 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">ticooops</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">37</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                
+                  <span class="site-state-item-count">10</span>
+                  <span class="site-state-item-name">tags</span>
+                
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#Battery-Historian"><span class="nav-number">1.</span> <span class="nav-text">Battery Historian</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Install"><span class="nav-number">2.</span> <span class="nav-text">Install</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Analyze-power-use"><span class="nav-number">3.</span> <span class="nav-text">Analyze power use</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#View-app-specific-data"><span class="nav-number">4.</span> <span class="nav-text">View app-specific data</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Other-cases-where-Battery-Historian-can-help"><span class="nav-number">5.</span> <span class="nav-text">Other cases where Battery Historian can help</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">ticooops</span>
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

@@ -1,0 +1,982 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Android,Launcher,">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="省略一万字前奏如果大家没有源码，不介意的话，可以参考Launcher3-N-Folder 开发中 主入口LauncherLauncherAppStateLauncher的onCreate里比较长，我们依次取代码片段来分析，看oncrate方法的这一段,初始化LauncherAppState public void onCreate() {     ...     LauncherAppState">
+<meta name="keywords" content="Android,Launcher">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Launcher3桌面加载流程分析-1">
+<meta property="og:url" content="http://yoursite.com/2018/10/02/android/Launcher3桌面加载流程分析-1/index.html">
+<meta property="og:site_name" content="Hello,world">
+<meta property="og:description" content="省略一万字前奏如果大家没有源码，不介意的话，可以参考Launcher3-N-Folder 开发中 主入口LauncherLauncherAppStateLauncher的onCreate里比较长，我们依次取代码片段来分析，看oncrate方法的这一段,初始化LauncherAppState public void onCreate() {     ...     LauncherAppState">
+<meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2019-01-03T11:31:45.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Launcher3桌面加载流程分析-1">
+<meta name="twitter:description" content="省略一万字前奏如果大家没有源码，不介意的话，可以参考Launcher3-N-Folder 开发中 主入口LauncherLauncherAppStateLauncher的onCreate里比较长，我们依次取代码片段来分析，看oncrate方法的这一段,初始化LauncherAppState public void onCreate() {     ...     LauncherAppState">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2018/10/02/android/Launcher3桌面加载流程分析-1/">
+
+
+
+
+
+  <title>Launcher3桌面加载流程分析-1 | Hello,world</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="default">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Hello,world</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            Archives
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/10/02/android/Launcher3桌面加载流程分析-1/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="ticooops">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hello,world">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Launcher3桌面加载流程分析-1</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-10-02T19:59:46+08:00">
+                2018-10-02
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>省略一万字前奏<br>如果大家没有源码，<br>不介意的话，可以参考<a href="https://github.com/Tic-pf/Launcher3-N-Folder" target="_blank" rel="noopener">Launcher3-N-Folder</a> 开发中</p>
+<h3 id="主入口Launcher"><a href="#主入口Launcher" class="headerlink" title="主入口Launcher"></a>主入口Launcher</h3><h4 id="LauncherAppState"><a href="#LauncherAppState" class="headerlink" title="LauncherAppState"></a>LauncherAppState</h4><p>Launcher的onCreate里比较长，我们依次取代码片段来分析，看oncrate方法的这一段,初始化LauncherAppState</p>
+<pre><code>public void onCreate() {
+    ...
+    LauncherAppState app = LauncherAppState.getInstance();
+    ...
+}
+</code></pre><p>LauncherAppState是保存一些全局的，核心的对象。主要有整个Launcher的工作台workspace，Launcher的控制器LauncherModel，应用图标的缓存机制IconCache，设备的配置信息InvariantDeviceProfile等。  </p>
+<p>构造方法，首先初始化内存的追踪器TestingUtils，记录我们app的内存信息，这个工具在我们开发其他app分析内存信息时也是很有用的。</p>
+<pre><code>private LauncherAppState() {
+    ...
+
+    if (TestingUtils.MEMORY_DUMP_ENABLED) {
+        TestingUtils.startTrackingMemory(sContext);
+    }
+
+    mInvariantDeviceProfile = new InvariantDeviceProfile(sContext);
+    mIconCache = new IconCache(sContext, mInvariantDeviceProfile);
+    mWidgetCache = new WidgetPreviewLoader(sContext, mIconCache);
+
+    mAppFilter = AppFilter.loadByName(sContext.getString(R.string.app_filter_class));
+    mModel = new LauncherModel(this, mIconCache, mAppFilter);
+
+    LauncherAppsCompat.getInstance(sContext).addOnAppsChangedCallback(mModel);
+
+    // Register intent receivers
+    IntentFilter filter = new IntentFilter();
+    filter.addAction(Intent.ACTION_LOCALE_CHANGED);
+    filter.addAction(SearchManager.INTENT_GLOBAL_SEARCH_ACTIVITY_CHANGED);
+    // For handling managed profiles
+    filter.addAction(LauncherAppsCompat.ACTION_MANAGED_PROFILE_ADDED);
+    filter.addAction(LauncherAppsCompat.ACTION_MANAGED_PROFILE_REMOVED);
+    filter.addAction(LauncherAppsCompat.ACTION_MANAGED_PROFILE_AVAILABLE);
+    filter.addAction(LauncherAppsCompat.ACTION_MANAGED_PROFILE_UNAVAILABLE);
+
+    sContext.registerReceiver(mModel, filter);
+    ...
+}         
+</code></pre><p>LauncherAppsCompat里添加了一个应用变化的回调，由LauncherModel实现接口，及时的响应数据变化。LauncherAppsCompat是获取所有应用，监听应用变化的一个抽象，Android 5.0前后的版本获取方式不一样了，这就是Launcher良好适配性的体现了。</p>
+<pre><code>LauncherAppsCompat.getInstance(sContext).addOnAppsChangedCallback(mModel);
+</code></pre><p>Android 5.0以前的监听</p>
+<pre><code>private void registerForPackageIntents() {
+    IntentFilter filter = new IntentFilter(Intent.ACTION_PACKAGE_ADDED);
+    filter.addAction(Intent.ACTION_PACKAGE_REMOVED);
+    filter.addAction(Intent.ACTION_PACKAGE_CHANGED);
+    filter.addDataScheme(&quot;package&quot;);
+    mContext.registerReceiver(mPackageMonitor, filter);
+    filter = new IntentFilter();
+    filter.addAction(Intent.ACTION_EXTERNAL_APPLICATIONS_AVAILABLE);
+    filter.addAction(Intent.ACTION_EXTERNAL_APPLICATIONS_UNAVAILABLE);
+    mContext.registerReceiver(mPackageMonitor, filter);
+}
+</code></pre><p>Android5.0后的监听</p>
+<pre><code>import android.content.pm.LauncherApps;
+
+protected LauncherApps mLauncherApps;
+
+public void addOnAppsChangedCallback(LauncherAppsCompat.OnAppsChangedCallbackCompat callback) {
+    WrappedCallback wrappedCallback = new WrappedCallback(callback);
+    synchronized (mCallbacks) {
+        mCallbacks.put(callback, wrappedCallback);
+    }
+    mLauncherApps.registerCallback(wrappedCallback);
+}
+</code></pre><p>除了TestingUtils，应用变化监听外，初始化两个核心对象IconCache，LauncherModel。LauncherModel添加了设备变更，用户信息变更的广播，这是因为当用户修改设备信息如语言，区域，用户信息等，LauncherModel会刷新数据，改变图标，标题等信息。<br>LauncherAppState的初始化到这里基本上就完成了。</p>
+<h4 id="DeviceProfile，InvariantDeviceProfile，Launcher的配置"><a href="#DeviceProfile，InvariantDeviceProfile，Launcher的配置" class="headerlink" title="DeviceProfile，InvariantDeviceProfile，Launcher的配置"></a>DeviceProfile，InvariantDeviceProfile，Launcher的配置</h4><p>我们继续看，下一步</p>
+<pre><code>LauncherAppState app = LauncherAppState.getInstance();
+
+// Load configuration-specific DeviceProfile
+mDeviceProfile = getResources().getConfiguration().orientation
+        == Configuration.ORIENTATION_LANDSCAPE ?
+        app.getInvariantDeviceProfile().landscapeProfile
+        : app.getInvariantDeviceProfile().portraitProfile;
+</code></pre><p>通过Configuration获取横屏配置landscapeProfile 或者portraitProfile竖屏配置</p>
+<h5 id="DeviceProfile"><a href="#DeviceProfile" class="headerlink" title="DeviceProfile"></a>DeviceProfile</h5><p>DeviceProfile的数据都是来自InvariantDeviceProfile，封装一些工具方法，我们直接看重点InvariantDeviceProfile</p>
+<h5 id="InvariantDeviceProfile"><a href="#InvariantDeviceProfile" class="headerlink" title="InvariantDeviceProfile"></a>InvariantDeviceProfile</h5><p>InvariantDeviceProfile的初始化是在LauncherAppState构造里new出来的，调用的是</p>
+<pre><code>InvariantDeviceProfile(Context context) {
+    ...
+    numRows = closestProfile.numRows;
+    numColumns = closestProfile.numColumns;
+    numHotseatIcons = closestProfile.numHotseatIcons;
+    hotseatAllAppsRank = (int) (numHotseatIcons / 2);
+    defaultLayoutId = closestProfile.defaultLayoutId;
+    numFolderRows = closestProfile.numFolderRows;
+    numFolderColumns = closestProfile.numFolderColumns;
+    minAllAppsPredictionColumns = closestProfile.minAllAppsPredictionColumns;
+
+    iconSize = interpolatedDeviceProfileOut.iconSize;
+    iconBitmapSize = Utilities.pxFromDp(iconSize, dm);
+    iconTextSize = interpolatedDeviceProfileOut.iconTextSize;
+    hotseatIconSize = interpolatedDeviceProfileOut.hotseatIconSize;
+    fillResIconDpi = getLauncherIconDensity(iconBitmapSize);
+
+    // If the partner customization apk contains any grid overrides, apply them
+    // Supported overrides: numRows, numColumns, iconSize
+    applyPartnerDeviceProfileOverrides(context, dm);
+
+    Point realSize = new Point();
+    display.getRealSize(realSize);
+    // The real size never changes. smallSide and largeSide will remain the
+    // same in any orientation.
+    int smallSide = Math.min(realSize.x, realSize.y);
+    int largeSide = Math.max(realSize.x, realSize.y);
+
+    landscapeProfile = new DeviceProfile(context, this, smallestSize, largestSize,
+            largeSide, smallSide, true /* isLandscape */);
+    portraitProfile = new DeviceProfile(context, this, smallestSize, largestSize,
+            smallSide, largeSide, false /* isLandscape */);
+}
+</code></pre><p>可以看到，通过closestProfile和interpolatedDeviceProfileOut拿到了一系列配置项，如桌面的行，列，Hotseat(桌面底部固定的应用栏)的个数，Hotseat所有应用的位置，布局id，文件夹的行列，图标的大小等等。之后再将这些信息new出我们的DeviceProfile对象。<br>那问题来了，closestProfile和interpolatedDeviceProfileOut是什么？？怎么计算出来的？</p>
+<pre><code>...
+WindowManager wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
+Display display = wm.getDefaultDisplay();
+DisplayMetrics dm = new DisplayMetrics();
+display.getMetrics(dm);
+
+Point smallestSize = new Point();
+Point largestSize = new Point();
+display.getCurrentSizeRange(smallestSize, largestSize);
+
+// This guarantees that width &lt; height
+minWidthDps = Utilities.dpiFromPx(Math.min(smallestSize.x, smallestSize.y), dm);
+minHeightDps = Utilities.dpiFromPx(Math.min(largestSize.x, largestSize.y), dm);
+
+ArrayList&lt;InvariantDeviceProfile&gt; closestProfiles =
+        findClosestDeviceProfiles(minWidthDps, minHeightDps, getPredefinedDeviceProfiles());
+InvariantDeviceProfile interpolatedDeviceProfileOut =
+        invDistWeightedInterpolate(minWidthDps,  minHeightDps, closestProfiles);
+...
+</code></pre><p>可以发现，通过设备的宽高等信息，从各种分辨率的DeviceProfiles列表中找到最合适的配置信息，查找的方法如下，根据设备的宽高跟列表里的的最小宽高差值的平方根从小到大排序，第一个就是我们期望的配置</p>
+<pre><code>/**
+* Returns the closest device profiles ordered by closeness to the specified width and height
+*/
+// Package private visibility for testing.
+ArrayList&lt;InvariantDeviceProfile&gt; findClosestDeviceProfiles(
+        final float width, final float height, ArrayList&lt;InvariantDeviceProfile&gt; points) {
+
+    // Sort the profiles by their closeness to the dimensions
+    ArrayList&lt;InvariantDeviceProfile&gt; pointsByNearness = points;
+    Collections.sort(pointsByNearness, new Comparator&lt;InvariantDeviceProfile&gt;() {
+        public int compare(InvariantDeviceProfile a, InvariantDeviceProfile b) {
+            return Float.compare(dist(width, height, a.minWidthDps, a.minHeightDps),
+                    dist(width, height, b.minWidthDps, b.minHeightDps));
+        }
+    });
+
+    return pointsByNearness;
+}
+
+@Thunk float dist(float x0, float y0, float x1, float y1) {
+    return (float) Math.hypot(x1 - x0, y1 - y0);
+}
+</code></pre><p>配置好的InvariantDeviceProfile列表信息如下，构造参数依次是，<br>配置名称，宽高，行数，列数，文件夹行数列数，图标大小，图标文本大小<br>hotseat配置资源文件，hotseat图标大小，默认页的资源文件<br>故，当我们有新机型没有适配，就可以在这里修改或新增配置</p>
+<pre><code>ArrayList&lt;InvariantDeviceProfile&gt; getPredefinedDeviceProfiles() {
+    ArrayList&lt;InvariantDeviceProfile&gt; predefinedDeviceProfiles = new ArrayList&lt;&gt;();
+    // width, height, #rows, #columns, #folder rows, #folder columns,
+    // iconSize, iconTextSize, #hotseat, #hotseatIconSize, defaultLayoutId.
+    predefinedDeviceProfiles.add(new InvariantDeviceProfile(&quot;Super Short Stubby&quot;,
+            255, 300,     2, 3, 2, 3, 3, 48, 13, 3, 48, R.xml.default_workspace_3x3));
+    predefinedDeviceProfiles.add(new InvariantDeviceProfile(&quot;Shorter Stubby&quot;,
+            255, 400,     3, 3, 3, 3, 3, 48, 13, 3, 48, R.xml.default_workspace_3x3));
+    predefinedDeviceProfiles.add(new InvariantDeviceProfile(&quot;Short Stubby&quot;,
+            275, 420,     3, 4, 3, 4, 4, 48, 13, 5, 48, R.xml.default_workspace_4x4));
+    predefinedDeviceProfiles.add(new InvariantDeviceProfile(&quot;Stubby&quot;,
+            255, 450,     3, 4, 3, 4, 4, 48, 13, 5, 48, R.xml.default_workspace_4x4));
+    predefinedDeviceProfiles.add(new InvariantDeviceProfile(&quot;Nexus S&quot;,
+            296, 491.33f, 4, 4, 4, 4, 4, 48, 13, 5, 48, R.xml.default_workspace_4x4));
+    predefinedDeviceProfiles.add(new InvariantDeviceProfile(&quot;Nexus 4&quot;,
+            359, 567,     4, 4, 4, 4, 4, DEFAULT_ICON_SIZE_DP, 13, 5, 56, R.xml.default_workspace_4x4));
+    predefinedDeviceProfiles.add(new InvariantDeviceProfile(&quot;Nexus 5&quot;,
+            335, 567,     5, 4, 5, 4, 4, DEFAULT_ICON_SIZE_DP, 13, 5, 56, R.xml.default_workspace_5x4_no_all_apps));
+    predefinedDeviceProfiles.add(new InvariantDeviceProfile(&quot;Large Phone&quot;,
+            406, 694,     5, 5, 4, 4, 4, 64, 14.4f,  5, 56, R.xml.default_workspace_5x5));
+    // The tablet profile is odd in that the landscape orientation
+    // also includes the nav bar on the side
+    predefinedDeviceProfiles.add(new InvariantDeviceProfile(&quot;Nexus 7&quot;,
+            575, 904,     5, 6, 4, 5, 4, 72, 14.4f,  7, 60, R.xml.default_workspace_5x6));
+    // Larger tablet profiles always have system bars on the top &amp; bottom
+    predefinedDeviceProfiles.add(new InvariantDeviceProfile(&quot;Nexus 10&quot;,
+            727, 1207,    5, 6, 4, 5, 4, 76, 14.4f,  7, 76, R.xml.default_workspace_5x6));
+    predefinedDeviceProfiles.add(new InvariantDeviceProfile(&quot;20-inch Tablet&quot;,
+            1527, 2527,   7, 7, 6, 6, 4, 100, 20,  7, 72, R.xml.default_workspace_5x6));
+    return predefinedDeviceProfiles;
+}
+</code></pre><p>Launcher的配置初始化到这里基本上就完成了。</p>
+<p>还有一些其他的对象的初始化，包括workspace状态变化的动画加载控制LauncherStateTransitionAnimation, 应用组件的管理器AppWidgetManagerCompat, 处理组件长按事件的ViewLauncherAppWidgetHost，因为在Launcher的初始化流程里不是特别需要，故后文有机会再做介绍。</p>
+<h4 id="LauncherModel加载应用信息"><a href="#LauncherModel加载应用信息" class="headerlink" title="LauncherModel加载应用信息"></a>LauncherModel加载应用信息</h4><p>整个流程里比较复杂的就是LauncherModel加载应用了, 在onCreate里</p>
+<pre><code>mModel = app.setLauncher(this);
+</code></pre><p>LauncherAppState里调用了LauncherModel的初始化方法 initialize,参数是Launcher</p>
+<pre><code>LauncherModel setLauncher(Launcher launcher) {
+    getLauncherProvider().setLauncherProviderChangeListener(launcher);
+    mModel.initialize(launcher);
+    mAccessibilityDelegate = ((launcher != null) &amp;&amp; Utilities.ATLEAST_LOLLIPOP) ?
+        new LauncherAccessibilityDelegate(launcher) : null;
+    return mModel;
+}
+</code></pre><p>LauncherModel的initialize参数是LauncherModel.Callbacks，Launcher里实现了LauncherModel.Callbacks的一系列接口用于绑定获取到的应用信息，文件夹信息，屏幕信息等等</p>
+<pre><code>public void initialize(Callbacks callbacks) {
+    synchronized (mLock) {
+        // Disconnect any of the callbacks and drawables associated with ItemInfos on the
+        // workspace to prevent leaking Launcher activities on orientation change.
+        unbindItemInfosAndClearQueuedBindRunnables();
+        mCallbacks = new WeakReference&lt;Callbacks&gt;(callbacks);
+    }
+}
+</code></pre><p>在加载数据之前先清除正在运行的线程DeferredBindRunnables，清除DeferredHandler里等待执行的任务，并且将所有ItemInfo unbind</p>
+<pre><code>/** Unbinds all the sBgWorkspaceItems and sBgAppWidgets on the main thread */
+void unbindWorkspaceItemsOnMainThread() {
+    // Ensure that we don&apos;t use the same workspace items data structure on the main thread
+    // by making a copy of workspace items first.
+    final ArrayList&lt;ItemInfo&gt; tmpItems = new ArrayList&lt;ItemInfo&gt;();
+    synchronized (sBgLock) {
+        tmpItems.addAll(sBgWorkspaceItems);
+        tmpItems.addAll(sBgAppWidgets);
+    }
+    Runnable r = new Runnable() {
+            @Override
+            public void run() {
+                for (ItemInfo item : tmpItems) {
+                    item.unbind();
+                }
+            }
+        };
+    runOnMainThread(r);
+}
+</code></pre><p>接着我们才看到真正开始加载数据了，onCreate里的LauncherModel调用startLoader，创建线程加载数据</p>
+<pre><code>...        
+if (!mRestoring) {
+    if (DISABLE_SYNCHRONOUS_BINDING_CURRENT_PAGE) {
+        // If the user leaves launcher, then we should just load items asynchronously when
+        // they return.
+        mModel.startLoader(PagedView.INVALID_RESTORE_PAGE);
+    } else {
+        // We only load the page synchronously if the user rotates (or triggers a
+        // configuration change) while launcher is in the foreground
+        mModel.startLoader(mWorkspace.getRestorePage());
+    }
+}
+...
+</code></pre><p>当第一次打开时，会调用                mModel.startLoader(PagedView.INVALID_RESTORE_PAGE)，停止旧的Loader任务，stopLoaderLocked，然后new出一个LoaderTask(mApp.getContext(), loadFlags) Runnable，通过Handler sworker post出去，开始加载任务</p>
+<pre><code>public void startLoader(int synchronousBindPage) {
+    startLoader(synchronousBindPage, LOADER_FLAG_NONE);
+}
+
+public void startLoader(int synchronousBindPage, int loadFlags) {
+        // Enable queue before starting loader. It will get disabled in Launcher#finishBindingItems
+        InstallShortcutReceiver.enableInstallQueue();
+        synchronized (mLock) {
+            // Clear any deferred bind-runnables from the synchronized load process
+            // We must do this before any loading/binding is scheduled below.
+            synchronized (mDeferredBindRunnables) {
+                mDeferredBindRunnables.clear();
+            }
+
+            // Don&apos;t bother to start the thread if we know it&apos;s not going to do anything
+            if (mCallbacks != null &amp;&amp; mCallbacks.get() != null) {
+                // If there is already one running, tell it to stop.
+                stopLoaderLocked();
+                mLoaderTask = new LoaderTask(mApp.getContext(), loadFlags);
+                if (synchronousBindPage != PagedView.INVALID_RESTORE_PAGE
+                        &amp;&amp; mAllAppsLoaded &amp;&amp; mWorkspaceLoaded &amp;&amp; !mIsLoaderTaskRunning) {
+                    mLoaderTask.runBindSynchronousPage(synchronousBindPage);
+                } else {
+                    sWorkerThread.setPriority(Thread.NORM_PRIORITY);
+                    sWorker.post(mLoaderTask);
+                }
+            }
+        }
+    }
+</code></pre><p>开始加载应用信息的任务后，由于后续的篇幅比较长，请看下一篇文章的详细介绍。</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div></div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>Donate</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/wechatpay.jpg" alt="ticooops WeChat Pay">
+        <p>WeChat Pay</p>
+      </div>
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/images/alipay.jpg" alt="ticooops Alipay">
+        <p>Alipay</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Android/" rel="tag"># Android</a>
+          
+            <a href="/tags/Launcher/" rel="tag"># Launcher</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/04/13/java/线程池/" rel="next" title="线程池">
+                <i class="fa fa-chevron-left"></i> 线程池
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/10/03/android/Launcher3桌面加载流程分析-2/" rel="prev" title="Launcher3桌面加载流程分析-2">
+                Launcher3桌面加载流程分析-2 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">ticooops</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">37</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                
+                  <span class="site-state-item-count">10</span>
+                  <span class="site-state-item-name">tags</span>
+                
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#主入口Launcher"><span class="nav-number">1.</span> <span class="nav-text">主入口Launcher</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#LauncherAppState"><span class="nav-number">1.1.</span> <span class="nav-text">LauncherAppState</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#DeviceProfile，InvariantDeviceProfile，Launcher的配置"><span class="nav-number">1.2.</span> <span class="nav-text">DeviceProfile，InvariantDeviceProfile，Launcher的配置</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#DeviceProfile"><span class="nav-number">1.2.1.</span> <span class="nav-text">DeviceProfile</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#InvariantDeviceProfile"><span class="nav-number">1.2.2.</span> <span class="nav-text">InvariantDeviceProfile</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#LauncherModel加载应用信息"><span class="nav-number">1.3.</span> <span class="nav-text">LauncherModel加载应用信息</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">ticooops</span>
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

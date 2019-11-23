@@ -1,0 +1,1102 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Android,RxJava,">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="看过上文的 RxJava线程是如何控制的(上)， 对RxJava 是如何调度的有一定的了解了，本文主要解说 Scheduler 和 Scheduler.Worker 它们是如何协作，希望对你们有帮助.   通过上文，我们知道，  SingleScheduler  一个共享的，单一线程 Scheduler ComputationScheduler 持有一个固定工作线程数量的线程池, 通过 ro">
+<meta name="keywords" content="Android,RxJava">
+<meta property="og:type" content="article">
+<meta property="og:title" content="RxJava线程是如何控制的(下)">
+<meta property="og:url" content="http://yoursite.com/2018/03/16/android/RxJava线程是如何控制的-2/index.html">
+<meta property="og:site_name" content="Hello,world">
+<meta property="og:description" content="看过上文的 RxJava线程是如何控制的(上)， 对RxJava 是如何调度的有一定的了解了，本文主要解说 Scheduler 和 Scheduler.Worker 它们是如何协作，希望对你们有帮助.   通过上文，我们知道，  SingleScheduler  一个共享的，单一线程 Scheduler ComputationScheduler 持有一个固定工作线程数量的线程池, 通过 ro">
+<meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2019-01-18T11:50:40.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="RxJava线程是如何控制的(下)">
+<meta name="twitter:description" content="看过上文的 RxJava线程是如何控制的(上)， 对RxJava 是如何调度的有一定的了解了，本文主要解说 Scheduler 和 Scheduler.Worker 它们是如何协作，希望对你们有帮助.   通过上文，我们知道，  SingleScheduler  一个共享的，单一线程 Scheduler ComputationScheduler 持有一个固定工作线程数量的线程池, 通过 ro">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2018/03/16/android/RxJava线程是如何控制的-2/">
+
+
+
+
+
+  <title>RxJava线程是如何控制的(下) | Hello,world</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="default">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Hello,world</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            Archives
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/03/16/android/RxJava线程是如何控制的-2/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="ticooops">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hello,world">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">RxJava线程是如何控制的(下)</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-03-16T15:01:29+08:00">
+                2018-03-16
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>看过上文的 RxJava线程是如何控制的(上)， 对RxJava 是如何调度的有一定的了解了，本文主要解说 Scheduler 和 Scheduler.Worker 它们是如何协作，希望对你们有帮助.  </p>
+<p>通过上文，我们知道，</p>
+<ol>
+<li>SingleScheduler  一个共享的，单一线程 Scheduler</li>
+<li>ComputationScheduler 持有一个固定工作线程数量的线程池, 通过 round-robin 轮询的方式处理 Scheduler.Workder</li>
+<li>IoScheduler  创建并缓存线程，会尽可能的重复使用已存在的线程</li>
+<li>NewThreadScheduler 创建新线程的一个调度器</li>
+</ol>
+<h2 id="Scheduler-调度器"><a href="#Scheduler-调度器" class="headerlink" title="Scheduler 调度器"></a>Scheduler 调度器</h2><h3 id="NewThreadScheduler"><a href="#NewThreadScheduler" class="headerlink" title="NewThreadScheduler"></a>NewThreadScheduler</h3><p>我们从最简单的 NewThreadScheduler 调度器开始看起.<br>默认会使用 THREAD_FACTORY 来完成构造</p>
+<pre><code>public final class NewThreadScheduler extends Scheduler {
+    final ThreadFactory threadFactory;
+    private static final String THREAD_NAME_PREFIX = &quot;RxNewThreadScheduler&quot;;
+    private static final RxThreadFactory THREAD_FACTORY;
+
+    /** The name of the system property for setting the thread priority for this Scheduler. */
+    private static final String KEY_NEWTHREAD_PRIORITY = &quot;rx2.newthread-priority&quot;;
+
+    static {
+        int priority = Math.max(Thread.MIN_PRIORITY, Math.min(Thread.MAX_PRIORITY,
+                Integer.getInteger(KEY_NEWTHREAD_PRIORITY, Thread.NORM_PRIORITY)));
+
+        THREAD_FACTORY = new RxThreadFactory(THREAD_NAME_PREFIX, priority);
+    }
+
+    public NewThreadScheduler() {
+        this(THREAD_FACTORY);
+    }
+
+    public Worker createWorker() {
+        return new NewThreadWorker(threadFactory);
+    }
+}
+</code></pre><p>那，RxThreadFactory是什么呢？注释里是这么描述的</p>
+<p>A ThreadFactory that counts how many threads have been created and given a prefix, sets the created Thread’s name to {@code prefix-count}.</p>
+<p>功能很简单，就是用来创建线程的一个Factory类，额外的，添加的计算线程数量以及给线程命名的功能。 主要代码是</p>
+<pre><code>@Override
+public Thread newThread(Runnable r) {
+    StringBuilder nameBuilder = new StringBuilder(prefix).append(&apos;-&apos;).append(incrementAndGet());
+
+    String name = nameBuilder.toString();
+    Thread t = nonBlocking ? new RxCustomThread(r, name) : new Thread(r, name);
+    t.setPriority(priority);
+    t.setDaemon(true);
+    return t;
+}
+
+static final class RxCustomThread extends Thread implements NonBlockingThread {
+    RxCustomThread(Runnable run, String name) {
+        super(run, name);
+    }
+}
+</code></pre><h3 id="SingleScheduler"><a href="#SingleScheduler" class="headerlink" title="SingleScheduler"></a>SingleScheduler</h3><p>同 NewThreadScheduler 一样，在构造方法里使用 RxThreadFactory, 通过SchedulerPoolFactory 创建一个核心数为 1 的线程池并缓存了线程池，重复使用。</p>
+<pre><code>public final class SingleScheduler extends Scheduler {
+    final ThreadFactory threadFactory;
+    final AtomicReference&lt;ScheduledExecutorService&gt; executor = new AtomicReference&lt;ScheduledExecutorService&gt;();
+    ...
+    static final RxThreadFactory SINGLE_THREAD_FACTORY;
+
+    public SingleScheduler() {
+        this(SINGLE_THREAD_FACTORY);
+    }
+
+    /**
+    * Constructs a SingleScheduler with the given ThreadFactory and prepares the
+    * single scheduler thread.
+    * @param threadFactory thread factory to use for creating worker threads. Note that this takes precedence over any
+    *                      system properties for configuring new thread creation. Cannot be null.
+    */
+    public SingleScheduler(ThreadFactory threadFactory) {
+        this.threadFactory = threadFactory;
+        executor.lazySet(createExecutor(threadFactory));
+    }
+
+    static ScheduledExecutorService createExecutor(ThreadFactory threadFactory) {
+        return SchedulerPoolFactory.create(threadFactory);
+    }
+
+    public Worker createWorker() {
+        return new ScheduledWorker(executor.get());
+    }
+}
+</code></pre><p>可以看到，配合 SingleScheduler 使用的是 ScheduledWorker，跟 NewThreadScheduler 不一样。</p>
+<h3 id="ComputationScheduler"><a href="#ComputationScheduler" class="headerlink" title="ComputationScheduler"></a>ComputationScheduler</h3><p>ComputationScheduler 使用 EventLoopWorker, 还有一个关键的成员属性<br> pool ,是一个保存有 FixedSchedulerPool实例的 AtomicReference对象</p>
+<p>public final class ComputationScheduler extends Scheduler implements SchedulerMultiWorkerSupport {<br>    final AtomicReference<fixedschedulerpool> pool;<br>    …<br>    public ComputationScheduler() {<br>        this(THREAD_FACTORY);<br>    }</fixedschedulerpool></p>
+<pre><code>public ComputationScheduler(ThreadFactory threadFactory) {
+    this.threadFactory = threadFactory;
+    this.pool = new AtomicReference&lt;FixedSchedulerPool&gt;(NONE);
+    start();
+}
+
+@NonNull
+@Override
+public Worker createWorker() {
+    return new EventLoopWorker(pool.get().getEventLoop());
+}
+
+@Override
+public void createWorkers(int number, WorkerCallback callback) {
+    ObjectHelper.verifyPositive(number, &quot;number &gt; 0 required&quot;);
+    pool.get().createWorkers(number, callback);
+}
+
+@Override
+public void start() {
+    FixedSchedulerPool update = new FixedSchedulerPool(MAX_THREADS, threadFactory);
+    if (!pool.compareAndSet(NONE, update)) {
+        update.shutdown();
+    }
+}
+</code></pre><p>先来看看 FixedSchedulerPool 是什么？ 可以发现，PoolWorker 其实是继承 NewThreadWorker，并没有新增或者重写方法，因此，可以认为 FixedSchedulerPool 模拟了一个持有固定大小的工作单元(Shceduler.Worker)的线程池。</p>
+<pre><code>static final class FixedSchedulerPool implements SchedulerMultiWorkerSupport {
+    final int cores;
+    // 保存工作单元数组，固定大小
+    final PoolWorker[] eventLoops;
+    long n;
+
+    FixedSchedulerPool(int maxThreads, ThreadFactory threadFactory) {
+        // 初始化固定长度的 PoolWorker
+        this.cores = maxThreads;
+        this.eventLoops = new PoolWorker[maxThreads];
+        for (int i = 0; i &lt; maxThreads; i++) {
+            this.eventLoops[i] = new PoolWorker(threadFactory);
+        }
+    }
+
+    public PoolWorker getEventLoop() {
+        int c = cores;
+        if (c == 0) {
+            return SHUTDOWN_WORKER;
+        }
+        // simple round robin, improvements to come
+        return eventLoops[(int)(n++ % c)];
+    }
+}
+</code></pre><p>回过头看 ComputationScheduler 的createWorker，EventLoopWorker传递了一个参数 pool.get().getEventLoop()，即 FixedSchedulerPool getEventLoop 顺序遍历 eventLoops 里的所有对象。</p>
+<pre><code>static final class EventLoopWorker extends Scheduler.Worker {
+    public Disposable schedule(@NonNull Runnable action) {
+        if (disposed) {
+            return EmptyDisposable.INSTANCE;
+        }
+
+        return poolWorker.scheduleActual(action, 0, TimeUnit.MILLISECONDS, serial);
+    }
+
+    @NonNull
+    @Override
+    public Disposable schedule(@NonNull Runnable action, long delayTime, @NonNull TimeUnit unit) {
+        if (disposed) {
+            return EmptyDisposable.INSTANCE;
+        }
+
+        return poolWorker.scheduleActual(action, delayTime, unit, timed);
+    }
+}
+</code></pre><h3 id="IoScheduler"><a href="#IoScheduler" class="headerlink" title="IoScheduler"></a>IoScheduler</h3><p>IoScheduler 里跟 ComputationScheduler 类似，也有一个 AtomicReference成员属性，保存的是 CachedWorkerPool 对象，在构造函数里完成初始化。</p>
+<pre><code>public final class IoScheduler extends Scheduler {
+
+    final AtomicReference&lt;CachedWorkerPool&gt; pool;
+    ...
+
+    public IoScheduler(ThreadFactory threadFactory) {
+        this.threadFactory = threadFactory;
+        this.pool = new AtomicReference&lt;CachedWorkerPool&gt;(NONE);
+        start();
+    }
+
+    @Override
+    public void start() {
+        CachedWorkerPool update = new CachedWorkerPool(KEEP_ALIVE_TIME, KEEP_ALIVE_UNIT, threadFactory);
+        if (!pool.compareAndSet(NONE, update)) {
+            update.shutdown();
+        }
+    }
+
+    public Worker createWorker() {
+        return new EventLoopWorker(pool.get());
+    }
+}
+</code></pre><p>不难知道，CachedWorkerPool 里肯定也是维护了一个线程池，或者模拟了一个线程池的功能。 CachedWorkerPool 继承 Runnable， 内部维护了一个 ThreadWorker的并发链式队列 expiringWorkerQueue。</p>
+<pre><code>static final class CachedWorkerPool implements Runnable {
+    private final long keepAliveTime;
+    private final ConcurrentLinkedQueue&lt;ThreadWorker&gt; expiringWorkerQueue;
+    final CompositeDisposable allWorkers;
+    private final ScheduledExecutorService evictorService;
+    private final Future&lt;?&gt; evictorTask;
+    private final ThreadFactory threadFactory;
+
+    CachedWorkerPool(long keepAliveTime, TimeUnit unit, ThreadFactory threadFactory) {
+        this.keepAliveTime = unit != null ? unit.toNanos(keepAliveTime) : 0L;
+        this.expiringWorkerQueue = new ConcurrentLinkedQueue&lt;ThreadWorker&gt;();
+        this.allWorkers = new CompositeDisposable();
+        this.threadFactory = threadFactory;
+
+        ScheduledExecutorService evictor = null;
+        Future&lt;?&gt; task = null;
+        if (unit != null) {
+            evictor = Executors.newScheduledThreadPool(1, EVICTOR_THREAD_FACTORY);
+            task = evictor.scheduleWithFixedDelay(this, this.keepAliveTime, this.keepAliveTime, TimeUnit.NANOSECONDS);
+        }
+        evictorService = evictor;
+        evictorTask = task;
+    }
+
+    public void run() {
+        evictExpiredWorkers();
+    }
+
+     void evictExpiredWorkers() {
+        if (!expiringWorkerQueue.isEmpty()) {
+            long currentTimestamp = now();
+
+            for (ThreadWorker threadWorker : expiringWorkerQueue) {
+                if (threadWorker.getExpirationTime() &lt;= currentTimestamp) {
+                    if (expiringWorkerQueue.remove(threadWorker)) {
+                        allWorkers.remove(threadWorker);
+                    }
+                } else {
+                    // Queue is ordered with the worker that will expire first in the beginning, so when we
+                    // find a non-expired worker we can stop evicting.
+                    break;
+                }
+            }
+        }
+    }
+}
+</code></pre><p>不出所料，使用 Executors.newScheduledThreadPool 创建了一个核心数为 1的线程池，与其他不同的是，线程池 evictor 执行的方法是 scheduleWithFixedDelay，每间隔一个 keepAliveTime 时间会执行一次，以达到轮询 expiringWorkerQueue 里的工作单元Scheduler.Workder。  </p>
+<p>接着，配合 IoScheduler 调度的工作单元是 EventLoopWorker， 这里的 EventLoopWorker 和 ComputationScheduler 里的 EventLoopWorker是不一样的。</p>
+<pre><code>static final class EventLoopWorker extends Scheduler.Worker {
+    private final CompositeDisposable tasks;
+    private final CachedWorkerPool pool;
+    private final ThreadWorker threadWorker;
+
+    final AtomicBoolean once = new AtomicBoolean();
+
+    EventLoopWorker(CachedWorkerPool pool) {
+        this.pool = pool;
+        this.tasks = new CompositeDisposable();
+        this.threadWorker = pool.get();
+    }
+
+    public Disposable schedule(@NonNull Runnable action, long delayTime, @NonNull TimeUnit unit) {
+        if (tasks.isDisposed()) {
+            // don&apos;t schedule, we are unsubscribed
+            return EmptyDisposable.INSTANCE;
+        }
+
+        return threadWorker.scheduleActual(action, delayTime, unit, tasks);
+    }
+}
+</code></pre><p>EventLoopWorker 这里做的的东西其实不多，通过 CachedWorkerPool.get，持有 ThreadWorker 对象，在 schedule 回调里完成任务的调度。  </p>
+<p>看完这四种方式，我们能大致了解到，</p>
+<ul>
+<li>它们内部都有线程池或者模拟了线程池</li>
+<li>创建 Worker 的方式</li>
+</ul>
+<p>奇怪的是，我们还是不能找到异步执行的地方，不过也差不多了，因为我们只剩 Worker 的实现还没有看。 </p>
+<h3 id="NewThreadScheduler-amp-NewThreadWorker"><a href="#NewThreadScheduler-amp-NewThreadWorker" class="headerlink" title="NewThreadScheduler &amp; NewThreadWorker"></a>NewThreadScheduler &amp; NewThreadWorker</h3><p>先来看看 NewThreadWorker 的构造 </p>
+<pre><code>private final ScheduledExecutorService executor;
+
+public NewThreadWorker(ThreadFactory threadFactory) {
+    executor = SchedulerPoolFactory.create(threadFactory);
+}
+</code></pre><p>成员变量 SchedulerPoolFactory 是SchedulerPool的管理工厂， 创建核心数为 1 的线程池</p>
+<pre><code>public static ScheduledExecutorService create(ThreadFactory  factory) {
+    final ScheduledExecutorService exec = Executors.newScheduledThreadPool(1, factory);
+    tryPutIntoPool(PURGE_ENABLED, exec);
+    return exec;
+}
+</code></pre><p>来看最核心的方法 scheduleDirect，scheduleActual， 方法注释其实已经写得很清楚了，通过线程池执行 Runnable run参数, 达到异步的效果</p>
+<pre><code>/**
+ * Schedules the given runnable on the underlying executor directly and
+ * returns its future wrapped into a Disposable.
+ * @param run the Runnable to execute in a delayed fashion
+ * @param delayTime the delay amount
+ * @param unit the delay time unit
+ * @return the ScheduledRunnable instance
+ */
+public Disposable scheduleDirect(final Runnable run, long delayTime, TimeUnit unit) {
+    ScheduledDirectTask task = new ScheduledDirectTask(RxJavaPlugins.onSchedule(run));
+    try {
+        Future&lt;?&gt; f;
+        if (delayTime &lt;= 0L) {
+            f = executor.submit(task);
+        } else {
+            f = executor.schedule(task, delayTime, unit);
+        }
+        task.setFuture(f);
+        return task;
+    } catch (RejectedExecutionException ex) {
+        RxJavaPlugins.onError(ex);
+        return EmptyDisposable.INSTANCE;
+    }
+}
+
+/**
+ * Wraps the given runnable into a ScheduledRunnable and schedules it
+ * on the underlying ScheduledExecutorService.
+ * &lt;p&gt;If the schedule has been rejected, the ScheduledRunnable.wasScheduled will return
+ * false.
+ * @param run the runnable instance
+ * @param delayTime the time to delay the execution
+ * @param unit the time unit
+ * @param parent the optional tracker parent to add the created ScheduledRunnable instance to before it gets scheduled
+ * @return the ScheduledRunnable instance
+ */
+@NonNull
+public ScheduledRunnable scheduleActual(final Runnable run, long delayTime, @NonNull TimeUnit unit, @Nullable DisposableContainer parent) {
+    Runnable decoratedRun = RxJavaPlugins.onSchedule(run);
+
+    ScheduledRunnable sr = new ScheduledRunnable(decoratedRun, parent);
+
+    if (parent != null) {
+        if (!parent.add(sr)) {
+            return sr;
+        }
+    }
+
+    Future&lt;?&gt; f;
+    try {
+        if (delayTime &lt;= 0) {
+            f = executor.submit((Callable&lt;Object&gt;)sr);
+        } else {
+            f = executor.schedule((Callable&lt;Object&gt;)sr, delayTime, unit);
+        }
+        sr.setFuture(f);
+    } catch (RejectedExecutionException ex) {
+        if (parent != null) {
+            parent.remove(sr);
+        }
+        RxJavaPlugins.onError(ex);
+    }
+
+    return sr;
+}
+</code></pre><h3 id="SingleScheduler-amp-ScheduledWorker"><a href="#SingleScheduler-amp-ScheduledWorker" class="headerlink" title="SingleScheduler &amp; ScheduledWorker"></a>SingleScheduler &amp; ScheduledWorker</h3><p>static final class ScheduledWorker extends Scheduler.Worker {</p>
+<pre><code>    final ScheduledExecutorService executor;
+
+    final CompositeDisposable tasks;
+
+    volatile boolean disposed;
+
+    ScheduledWorker(ScheduledExecutorService executor) {
+        this.executor = executor;
+        this.tasks = new CompositeDisposable();
+    }
+
+    @NonNull
+    @Override
+    public Disposable schedule(@NonNull Runnable run, long delay, @NonNull TimeUnit unit) {
+        if (disposed) {
+            return EmptyDisposable.INSTANCE;
+        }
+
+        Runnable decoratedRun = RxJavaPlugins.onSchedule(run);
+
+        ScheduledRunnable sr = new ScheduledRunnable(decoratedRun, tasks);
+        tasks.add(sr);
+
+        try {
+            Future&lt;?&gt; f;
+            if (delay &lt;= 0L) {
+                f = executor.submit((Callable&lt;Object&gt;)sr);
+            } else {
+                f = executor.schedule((Callable&lt;Object&gt;)sr, delay, unit);
+            }
+
+            sr.setFuture(f);
+        } catch (RejectedExecutionException ex) {
+            dispose();
+            RxJavaPlugins.onError(ex);
+            return EmptyDisposable.INSTANCE;
+        }
+
+        return sr;
+    }
+
+    @Override
+    public void dispose() {
+        if (!disposed) {
+            disposed = true;
+            tasks.dispose();
+        }
+    }
+
+    @Override
+    public boolean isDisposed() {
+        return disposed;
+    }
+}
+</code></pre><p>}    </p>
+<h3 id="ComputationScheduler-amp-EventLoopWorker"><a href="#ComputationScheduler-amp-EventLoopWorker" class="headerlink" title="ComputationScheduler &amp; EventLoopWorker"></a>ComputationScheduler &amp; EventLoopWorker</h3><h3 id="IoScheduler-amp-ThreadWorker"><a href="#IoScheduler-amp-ThreadWorker" class="headerlink" title="IoScheduler &amp; ThreadWorker"></a>IoScheduler &amp; ThreadWorker</h3>
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div></div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>Donate</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/wechatpay.jpg" alt="ticooops WeChat Pay">
+        <p>WeChat Pay</p>
+      </div>
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/images/alipay.jpg" alt="ticooops Alipay">
+        <p>Alipay</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Android/" rel="tag"># Android</a>
+          
+            <a href="/tags/RxJava/" rel="tag"># RxJava</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/03/14/android/RxJava线程是如何控制的-1/" rel="next" title="RxJava线程是如何控制的(上)">
+                <i class="fa fa-chevron-left"></i> RxJava线程是如何控制的(上)
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/03/20/java/atomic包/" rel="prev" title="atomic包">
+                atomic包 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">ticooops</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">37</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                
+                  <span class="site-state-item-count">10</span>
+                  <span class="site-state-item-name">tags</span>
+                
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Scheduler-调度器"><span class="nav-number">1.</span> <span class="nav-text">Scheduler 调度器</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#NewThreadScheduler"><span class="nav-number">1.1.</span> <span class="nav-text">NewThreadScheduler</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#SingleScheduler"><span class="nav-number">1.2.</span> <span class="nav-text">SingleScheduler</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ComputationScheduler"><span class="nav-number">1.3.</span> <span class="nav-text">ComputationScheduler</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#IoScheduler"><span class="nav-number">1.4.</span> <span class="nav-text">IoScheduler</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#NewThreadScheduler-amp-NewThreadWorker"><span class="nav-number">1.5.</span> <span class="nav-text">NewThreadScheduler &amp; NewThreadWorker</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#SingleScheduler-amp-ScheduledWorker"><span class="nav-number">1.6.</span> <span class="nav-text">SingleScheduler &amp; ScheduledWorker</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ComputationScheduler-amp-EventLoopWorker"><span class="nav-number">1.7.</span> <span class="nav-text">ComputationScheduler &amp; EventLoopWorker</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#IoScheduler-amp-ThreadWorker"><span class="nav-number">1.8.</span> <span class="nav-text">IoScheduler &amp; ThreadWorker</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">ticooops</span>
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

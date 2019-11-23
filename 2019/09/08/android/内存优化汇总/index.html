@@ -1,0 +1,829 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Android,">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="首先认识关于内存的两个重要知识  内存溢出（Out of Memory）：系统会给每个APP分配内存也就是Heap Size值。当APP占用的内存加上我们申请的内存资源超过了Dalvik虚拟机的最大内存时就会抛出的Out Of Memory异常。 内存泄漏（Memory Leak）：当一个对象不在使用了，本应该被垃圾回收器（JVM）回收。但是这个对象由于被其他正在使用的对象所持有，造成无法被回收的">
+<meta name="keywords" content="Android">
+<meta property="og:type" content="article">
+<meta property="og:title" content="内存&#x2F;性能优化汇总">
+<meta property="og:url" content="http://yoursite.com/2019/09/08/android/内存优化汇总/index.html">
+<meta property="og:site_name" content="Hello,world">
+<meta property="og:description" content="首先认识关于内存的两个重要知识  内存溢出（Out of Memory）：系统会给每个APP分配内存也就是Heap Size值。当APP占用的内存加上我们申请的内存资源超过了Dalvik虚拟机的最大内存时就会抛出的Out Of Memory异常。 内存泄漏（Memory Leak）：当一个对象不在使用了，本应该被垃圾回收器（JVM）回收。但是这个对象由于被其他正在使用的对象所持有，造成无法被回收的">
+<meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2019-09-14T08:29:30.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="内存&#x2F;性能优化汇总">
+<meta name="twitter:description" content="首先认识关于内存的两个重要知识  内存溢出（Out of Memory）：系统会给每个APP分配内存也就是Heap Size值。当APP占用的内存加上我们申请的内存资源超过了Dalvik虚拟机的最大内存时就会抛出的Out Of Memory异常。 内存泄漏（Memory Leak）：当一个对象不在使用了，本应该被垃圾回收器（JVM）回收。但是这个对象由于被其他正在使用的对象所持有，造成无法被回收的">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2019/09/08/android/内存优化汇总/">
+
+
+
+
+
+  <title>内存/性能优化汇总 | Hello,world</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="default">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Hello,world</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            Archives
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/09/08/android/内存优化汇总/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="ticooops">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hello,world">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">内存/性能优化汇总</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-09-08T15:40:38+08:00">
+                2019-09-08
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>首先认识关于内存的两个重要知识</p>
+<ul>
+<li>内存溢出（Out of Memory）：系统会给每个APP分配内存也就是Heap Size值。当APP占用的内存加上我们申请的内存资源超过了Dalvik虚拟机的最大内存时就会抛出的Out Of Memory异常。</li>
+<li>内存泄漏（Memory Leak）：当一个对象不在使用了，本应该被垃圾回收器（JVM）回收。但是这个对象由于被其他正在使用的对象所持有，造成无法被回收的结果。内存泄漏最终会导致内存溢出。</li>
+</ul>
+<p>区别：内存泄露是由于 GC 无法及时或者无法识别可以回收的数据进行及时的回收，导致内存的浪费；内存溢出是由于数据所需要的内存无法得到满足，导致数据无法正常存储到内存中。内存泄露的多次表现就是会导致内存溢出。</p>
+<h2 id="内存优化"><a href="#内存优化" class="headerlink" title="内存优化"></a>内存优化</h2><h3 id="Handler，Thread等内部类造成的内存泄漏"><a href="#Handler，Thread等内部类造成的内存泄漏" class="headerlink" title="Handler，Thread等内部类造成的内存泄漏"></a>Handler，Thread等内部类造成的内存泄漏</h3><p>在Activity中创建非静态内部类，非静态内部类会持有Activity的隐式引用，若内部类生命周期长于Activity，会导致Activity实例无法被回收。（屏幕旋转后会重新创建Activity实例，如果内部类持有引用，将会导致旋转前的实例无法被回收）。  </p>
+<p>解决办法： </p>
+<ul>
+<li><p>如果一定要使用内部类，就改用static内部类(静态的内部类不会持有外部类的一个隐式引用)，在内部类中通过 WeakReference 的方式引用外界资源。对Handler、Thread、Runnable等使用弱引用，并且调用removeCallbacksAndMessages 等移除。</p>
+</li>
+<li><p>在关闭Activity的时候停掉你的后台线程。线程停掉了，就相当于切断了Handler和外部连接的线，Activity自然会在合适的时候被回收。</p>
+</li>
+</ul>
+<h3 id="资源未及时关闭造成内存泄漏"><a href="#资源未及时关闭造成内存泄漏" class="headerlink" title="资源未及时关闭造成内存泄漏"></a>资源未及时关闭造成内存泄漏</h3><p>对于使用了 BraodcastReceiver，ContentObserver，Cursor，File，Stream，ContentProvider，Bitmap，动画，I/O，数据库，网络的连接等资源的使用，应该在Activity 销毁时及时关闭或者注销，否则这些资源将不会被回收，造成内存泄漏。</p>
+<ul>
+<li>广播 BroadcastReceiver：记得注销注册unregisterReceiver();</li>
+<li>IO 流：记得关闭流 InputStream / OutputStream.close();</li>
+<li>数据库游标 Cursor：使用后关闭游标cursor.close()</li>
+<li>对于图片资源Bitmap：当它不再被使用时，应调用recycle() 回收此对象的像素所占用的内存，再赋为 null</li>
+<li>动画：属性动画或循环动画，在 Activity 退出时需要停止动画。在属性动画中有一类无限循环动画，如果在Activity中播放这类动画并且在 onDestroy 中没有去停止动画，那么这个动画将会一直播放下去，这时候 Activity 会被 View 所持有，从而导致 Activity 无法被释放。在 Activity 中onDestroy 去调用 objectAnimator.cancel() 来停止动画。</li>
+</ul>
+<h3 id="static关键字修饰的变量由于生命周期过长，容易造成内存泄漏"><a href="#static关键字修饰的变量由于生命周期过长，容易造成内存泄漏" class="headerlink" title="static关键字修饰的变量由于生命周期过长，容易造成内存泄漏"></a>static关键字修饰的变量由于生命周期过长，容易造成内存泄漏</h3><p>static 对象的生命周期过长，应该谨慎使用。一定要使用要及时进行 null 处理。</p>
+<p>静态变量 Activity 和 View 会导致内存泄漏。例如：context，textView 实例的生命周期与应用的生命周期一样，而他们都持有当前 Activity ，当 Activity 销毁，而它们的引用一直被持有，就不会被回收。因此就产生内存泄漏了。</p>
+<h3 id="不合理使用Context造成内存泄漏"><a href="#不合理使用Context造成内存泄漏" class="headerlink" title="不合理使用Context造成内存泄漏"></a>不合理使用Context造成内存泄漏</h3><p>单例模式造成的内存泄漏，如 Context 的使用，单例中传入的是 Activity，在关闭 Activity时，因单例持有Activity 的引用, 导致Activity 无法被回收。</p>
+<p>建议使用 application 替代 Activity， 或者 activity.getApplicationContext() 获取 context</p>
+<h3 id="WebView造成内存泄露"><a href="#WebView造成内存泄露" class="headerlink" title="WebView造成内存泄露"></a>WebView造成内存泄露</h3><p>关于 WebView 的内存泄露，因为 WebView 在加载网页后会长期占用内存而不能被释放，因此我们在 Activity 销毁后把 webview 从父控件内 remove ，同时调用它的 destory() 方法来销毁它以释放内存。</p>
+<h3 id="String-频繁的字符串拼接"><a href="#String-频繁的字符串拼接" class="headerlink" title="String 频繁的字符串拼接"></a>String 频繁的字符串拼接</h3><p>严格的讲，String拼接只能归结到内存抖动中，因为产生的String副本能够被GC，不会造成内存泄露。</p>
+<p>使用 StringBuffer 或者 StringBuilder 代替 String，可以在一定程度上避免OOM和内存抖动。</p>
+<h3 id="MVP架构不合理应用"><a href="#MVP架构不合理应用" class="headerlink" title="MVP架构不合理应用"></a>MVP架构不合理应用</h3><p>在 MVP 的架构中，通常 Presenter 要同时持有 View 和 Model 的引用，如果在 Activity 退出的时候，Presenter 正在进行一个耗时操作，那么 Presenter 的生命周期会比 Activity 长，导致 Activity 无法回收，造成内存泄漏</p>
+<p>解决方法：，在 onDestory 方法中把 presenter 中的 相关资源销毁，如停止线程等等</p>
+<h3 id="其他方式调整"><a href="#其他方式调整" class="headerlink" title="其他方式调整"></a>其他方式调整</h3><p>gradle 配置，heapsize会增大2-3倍，缓解OOM的发生</p>
+<pre><code>android:largeHeap=&quot;true&quot;
+</code></pre><p>修改 JVM 配置 -XXM等等</p>
+<h2 id="性能优化"><a href="#性能优化" class="headerlink" title="性能优化"></a>性能优化</h2><p>app 性能方面的问题分类</p>
+<ol>
+<li>渲染问题：过度绘制、布局冗杂</li>
+<li>内存问题：内存浪费（内存管理）、内存泄漏</li>
+<li>功耗问题：耗电</li>
+</ol>
+<h3 id="渲染优化"><a href="#渲染优化" class="headerlink" title="渲染优化"></a>渲染优化</h3><p>常见的渲染问题有，</p>
+<ol>
+<li>人为在UI线程中做轻微耗时操作，导致UI线程卡顿；</li>
+<li>布局Layout过于复杂，无法在16ms内完成渲染；</li>
+<li>同一时间动画执行的次数过多，导致CPU或GPU负载过重；</li>
+<li>View 过度绘制，导致某些像素在同一帧时间内被绘制多次，从而使CPU或GPU负载过重；</li>
+<li>View 频繁的触发 measure, layout，导致measure, layout累计耗时过多及整个View频繁的重新渲染；</li>
+<li>内存频繁触发GC过多(内存抖动), 导致暂时阻塞渲染操作；</li>
+<li>冗余资源及逻辑等导致加载和执行缓慢；</li>
+<li>臭名昭著的ANR；</li>
+</ol>
+<p>常用解决办法：</p>
+<ul>
+<li>优化布局，ConstraintLayout 减少布局嵌套等等</li>
+<li>移除多余的背景</li>
+<li>GPU检测工具，优化布局</li>
+<li>自定义view时，clipRect和clipPath 只在限定范围内绘制</li>
+<li>启用严格模式，异步处理耗时，删除冗余资源，操作，</li>
+</ul>
+<h3 id="集合优化"><a href="#集合优化" class="headerlink" title="集合优化"></a>集合优化</h3><p>不必要的内崔浪费也是我们开发中着重要优化的地方<br>针对 Java 原生集合 Map 的优化，在数据量1000以内时，使用 Google Android 推荐的集合</p>
+<pre><code>android.util.SparseArray&lt;E&gt;
+android.util.SparseBooleanArray
+android.util.SparseIntArray
+android.util.SparseLongArray
+
+android.support.v4.util.ArrayMap&lt;K, V&gt;
+android.support.v4.util.ArraySet&lt;E&gt;
+android.support.v4.util.LongSparseArray&lt;E&gt;
+android.support.v4.util.SparseArrayCompat&lt;E&gt;
+android.support.v4.util.CircularArray&lt;E&gt;
+</code></pre><p>简单介绍下ArrayMap原理：</p>
+<pre><code>内部存储是使用两个数组，一个存储 key 的 hash 值，一个存储 value 值
+
+当你想获取某个value的时候，ArrayMap会计算输入key转换过后的hash值，然后对hash数组使用二分查找法寻找到对应的index
+
+然后我们可以通过这个index在另外一个数组中直接访问到需要的键值对。
+</code></pre><p>这些集合都比Java原生的集合更适合在移动设备上使用，在内存和效率上都做了很多优化。跟 Java集合相比有以下不同：</p>
+<p>数据结构不同  </p>
+<ul>
+<li>ArrayMap 和 SparseArray 采用的都是两个数组，Android专门针对内存优化而设计的  </li>
+<li>HashMap采用的是数据 + 链表 + 红黑树  </li>
+</ul>
+<p>内存优化  </p>
+<ul>
+<li>ArrayMap 比 HashMap 更节省内存，综合性能方面在数据量不大的情况下，推荐使用ArrayMap；</li>
+<li>Hash需要创建一个额外对象来保存每一个放入map的entry，且容量的利用率比ArrayMap低，整体更消耗内存</li>
+<li>SparseArray比ArrayMap节省1/3的内存，但SparseArray只能用于key为int类型的Map，所以int类型的Map数据推荐使用SparseArray；</li>
+</ul>
+<p>性能方面： </p>
+<ul>
+<li>ArrayMap查找时间复杂度O(logN)；ArrayMap增加、删除操作需要移动成员，速度相比较慢，对于个数小于1000的情况下，性能基本没有明显差异</li>
+<li>HashMap查找、修改的时间复杂度为O(1)；</li>
+<li>SparseArray 少了拆箱的操作，适合频繁删除和插入来回执行的场景，性能比较好</li>
+</ul>
+<p>缓存机制</p>
+<ul>
+<li>ArrayMap 针对容量为4和8的对象进行缓存，可避免频繁创建对象而分配内存与GC操作，这两个缓存池大小的上限为10个，防止缓存池无限增大；</li>
+<li>HashMap 没有缓存机制</li>
+<li>SparseArray 有延迟回收机制，提供删除效率，同时减少数组成员来回拷贝的次数</li>
+</ul>
+<p>扩容机制</p>
+<ul>
+<li>ArrayMap是在容量满的时机触发容量扩大至原来的1.5倍，在容量不足1/3时触发内存收缩至原来的0.5倍，更节省的内存扩容机制</li>
+<li>HashMap是在容量的0.75倍时触发容量扩大至原来的2倍，且没有内存收缩机制。HashMap扩容过程有hash重建，相对耗时。所以能大致知道数据量，可指定创建指定容量的对象，能减少性能浪费。</li>
+</ul>
+<p>并发问题</p>
+<ul>
+<li>ArrayMap是非线程安全的类，大量方法中通过对mSize判断是否发生并发，来决定抛出异常。但没有覆盖到所有并发场景，比如大小没有改变而成员内容改变的情况就没有覆盖</li>
+<li>HashMap是在每次增加、删除、清空操作的过程将modCount加1，在关键方法内进入时记录当前mCount，执行完核心逻辑后，再检测mCount是否被其他线程修改，来决定抛出异常。这一点的处理比ArrayMap更有全面。</li>
+</ul>
+<p>如果在知道集合使用大小的情况下，在初始化的时候可以直接指明，避免不必要的浪费</p>
+<h3 id="避免使用-enum-枚举"><a href="#避免使用-enum-枚举" class="headerlink" title="避免使用 enum 枚举"></a>避免使用 enum 枚举</h3><p>普通的 int 型常量，enum 增长量是使用static int的13倍！！！<br>不仅仅如此，使用enum，运行时还会产生额外的内存占用，</p>
+<ul>
+<li>每个enum值会增加 20+ byte</li>
+<li>会额外增加 12~16 bytes 给数组</li>
+</ul>
+<h2 id="线程优化"><a href="#线程优化" class="headerlink" title="线程优化"></a>线程优化</h2><p>线程的创建和销毁会带来比较大的性能开销。因此在频繁使用线程的场景下，优化也很有必要。<br>查看项目中是否存在随意 new Thread() ，线程缺乏管理的情况。使用 AsyncTask 或者线程池对线程进行管理，可以提升 APP的 性能。另外，推荐使用 Rxjava 来实现异步操作，既方便又优雅。</p>
+<p>在项目中异常：<br>RxJava 毫秒级定期执行线程任务时，内存直接暴走,线程数暴增， 最终采用线程池定期执行任务，或者 interval 操作符</p>
+<h2 id="电量优化"><a href="#电量优化" class="headerlink" title="电量优化"></a>电量优化</h2><p><a href="https://ticooops.github.io/2018/10/14/android/Battery-historian%E7%94%B5%E9%87%8F%E4%BC%98%E5%8C%96/" target="_blank" rel="noopener">电量监测-BatteryHistorian</a><br>项目优化点：<br>手机待机后需要时时同步各种数据，使用WakeLock操作，导致耗电增加。采用 JobScheduler 方案来优化，在手机待机的时候不主动做任何同步，交由 JobScheduler 在条件允许下只做数次同步即可，在唤醒手机时做必要的同步即可，大大节省了 CPU 的使用，节省流量，网络的使用，耗电量显著下降</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div></div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>Donate</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/wechatpay.jpg" alt="ticooops WeChat Pay">
+        <p>WeChat Pay</p>
+      </div>
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/images/alipay.jpg" alt="ticooops Alipay">
+        <p>Alipay</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Android/" rel="tag"># Android</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/09/06/design/设计模式之代理模式-Proxy/" rel="next" title="设计模式之代理模式-Proxy">
+                <i class="fa fa-chevron-left"></i> 设计模式之代理模式-Proxy
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/09/10/android/数据库多线程研究/" rel="prev" title="数据库多线程研究">
+                数据库多线程研究 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">ticooops</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">37</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                
+                  <span class="site-state-item-count">10</span>
+                  <span class="site-state-item-name">tags</span>
+                
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#内存优化"><span class="nav-number">1.</span> <span class="nav-text">内存优化</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Handler，Thread等内部类造成的内存泄漏"><span class="nav-number">1.1.</span> <span class="nav-text">Handler，Thread等内部类造成的内存泄漏</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#资源未及时关闭造成内存泄漏"><span class="nav-number">1.2.</span> <span class="nav-text">资源未及时关闭造成内存泄漏</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#static关键字修饰的变量由于生命周期过长，容易造成内存泄漏"><span class="nav-number">1.3.</span> <span class="nav-text">static关键字修饰的变量由于生命周期过长，容易造成内存泄漏</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#不合理使用Context造成内存泄漏"><span class="nav-number">1.4.</span> <span class="nav-text">不合理使用Context造成内存泄漏</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#WebView造成内存泄露"><span class="nav-number">1.5.</span> <span class="nav-text">WebView造成内存泄露</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#String-频繁的字符串拼接"><span class="nav-number">1.6.</span> <span class="nav-text">String 频繁的字符串拼接</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#MVP架构不合理应用"><span class="nav-number">1.7.</span> <span class="nav-text">MVP架构不合理应用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#其他方式调整"><span class="nav-number">1.8.</span> <span class="nav-text">其他方式调整</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#性能优化"><span class="nav-number">2.</span> <span class="nav-text">性能优化</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#渲染优化"><span class="nav-number">2.1.</span> <span class="nav-text">渲染优化</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#集合优化"><span class="nav-number">2.2.</span> <span class="nav-text">集合优化</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#避免使用-enum-枚举"><span class="nav-number">2.3.</span> <span class="nav-text">避免使用 enum 枚举</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#线程优化"><span class="nav-number">3.</span> <span class="nav-text">线程优化</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#电量优化"><span class="nav-number">4.</span> <span class="nav-text">电量优化</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">ticooops</span>
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

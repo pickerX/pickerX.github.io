@@ -1,0 +1,828 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Hexo, NexT">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="内存模型内存模型的系列文章，请参考，有一种恍然大悟的感觉  Java内存模型深度解析：基础部分 Java内存模型深度解析：重排序 Java内存模型深度解析：顺序一致性 Java内存模型深度解析：volatile  Java内存模型深度解析：锁 Java内存模型深度解析：final Java内存模型深度解析：总结  其中, 对volatile的补充 ==&amp;gt; volatile和lock原理分析对">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Java内存模型深度解析">
+<meta property="og:url" content="http://yoursite.com/2018/02/15/java/并发编程-内存模型/index.html">
+<meta property="og:site_name" content="Hello,world">
+<meta property="og:description" content="内存模型内存模型的系列文章，请参考，有一种恍然大悟的感觉  Java内存模型深度解析：基础部分 Java内存模型深度解析：重排序 Java内存模型深度解析：顺序一致性 Java内存模型深度解析：volatile  Java内存模型深度解析：锁 Java内存模型深度解析：final Java内存模型深度解析：总结  其中, 对volatile的补充 ==&amp;gt; volatile和lock原理分析对">
+<meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2019-09-15T03:35:42.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Java内存模型深度解析">
+<meta name="twitter:description" content="内存模型内存模型的系列文章，请参考，有一种恍然大悟的感觉  Java内存模型深度解析：基础部分 Java内存模型深度解析：重排序 Java内存模型深度解析：顺序一致性 Java内存模型深度解析：volatile  Java内存模型深度解析：锁 Java内存模型深度解析：final Java内存模型深度解析：总结  其中, 对volatile的补充 ==&amp;gt; volatile和lock原理分析对">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2018/02/15/java/并发编程-内存模型/">
+
+
+
+
+
+  <title>Java内存模型深度解析 | Hello,world</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="default">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Hello,world</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            Archives
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/02/15/java/并发编程-内存模型/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="ticooops">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hello,world">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Java内存模型深度解析</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-02-15T09:17:08+08:00">
+                2018-02-15
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="内存模型"><a href="#内存模型" class="headerlink" title="内存模型"></a>内存模型</h2><p>内存模型的系列文章，请参考，有一种恍然大悟的感觉</p>
+<ul>
+<li><a href="http://www.codeceo.com/article/java-memory-1.html#comments" target="_blank" rel="noopener">Java内存模型深度解析：基础部分</a></li>
+<li><a href="http://www.codeceo.com/article/java-memeory-2.html" target="_blank" rel="noopener">Java内存模型深度解析：重排序</a></li>
+<li><a href="http://www.codeceo.com/article/java-memory-3.html" target="_blank" rel="noopener">Java内存模型深度解析：顺序一致性</a></li>
+<li><a href="http://www.codeceo.com/article/java-memory-4.html" target="_blank" rel="noopener">Java内存模型深度解析：volatile</a> </li>
+<li><a href="http://www.codeceo.com/article/java-memory-5.html" target="_blank" rel="noopener">Java内存模型深度解析：锁</a></li>
+<li><a href="http://www.codeceo.com/article/java-memory-6.html" target="_blank" rel="noopener">Java内存模型深度解析：final</a></li>
+<li><a href="http://www.codeceo.com/article/java-memory-7.html" target="_blank" rel="noopener">Java内存模型深度解析：总结</a></li>
+</ul>
+<p>其中, 对volatile的补充 ==&gt; <a href="https://liuzhengyang.github.io/2017/03/28/volatileandlock/" target="_blank" rel="noopener">volatile和lock原理分析</a><br>对多线程的补充 ==&gt; <a href="https://www.iteye.com/topic/806990" target="_blank" rel="noopener">java线程安全总结</a></p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>现如今，处理器使用写缓冲区来临时保存向内存写入的数据。 但每个处理器上的写缓冲区，仅仅对它所在的处理器可见。这个特性会以及处理器重排序对内存操作的执行顺序产生重要的影响：处理器对内存的读/写操作的执行顺序，<strong>不一定与内存实际发生的读/写操作顺序一致。</strong><br>除了顺序一致性外(有序性)，并发编程我们还会遇到一个可见性的问题：多个线程之间是不能互相传递数据通信的，它们之间的沟通只能通过共享变量来进行，如果一个线程修改了共享变量，其他线程并不能马上看到这个被修改后的数值。<br>为了保证顺序一致性和可见性，我们会有几种方式来处理，</p>
+<ul>
+<li>线程通信<ul>
+<li>共享内存</li>
+<li>消息传递</li>
+</ul>
+</li>
+<li>线程同步</li>
+</ul>
+<h3 id="线程同步的几种方式"><a href="#线程同步的几种方式" class="headerlink" title="线程同步的几种方式"></a>线程同步的几种方式</h3><h4 id="synchronized-关键字"><a href="#synchronized-关键字" class="headerlink" title="synchronized 关键字"></a>synchronized 关键字</h4><p>修饰方法</p>
+<pre><code>public synchronized void method() {
+    ...
+}
+</code></pre><p>修饰代码块</p>
+<pre><code>synchronized(object){ 
+    ...
+}
+</code></pre><p>同步是一种高开销的操作，因此应该尽量减少同步的内容。<br>通常没有必要同步整个方法，使用synchronized代码块同步关键代码即可</p>
+<h4 id="特殊域变量-volatile"><a href="#特殊域变量-volatile" class="headerlink" title="特殊域变量 volatile"></a>特殊域变量 volatile</h4><p>多线程中的非同步问题主要出现在对域的读写上，如果让域自身避免这个问题，则就不需要修改操作该域的方法。<br>用final域，有锁保护的域和volatile域可以避免非同步的问题。 </p>
+<pre><code>class Bank {
+    //需要同步的变量加上volatile
+    private volatile int account = 100;
+
+    public int getAccount() {
+        return account;
+    }
+    //这里不再需要synchronized 
+    public void save(int money) {
+        account += money;
+    }
+｝
+</code></pre><ol>
+<li>可见性是指当多个线程访问同一个变量时，一个线程修改了这个变量的值，其他线程能够立即看得到修改的值。</li>
+<li>volatile 可以禁止指令重排，这就保证了代码的程序会严格按照代码的先后顺序执行</li>
+<li>volatile 是不能保证原子性的</li>
+<li>volatile 没有涉及到锁操作，比使用同步的开销更低</li>
+</ol>
+<p>volatile 是适合读多写少的场景。当只有一个线程可以修改字段的值，其它线程可以随时读取，那么把字段声明为volatile是合理的</p>
+<h4 id="阻塞队列实现线程同步"><a href="#阻塞队列实现线程同步" class="headerlink" title="阻塞队列实现线程同步"></a>阻塞队列实现线程同步</h4><p>并发编程-Queues 一篇里已经介绍过，java.util.concurrent 里为我们提供了很多便利的阻塞队列类，主要实现 BlockingQueue 接口。 通常会使用LinkedBlockingQueue<e> 等来实现同步，常用于生产者-消费者模式下的场景</e></p>
+<h4 id="原子变量-atomic"><a href="#原子变量-atomic" class="headerlink" title="原子变量 atomic"></a>原子变量 atomic</h4><p>需要使用线程同步的根本原因在于对普通变量的操作不是原子的。<br>那么什么是原子操作呢？<br>原子操作就是指将读取变量值、修改变量值、保存变量值看成一个整体来操作，即这几种行为要么同时完成，要么都不完成。  </p>
+<p>在Java的 util.concurrent.atomic 包中提供了创建了原子类型变量的工具类，简化线程的同步。其中 AtomicInteger类可以用原子方式更新int的值，可用在应用程序中(如以原子方式增加的计数器)，但不能用于替换Integer；可扩展 Number，允许那些处理机遇数字类的工具和实用工具进行统一访问。</p>
+<p>AtomicInteger类常用方法：  </p>
+<ul>
+<li>AtomicInteger(int initialValue) : 创建具有给定初始值的新的  AtomicInteger  </li>
+<li>addAddGet(int dalta) : 以原子方式将给定值与当前值相加  </li>
+<li>get() : 获取当前值  </li>
+</ul>
+<p>原子操作主要有：  </p>
+<ul>
+<li>引用变量和大多数原始变量(long和double除外)的读写操作；  </li>
+<li>所有使用 volatile 修饰的变量(包括long和double)的读写操作。  </li>
+</ul>
+<p><strong>Simple Usage</strong></p>
+<pre><code>class Bank {
+    private AtomicInteger account = new AtomicInteger(100);
+
+    public AtomicInteger getAccount() {
+        return account;
+    }
+
+    public void save(int money) {
+        account.addAndGet(money);
+    }
+}
+</code></pre><h4 id="局部变量-ThreadLocal"><a href="#局部变量-ThreadLocal" class="headerlink" title="局部变量 ThreadLocal"></a>局部变量 ThreadLocal</h4><p>如果使用ThreadLocal管理变量，则每一个使用该变量的线程都获得该变量的副本，<br>副本之间相互独立，这样每一个线程都可以随意修改自己的变量副本，而不会对其他线程产生影响。  </p>
+<pre><code>ThreadLocal 类的常用方法  
+ThreadLocal() : 创建一个线程本地变量   
+get() : 返回此线程局部变量的当前线程副本中的值   
+initialValue() : 返回此线程局部变量的当前线程的&quot;初始值&quot;   
+set(T value) : 将此线程局部变量的当前线程副本中的值设置为value  
+</code></pre><p><strong>Simple Usage</strong>  </p>
+<pre><code>public class Bank {
+    //使用ThreadLocal类管理共享变量account
+    private static ThreadLocal&lt;Integer&gt; account = new ThreadLocal&lt;Integer&gt;() {
+        @Override
+        protected Integer initialValue() {
+            return 100;
+        }
+    };
+
+    public void save(int money) {
+        account.set(account.get() + money);
+    }
+
+    public int getAccount() {
+        return account.get();
+    }
+}
+</code></pre><p>注：ThreadLocal 与同步机制   </p>
+<ul>
+<li>ThreadLocal 与同步机制都是为了解决多线程中相同变量的访问冲突问题。  </li>
+<li>前者采用以”空间换时间”的方法，后者采用以”时间换空间”的方式  </li>
+</ul>
+<h4 id="重入锁-Lock"><a href="#重入锁-Lock" class="headerlink" title="重入锁 Lock"></a>重入锁 Lock</h4><p>在JavaSE5.0中新增了一个java.util.concurrent包来支持同步。ReentrantLock类是可重入、互斥、实现了Lock接口的锁， 它与使用 synchronized 方法和代码块具有相同的基本行为和语义，并且扩展了其能力，更灵活，二者性能上差不多</p>
+<pre><code>class Bank { 
+    private int account = 100;
+    //需要声明这个锁
+    private Lock lock = new ReentrantLock();
+
+    public int getAccount() {
+        return account;
+    }
+
+    //这里不再需要synchronized 
+    public void save(int money) {
+        lock.lock();
+        try {
+            account += money;
+        } finally {
+            lock.unlock();
+        }
+
+    }
+｝
+</code></pre>
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div></div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>Donate</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/wechatpay.jpg" alt="ticooops WeChat Pay">
+        <p>WeChat Pay</p>
+      </div>
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/images/alipay.jpg" alt="ticooops Alipay">
+        <p>Alipay</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/02/10/java/并发编程-Tools/" rel="next" title="并发编程-工具类">
+                <i class="fa fa-chevron-left"></i> 并发编程-工具类
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/02/21/java/并发编程-Queues/" rel="prev" title="并发编程--Queues">
+                并发编程--Queues <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">ticooops</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">37</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                
+                  <span class="site-state-item-count">10</span>
+                  <span class="site-state-item-name">tags</span>
+                
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#内存模型"><span class="nav-number">1.</span> <span class="nav-text">内存模型</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#总结"><span class="nav-number">2.</span> <span class="nav-text">总结</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#线程同步的几种方式"><span class="nav-number">2.1.</span> <span class="nav-text">线程同步的几种方式</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#synchronized-关键字"><span class="nav-number">2.1.1.</span> <span class="nav-text">synchronized 关键字</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#特殊域变量-volatile"><span class="nav-number">2.1.2.</span> <span class="nav-text">特殊域变量 volatile</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#阻塞队列实现线程同步"><span class="nav-number">2.1.3.</span> <span class="nav-text">阻塞队列实现线程同步</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#原子变量-atomic"><span class="nav-number">2.1.4.</span> <span class="nav-text">原子变量 atomic</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#局部变量-ThreadLocal"><span class="nav-number">2.1.5.</span> <span class="nav-text">局部变量 ThreadLocal</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#重入锁-Lock"><span class="nav-number">2.1.6.</span> <span class="nav-text">重入锁 Lock</span></a></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">ticooops</span>
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

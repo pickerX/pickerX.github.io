@@ -1,0 +1,1041 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Java,">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="常用于并发处理的集合Queues，ConcurrentHashMap，ConcurrentSkipListMap，ConcurrentSkipListSet，CopyOnWriteArrayList，CopyOnWriteArraySet， 这些集合都比较好理解和使用，不多bb。本文介绍一些比较难接触的并发处理类 工具类Semaphore信号量，一个经典的并发工具，常用于限制访问资源的线程数量">
+<meta name="keywords" content="Java">
+<meta property="og:type" content="article">
+<meta property="og:title" content="并发编程-工具类">
+<meta property="og:url" content="http://yoursite.com/2018/02/10/java/并发编程-Tools/index.html">
+<meta property="og:site_name" content="Hello,world">
+<meta property="og:description" content="常用于并发处理的集合Queues，ConcurrentHashMap，ConcurrentSkipListMap，ConcurrentSkipListSet，CopyOnWriteArrayList，CopyOnWriteArraySet， 这些集合都比较好理解和使用，不多bb。本文介绍一些比较难接触的并发处理类 工具类Semaphore信号量，一个经典的并发工具，常用于限制访问资源的线程数量">
+<meta property="og:locale" content="default">
+<meta property="og:image" content="http://incdn1.b0.upaiyun.com/2015/04/f65cc83b7b4664916fad5d1398a36005.png">
+<meta property="og:updated_time" content="2019-10-18T14:31:41.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="并发编程-工具类">
+<meta name="twitter:description" content="常用于并发处理的集合Queues，ConcurrentHashMap，ConcurrentSkipListMap，ConcurrentSkipListSet，CopyOnWriteArrayList，CopyOnWriteArraySet， 这些集合都比较好理解和使用，不多bb。本文介绍一些比较难接触的并发处理类 工具类Semaphore信号量，一个经典的并发工具，常用于限制访问资源的线程数量">
+<meta name="twitter:image" content="http://incdn1.b0.upaiyun.com/2015/04/f65cc83b7b4664916fad5d1398a36005.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2018/02/10/java/并发编程-Tools/">
+
+
+
+
+
+  <title>并发编程-工具类 | Hello,world</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="default">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Hello,world</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            Archives
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/02/10/java/并发编程-Tools/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="ticooops">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hello,world">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">并发编程-工具类</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-02-10T19:01:19+08:00">
+                2018-02-10
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>常用于并发处理的集合Queues，ConcurrentHashMap，ConcurrentSkipListMap<br>，ConcurrentSkipListSet，CopyOnWriteArrayList，CopyOnWriteArraySet， 这些集合都比较好理解和使用，不多bb。本文介绍一些比较难接触的并发处理类</p>
+<h3 id="工具类"><a href="#工具类" class="headerlink" title="工具类"></a>工具类</h3><h4 id="Semaphore"><a href="#Semaphore" class="headerlink" title="Semaphore"></a><a href="https://developer.android.google.cn/reference/java/util/concurrent/Semaphore" target="_blank" rel="noopener">Semaphore</a></h4><p>信号量，一个经典的并发工具，常用于限制访问资源的线程数量。<br>通常我们会使用synchronized和Lock锁实现资源并发访问的控制，在同一时间只允许一个线程进入临界区访问资源(读锁除外)，解决多个线程并发同一资源造成的数据不一致问题。Semaphore使用场景略有不同，在一个共享的资源里，有多个(有限个)副本可以使用的情况下，如果并发的线程超过可使用的副本时，我们就可以使用Semaphore来控制资源副本访问的线程数。</p>
+<p><strong>实现原理</strong><br>Semaphore保护一个或多个共享资源的使用，内部维护了一个计数器，即同一时间最多的可访问线程数。<br>一个线程要访问资源时，需要先获取Semaphore， 如果Semaphore的计数器大于1，表示可以使用该资源，Semaphore.acquire()之后，计数器减1，访问该资源，使用完后，Semaphore.release()释放信号量，计数器加1，其他被阻塞的线程会被唤醒获取信号量，访问资源。 如果计数器为0，线程进入休眠.</p>
+<p><strong>Sample usage</strong>  </p>
+<pre><code>class Pool {
+    private static final int MAX_AVAILABLE = 100;
+    private final Semaphore available = new Semaphore(MAX_AVAILABLE, true);
+
+    public Object getItem() throws InterruptedException {
+        available.acquire();
+        return getNextAvailableItem();
+    }
+
+    public void putItem(Object x) {
+        if (markAsUnused(x))
+        available.release();
+    }
+
+    // Not a particularly efficient data structure; just for demo
+
+    protected Object[] items = ... whatever kinds of items being managed
+    protected boolean[] used = new boolean[MAX_AVAILABLE];
+
+    protected synchronized Object getNextAvailableItem() {
+        for (int i = 0; i &lt; MAX_AVAILABLE; ++i) {
+            if (!used[i]) {
+                used[i] = true;
+                return items[i];
+            }
+        }
+        return null; // not reached
+    }
+
+    protected synchronized boolean markAsUnused(Object item) {
+        for (int i = 0; i &lt; MAX_AVAILABLE; ++i) {
+            if (item == items[i]) {
+                if (used[i]) {
+                    used[i] = false;
+                    return true;
+                } else
+                    return false;
+            }
+        }
+        return false;
+    }
+}
+</code></pre><h4 id="CountDownLatch"><a href="#CountDownLatch" class="headerlink" title="CountDownLatch"></a><a href="https://developer.android.google.cn/reference/java/util/concurrent/CountDownLatch" target="_blank" rel="noopener">CountDownLatch</a></h4><p>使一个线程等待其他线程完成各自的工作后再执行.例如，应用程序的主线程希望在负责启动框架服务的线程已经启动所有的框架服务之后再执行。</p>
+<p><strong>实现原理</strong><br>是通过一个计数器来实现的，计数器的初始值为线程的数量。每当一个线程完成了自己的任务后，计数器的值就会减1。当计数器值到达0时，它表示所有的线程已经完成了任务，然后在闭锁上等待的线程就可以恢复执行任务。  </p>
+<p><img src="http://incdn1.b0.upaiyun.com/2015/04/f65cc83b7b4664916fad5d1398a36005.png" alt="CountDownLatch"></p>
+<p>CountDownLatch构造器</p>
+<pre><code>//Constructs a CountDownLatch initialized with the given count.
+public void CountDownLatch(int count) {...}
+</code></pre><p>构造器中的计数值（count）实际上就是闭锁需要等待的线程数量。这个值只能被设置一次，而且CountDownLatch没有提供任何机制去重新设置这个计数值。<br>与CountDownLatch的第一次交互是主线程等待其他线程。主线程必须在启动其他线程后立即调用CountDownLatch.await()方法，这样主线程的操作就会在这个方法上阻塞，直到其他线程完成各自的任务。</p>
+<p>其他N个线程必须引用闭锁对象，因为他们需要通知CountDownLatch对象，他们已经完成了各自的任务。这种通知机制是通过 CountDownLatch.countDown()方法来完成的；每调用一次这个方法，在构造函数中初始化的count值就减1。所以当N个线程都调 用了这个方法，count的值等于0，然后主线程就能通过await()方法，恢复执行自己的任务。</p>
+<p><strong>Sample usage1</strong></p>
+<p>子线程等待主线程完成准备工作，子线程才执行  </p>
+<pre><code>class Driver { // ...
+    void main() throws InterruptedException {
+        CountDownLatch startSignal = new CountDownLatch(1);
+        CountDownLatch doneSignal = new CountDownLatch(N);
+        // create and start threads
+        for (int i = 0; i &lt; N; ++i) 
+            new Thread(new Worker(startSignal, doneSignal)).start();
+
+        doSomethingElse();            // don&apos;t let run yet
+        startSignal.countDown();      // let all threads proceed
+        doSomethingElse();
+        // 阻塞主线程，等待其他线程完成
+        doneSignal.await();           // wait for all to finish
+    }
+}
+
+class Worker implements Runnable {
+    private final CountDownLatch startSignal;
+    private final CountDownLatch doneSignal;
+    Worker(CountDownLatch startSignal, CountDownLatch doneSignal) {
+        this.startSignal = startSignal;
+        this.doneSignal = doneSignal;
+    }
+    public void run() {
+        try {
+            // 阻塞线程
+            startSignal.await();
+            doWork();
+            doneSignal.countDown();
+        } catch (InterruptedException ex) {} // return;
+    }
+
+    void doWork() { ... }
+}
+</code></pre><p><strong>Sample usage2</strong></p>
+<p>主线程等待子线程完成工作，才执行</p>
+<pre><code>class Driver2 { // ...
+    void main() throws InterruptedException {
+        CountDownLatch doneSignal = new CountDownLatch(N);
+        Executor e = ...
+
+        for (int i = 0; i &lt; N; ++i) // create and start threads
+        e.execute(new WorkerRunnable(doneSignal, i));
+
+        doneSignal.await();           // wait for all to finish
+    }
+}
+
+class WorkerRunnable implements Runnable {
+    private final CountDownLatch doneSignal;
+    private final int i;
+    WorkerRunnable(CountDownLatch doneSignal, int i) {
+        this.doneSignal = doneSignal;
+        this.i = i;
+    }
+    public void run() {
+        try {
+            doWork(i);
+            doneSignal.countDown();
+        } catch (InterruptedException ex) {} // return;
+    }
+
+    void doWork() { ... }
+}  
+</code></pre><p>CountDownLatch面试题:  </p>
+<p>解释一下CountDownLatch概念?<br>CountDownLatch 和CyclicBarrier的不同之处?<br>给出一些CountDownLatch使用的例子?<br>CountDownLatch 类中主要的方法?  </p>
+<h4 id="CyclicBarrier"><a href="#CyclicBarrier" class="headerlink" title="CyclicBarrier"></a><a href="https://developer.android.google.cn/reference/java/util/concurrent/CyclicBarrier" target="_blank" rel="noopener">CyclicBarrier</a></h4><p>是一个同步工具类，它允许一组线程互相等待，直到到达某个公共屏障点，与CountDownLatch不同的是该barrier在释放等待线程后可以重用。 CyclicBarrier支持一个可选的Runnable命令，在一组线程中的最后一个线程到达之后（但在释放所有线程之前），该命令只在每个屏障点运行一次。若在继续所有参与线程之前更新共享状态，此屏障操作很有用。    </p>
+<p>CyclicBarrier的一些关键方法</p>
+<pre><code>public CyclicBarrier(int parties, Runnable barrierAction)
+public CyclicBarrier(int parties)
+
+// 返回值为当前线程的索引，0表示当前线程是最后一个到达的线程
+public int await() throws InterruptedException, BrokenBarrierException
+
+//在await()的基础上增加超时机制，如果超出指定的等待时间，则抛出 //TimeoutException 异常。如果该时间小于等于零，则此方法根本不会等待。
+public int await(long timeout, TimeUnit unit) throws InterruptedException, BrokenBarrierException, TimeoutException
+</code></pre><p><strong>Sample Usage</strong>  </p>
+<p>每个Worker处理矩阵中的一行，在处理完所有的行之前，该线程将一直在屏障处等待。在各个Worker处理完所有行后，将执行提供的Runnable屏障操作。</p>
+<pre><code>public class Solver {
+    final int N;
+    final float[][] data;
+    final CyclicBarrier barrier;
+
+    public Solver(float[][] matrix) throws InterruptedException {
+        data = matrix;
+        N = matrix.length;
+        Runnable barrierAction =
+                () -&gt; {
+                    System.out.println(&quot;finish row process&quot;);
+                };
+        barrier = new CyclicBarrier(N, barrierAction);
+
+        List&lt;Thread&gt; threads = new ArrayList&lt;&gt;(N);
+        for (int i = 0; i &lt; N; i++) {
+            Thread thread = new Thread(new Worker(i));
+            threads.add(thread);
+            thread.start();
+        }
+        // System.out.println(&quot;wait until done...&quot;);
+        // wait until done
+        for (Thread thread : threads) {
+            thread.join();
+        }
+    }
+
+    public static void main(String[] args) throws InterruptedException {
+        float[][] matrix = new float[][]{
+                new float[]{1, 2, 3, 4, 5},
+                new float[]{6, 7, 8, 9, 10},
+                new float[]{11, 12, 13, 14, 15},
+                new float[]{16, 17, 18, 19, 20},
+                new float[]{21, 22, 23, 24, 25},
+        };
+        Solver solver = new Solver(matrix);
+    }
+
+    class Worker implements Runnable {
+        int myRow;
+        boolean isDone = false;
+
+        Worker(int row) {
+            myRow = row;
+        }
+
+        public void run() {
+            while (!done()) {
+                isDone = processRow(myRow);
+                try {
+                    System.out.println(&quot;barrier await:&quot; + barrier.getNumberWaiting());
+                    barrier.await();
+                } catch (InterruptedException | BrokenBarrierException ex) {
+                    return;
+                }
+            }
+        }
+
+        private boolean done() {
+            return isDone;
+        }
+
+        private boolean processRow(int myRow) {
+            final int rows = data.length;
+            for (int i = 0; i &lt; rows; i++) {
+                if (i == myRow) {
+                    System.out.println(&quot;========&gt;process myRow:&quot; + myRow);
+                    float[] row = data[myRow];
+                    for (float v : row) {
+                        System.out.println(&quot;process value:&quot; + v);
+                    }
+                    return true;
+                }
+            }
+            return false;
+        }
+    }
+}
+</code></pre><h4 id="Phaser"><a href="#Phaser" class="headerlink" title="Phaser"></a><a href="https://developer.android.google.cn/reference/java/util/concurrent/Phaser" target="_blank" rel="noopener">Phaser</a></h4><p>一个可重复使用的同步屏障，功能类似于CyclicBarrier和CountDownLatch，但支持更灵活的使用。</p>
+<p><strong>原理</strong>  </p>
+<p><strong>Sample usages</strong><br>Phaser可以代替CountDownLatch来构建一个服务于多个对象只执行一次的行动。这个典型的应用惯例是注册–&gt;执行任务–&gt;撤销，例如：</p>
+<pre><code>void runTasks(List&lt;Runnable&gt; tasks) {
+    final Phaser phaser = new Phaser(1); // &quot;1&quot; to register self
+    // create and start threads
+    for (final Runnable task : tasks) {
+        phaser.register();
+        new Thread() {
+            public void run() {
+                phaser.arriveAndAwaitAdvance(); // await all creation
+                task.run();
+            }
+        }.start();
+    }
+    // allow threads to start and deregister self
+    phaser.arriveAndDeregister();
+}
+</code></pre><p>可以通过覆盖onAdvance来实现让多个线程把某些任务执行固定的次数。</p>
+<pre><code>void startTasks(List&lt;Runnable&gt; tasks, final int iterations) {
+    final Phaser phaser = new Phaser() {
+        protected boolean onAdvance(int phase, int registeredParties) {
+            return phase &gt;= iterations || registeredParties == 0;
+        }
+    };
+    phaser.register();
+    for (final Runnable task : tasks) {
+        phaser.register();
+        new Thread() {
+            public void run() {
+                do {
+                    task.run();
+                    phaser.arriveAndAwaitAdvance();
+                } while (!phaser.isTerminated());
+            }
+        }.start();
+    }
+    phaser.arriveAndDeregister(); // deregister self, don&apos;t wait
+}
+</code></pre><p>如果主任务需要等待phaser的结束，那么它可以不断地注册自己从而执行一个类似循环：</p>
+<pre><code>// ...
+phaser.register();
+while (!phaser.isTerminated())
+    phaser.arriveAndAwaitAdvance();
+</code></pre><p>你可以等待特定的不超过Integer.MAX_VALUE的阶段数。例如：</p>
+<pre><code>void awaitPhase(Phaser phaser, int phase) {
+    int p = phaser.register(); // assumes caller not already registered
+    while (p &lt; phase) {
+        if (phaser.isTerminated())
+        // ... deal with unexpected termination
+        else
+        p = phaser.arriveAndAwaitAdvance();
+    }
+    phaser.arriveAndDeregister();
+}
+</code></pre><p>创建一个集合的任务可以使用一个树结构的phasers，你能够使用以下的代码，假如一个Task类有一个构造函数接受一个Phaser从而进行注册。在调用build(new Task[n], 0, n, new Phaser())后，这些任务能够被执行，<br>比如提交给一个线程池：</p>
+<pre><code>void build(Task[] tasks, int lo, int hi, Phaser ph) {
+    if (hi - lo &gt; TASKS_PER_PHASER) {
+        for (int i = lo; i &lt; hi; i += TASKS_PER_PHASER) {
+        int j = Math.min(i + TASKS_PER_PHASER, hi);
+        build(tasks, i, j, new Phaser(ph));
+        }
+    } else {
+        for (int i = lo; i &lt; hi; ++i)
+        tasks[i] = new Task(ph);
+        // assumes new Task(ph) performs ph.register()
+    }
+}
+</code></pre><p>最好的{TASKS_PER_PHASER}依赖于期待的同步速率。很小的数字比如4适合于执行非常小的任务（所以速率高），或者成百上千适合于使用大任务。<br>注意：我们的这个实现将参与者的上限定为65535.尝试注册更多的参与者会导致IllegalStateException异常。当然，你可以通过使用分层Phaser的方法去满足任意数量的参与者。</p>
+<h4 id="Exchanger"><a href="#Exchanger" class="headerlink" title="Exchanger"></a><a href="https://developer.android.google.cn/reference/java/util/concurrent/Exchanger" target="_blank" rel="noopener">Exchanger</a></h4><p>一般用于两个工作线程之间交换数据，在一些pipeline设计上非常有用.<br>Exchanger有几个特征：  </p>
+<ol>
+<li>此类提供对外的操作是同步的；</li>
+<li>用于成对出现的线程之间交换数据；</li>
+<li>可以视作双向的同步队列；</li>
+<li>可应用于基因算法、流水线设计等场景。</li>
+</ol>
+<p><strong>实现原理</strong>  </p>
+<p>当一个线程到达exchange调用点时，如果它的伙伴线程此前已经调用了此方法，那么它的伙伴会被调度唤醒并与之进行对象交换，然后各自返回。如果它的伙伴还没到达交换点，那么当前线程将会被挂起，直至伙伴线程到达，依次完成交换正常返回；或者当前线程被中断——抛出中断异常；又或者是等候超时——抛出超时异常。</p>
+<p><strong>Sample Usage</strong>  </p>
+<pre><code>class FillAndEmpty {
+    Exchanger&lt;DataBuffer&gt; exchanger = new Exchanger&lt;&gt;();
+    DataBuffer initialEmptyBuffer = ... a made-up type
+    DataBuffer initialFullBuffer = ...
+
+    class FillingLoop implements Runnable {
+        public void run() {
+            DataBuffer currentBuffer = initialEmptyBuffer;
+            try {
+                while (currentBuffer != null) {
+                    addToBuffer(currentBuffer);
+                    if (currentBuffer.isFull())
+                        currentBuffer = exchanger.exchange(currentBuffer);
+                    }
+            } catch (InterruptedException ex) { 
+                ... handle ... 
+            }
+        }
+    }
+
+    class EmptyingLoop implements Runnable {
+        public void run() {
+            DataBuffer currentBuffer = initialFullBuffer;
+            try {
+                while (currentBuffer != null) {
+                    takeFromBuffer(currentBuffer);
+                    if (currentBuffer.isEmpty())
+                        currentBuffer = exchanger.exchange(currentBuffer);
+                }
+            } catch (InterruptedException ex) { ... handle ...}
+        }
+    }
+
+    void start() {
+        new Thread(new FillingLoop()).start();
+        new Thread(new EmptyingLoop()).start();
+    }
+}
+</code></pre>
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div></div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>Donate</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/wechatpay.jpg" alt="ticooops WeChat Pay">
+        <p>WeChat Pay</p>
+      </div>
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/images/alipay.jpg" alt="ticooops Alipay">
+        <p>Alipay</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Java/" rel="tag"># Java</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/02/09/java/Java集合/" rel="next" title="Java集合">
+                <i class="fa fa-chevron-left"></i> Java集合
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/02/15/java/并发编程-内存模型/" rel="prev" title="Java内存模型深度解析">
+                Java内存模型深度解析 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">ticooops</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">37</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                
+                  <span class="site-state-item-count">10</span>
+                  <span class="site-state-item-name">tags</span>
+                
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#工具类"><span class="nav-number">1.</span> <span class="nav-text">工具类</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Semaphore"><span class="nav-number">1.1.</span> <span class="nav-text">Semaphore</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#CountDownLatch"><span class="nav-number">1.2.</span> <span class="nav-text">CountDownLatch</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#CyclicBarrier"><span class="nav-number">1.3.</span> <span class="nav-text">CyclicBarrier</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Phaser"><span class="nav-number">1.4.</span> <span class="nav-text">Phaser</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Exchanger"><span class="nav-number">1.5.</span> <span class="nav-text">Exchanger</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">ticooops</span>
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

@@ -1,0 +1,814 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Android,">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="map， flatmap 操作符在 RxJava 里都是用于数据类型转换 相同点:参数相同, 都是使用 Function(入参，返回值) 进行转换（将一个类型依据程序逻辑转换成另一种类型，根据入参和返回值）,都能在转换后直接被 subscribe 不同点：返回参数不同 map返回的是 Function&amp;lt;? super T, ? extends R&amp;gt; R 类型， flatmap返回的是F">
+<meta name="keywords" content="Android">
+<meta property="og:type" content="article">
+<meta property="og:title" content="RxJava里map&amp;flatMap操作区别">
+<meta property="og:url" content="http://yoursite.com/2019/09/03/android/RxJava里map-flatMap操作区别/index.html">
+<meta property="og:site_name" content="Hello,world">
+<meta property="og:description" content="map， flatmap 操作符在 RxJava 里都是用于数据类型转换 相同点:参数相同, 都是使用 Function(入参，返回值) 进行转换（将一个类型依据程序逻辑转换成另一种类型，根据入参和返回值）,都能在转换后直接被 subscribe 不同点：返回参数不同 map返回的是 Function&amp;lt;? super T, ? extends R&amp;gt; R 类型， flatmap返回的是F">
+<meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2019-09-03T13:02:52.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="RxJava里map&amp;flatMap操作区别">
+<meta name="twitter:description" content="map， flatmap 操作符在 RxJava 里都是用于数据类型转换 相同点:参数相同, 都是使用 Function(入参，返回值) 进行转换（将一个类型依据程序逻辑转换成另一种类型，根据入参和返回值）,都能在转换后直接被 subscribe 不同点：返回参数不同 map返回的是 Function&amp;lt;? super T, ? extends R&amp;gt; R 类型， flatmap返回的是F">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2019/09/03/android/RxJava里map-flatMap操作区别/">
+
+
+
+
+
+  <title>RxJava里map&flatMap操作区别 | Hello,world</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="default">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Hello,world</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            Archives
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/09/03/android/RxJava里map-flatMap操作区别/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="ticooops">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hello,world">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">RxJava里map&flatMap操作区别</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-09-03T15:55:29+08:00">
+                2019-09-03
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>map， flatmap 操作符在 RxJava 里都是用于数据类型转换</p>
+<h4 id="相同点"><a href="#相同点" class="headerlink" title="相同点:"></a>相同点:</h4><p>参数相同, 都是使用 Function(入参，返回值) 进行转换（将一个类型依据程序逻辑转换成另一种类型，根据入参和返回值）,都能在转换后直接被 subscribe</p>
+<h3 id="不同点："><a href="#不同点：" class="headerlink" title="不同点："></a>不同点：</h3><h4 id="返回参数不同"><a href="#返回参数不同" class="headerlink" title="返回参数不同"></a>返回参数不同</h4><ol>
+<li>map返回的是 Function&lt;? super T, ? extends R&gt; R 类型，</li>
+<li>flatmap返回的是Function&lt;? super T, ? extends ObservableSource&lt;? extends R&gt;&gt;, 包含R类型的 ObservableSource 对象</li>
+</ol>
+<h4 id="使用方式不同"><a href="#使用方式不同" class="headerlink" title="使用方式不同,"></a>使用方式不同,</h4><ol>
+<li>map只能单一转换，单一只的是只能一对一进行转换, map被订阅时每传递一个事件执行一次onNext方法   </li>
+<li>flatmap多用于多对多，一对多，再被转化为多个时，一般利用from/just进行一一分发，被订阅时将所有数据传递完毕汇总到一个Observable然后一一执行onNext方法</li>
+</ol>
+<h3 id="Sample"><a href="#Sample" class="headerlink" title="Sample"></a>Sample</h3><p>map 测试</p>
+<pre><code>Observable.just(&quot;hello&quot;, &quot;sealink&quot;, &quot;what&quot;, &quot;are&quot;, &quot;you&quot;, &quot;doing&quot;, &quot;?&quot;)
+           .map(new Function&lt;String, Integer&gt;() {
+               @Override
+               public Integer apply(String s) {
+                   Log.e(&quot;RxJava&quot;, &quot;map apply:&quot; + s);
+                   return s.length();
+               }
+           })
+           .subscribeOn(Schedulers.newThread())
+           .observeOn(AndroidSchedulers.mainThread())
+           .subscribe(new Observer&lt;Integer&gt;() {
+               @Override
+               public void onSubscribe(Disposable d) {
+
+               }
+
+               @Override
+               public void onNext(Integer integer) {
+                   Log.e(&quot;RxJava&quot;, &quot;map onNext:&quot; + integer);
+               }
+
+               @Override
+               public void onError(Throwable e) {
+
+               }
+
+               @Override
+               public void onComplete() {
+
+               }
+           });
+</code></pre><p>输出结果</p>
+<pre><code>03-05 13:43:01.088 13889-13914/? E/RxJava: map apply:hello
+    map apply:sealink
+03-05 13:43:01.089 13889-13914/? E/RxJava: map apply:what
+    map apply:are
+    map apply:you
+    map apply:doing
+    map apply:?
+03-05 13:43:01.089 13889-13889/? E/RxJava: map onNext:5
+    map onNext:7
+    map onNext:4
+    map onNext:3
+    map onNext:3
+    map onNext:5
+    map onNext:1
+</code></pre><p>flatMap 测试</p>
+<pre><code>Observable.just(&quot;hello&quot;, &quot;sealink&quot;, &quot;what&quot;, &quot;are&quot;, &quot;you&quot;, &quot;doing&quot;, &quot;?&quot;)
+            flatMap(new Function&lt;String, ObservableSource&lt;Integer&gt;&gt;() {
+                @Override
+                public ObservableSource&lt;Integer&gt; apply(String s) {
+                    Log.e(&quot;RxJava&quot;, &quot;flatMap apply: &quot; + s);
+                    return Observable.just(s.length());
+                }
+            })
+            .subscribeOn(Schedulers.newThread())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe(new Observer&lt;Integer&gt;() {
+                @Override
+                public void onSubscribe(Disposable d) {
+
+                }
+
+                @Override
+                public void onNext(Integer integer) {
+                    Log.e(&quot;RxJava&quot;, &quot;flatMap onNext: &quot; + integer);
+                }
+
+                @Override
+                public void onError(Throwable e) {
+
+                }
+
+                @Override
+                public void onComplete() {
+
+                }
+            });
+</code></pre><p>输出结果</p>
+<pre><code>03-05 13:44:49.518 14089-14113/? E/RxJava: flatMap apply: hello
+    flatMap apply: sealink
+    flatMap apply: what
+    flatMap apply: are
+    flatMap apply: you
+    flatMap apply: doing
+    flatMap apply: ?
+03-05 13:44:49.518 14089-14089/? E/RxJava: flatMap onNext: 5
+    flatMap onNext: 7
+    flatMap onNext: 4
+    flatMap onNext: 3
+    flatMap onNext: 3
+    flatMap onNext: 5
+    flatMap onNext: 1
+</code></pre>
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div></div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>Donate</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/wechatpay.jpg" alt="ticooops WeChat Pay">
+        <p>WeChat Pay</p>
+      </div>
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/images/alipay.jpg" alt="ticooops Alipay">
+        <p>Alipay</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Android/" rel="tag"># Android</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/09/03/android/MVVM-MVP框架对比/" rel="next" title="MVVM,MVP框架对比">
+                <i class="fa fa-chevron-left"></i> MVVM,MVP框架对比
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/09/05/android/Glide源码研究/" rel="prev" title="Glide源码研究">
+                Glide源码研究 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">ticooops</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">37</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                
+                  <span class="site-state-item-count">10</span>
+                  <span class="site-state-item-name">tags</span>
+                
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#相同点"><span class="nav-number">1.</span> <span class="nav-text">相同点:</span></a></li></ol><li class="nav-item nav-level-3"><a class="nav-link" href="#不同点："><span class="nav-number"></span> <span class="nav-text">不同点：</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#返回参数不同"><span class="nav-number">1.</span> <span class="nav-text">返回参数不同</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#使用方式不同"><span class="nav-number">2.</span> <span class="nav-text">使用方式不同,</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Sample"><span class="nav-number"></span> <span class="nav-text">Sample</span></a></li></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">ticooops</span>
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
