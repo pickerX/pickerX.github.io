@@ -5,7 +5,7 @@
   
 
 
-<html class="theme-next pisces use-motion" lang="">
+<html class="theme-next gemini use-motion" lang="">
 <head><meta name="generator" content="Hexo 3.8.0">
   <meta charset="UTF-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -93,7 +93,7 @@
   var NexT = window.NexT || {};
   var CONFIG = {
     root: '/',
-    scheme: 'Pisces',
+    scheme: 'Gemini',
     version: '5.1.4',
     sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
     fancybox: true,
@@ -229,6 +229,149 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/11/18/FFmpeg编译/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="pickerX">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hello,world">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/11/18/FFmpeg编译/" itemprop="url">FFmpeg编译</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-11-18T11:11:15+08:00">
+                2019-11-18
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+        <div class="post-gallery" itemscope="" itemtype="http://schema.org/ImageGallery">
+          
+          
+            <div class="post-gallery-row">
+              <a class="post-gallery-img fancybox" href="https://trac.ffmpeg.org/ffmpeg-logo.png" rel="gallery_ck3i6r91a0001jqxz1yaa3msn" itemscope="" itemtype="http://schema.org/ImageObject" itemprop="url">
+                <img src="https://trac.ffmpeg.org/ffmpeg-logo.png" itemprop="contentUrl">
+              </a>
+            
+          
+
+          
+          </div>
+        </div>
+      
+
+      
+        
+          
+          编译环境MacOS 10.15NDK：android-ndk-r20FFmpeg-4.2.1Android Studio 3.5.1Android Studio 中采用 cmake 编译方式， ndk-build 方式请自行编码。  
+NDK环境NDK环境配置就比较简单, 下载，解压，配置环境变量，不啰嗦
+FFmpeg环境FFmpeg 官网下载 http://ffmpeg.org/download.html 解压
+yasm是汇编编译器，
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2019/11/18/FFmpeg编译/#more" rel="contents">
+              Read more &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/09/26/android/Android应用启动/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
@@ -296,566 +439,40 @@
 
       
       
+        <div class="post-gallery" itemscope="" itemtype="http://schema.org/ImageGallery">
+          
+          
+            <div class="post-gallery-row">
+              <a class="post-gallery-img fancybox" href="http://b-ssl.duitang.com/uploads/blog/201405/03/20140503185212_4A5zW.jpeg" rel="gallery_ck3i6r9g7000djqxzr91sm6ar" itemscope="" itemtype="http://schema.org/ImageObject" itemprop="url">
+                <img src="http://b-ssl.duitang.com/uploads/blog/201405/03/20140503185212_4A5zW.jpeg" itemprop="contentUrl">
+              </a>
+            
+          
+
+          
+          </div>
+        </div>
+      
 
       
         
           
-            <p>在讲应用启动之前，我们需要了解两个知识点</p>
-<ul>
-<li>Binder IPC机制</li>
-<li>Zygote 机制  </li>
-</ul>
-<p>Binder IPC比较复杂，请移步<a href="">Binder IPC机制</a></p>
-<h2 id="Zygote？"><a href="#Zygote？" class="headerlink" title="Zygote？"></a>Zygote？</h2><p>我们知道，Android 是基于 Linux 内核开发的，而在 Linux 中，所有的进程都是直接或者间接地由 init 进程 fork 出来的。Zygote 进程也不例外，它是在系统启动的过程，由 init 进程创建的。</p>
-<h3 id="Zygote-的运行"><a href="#Zygote-的运行" class="headerlink" title="Zygote 的运行"></a>Zygote 的运行</h3><p>做过手机系统开发的大佬都知道，init 进程代码在系统启动脚本 system/core/rootdir/init.rc 文件中。 截取一部分代码，可以发现，<br>是通过运行 service zygote 命令来创建 zygote </p>
-<pre><code>service zygote /system/bin/app_process -Xzygote /system/bin --zygote --start-system-server
-class main
-socket zygote stream 660 root system
-onrestart write /sys/android_power/request_state wake
-onrestart write /sys/power/state on
-...
-</code></pre><h3 id="初始化-Zygote"><a href="#初始化-Zygote" class="headerlink" title="初始化 Zygote"></a>初始化 Zygote</h3><p>执行命令后，最终会调用 Zygote 相关的 Java 代码。Zygote 进程的初始化在 ZygoteInit 这个类中的 main 方法</p>
-<pre><code>public static void main(String argv[]) {
-    // zygote 进程的 socketServer 
-    ZygoteServer zygoteServer = new ZygoteServer();
-    ZygoteHooks.startZygoteNoThreadCreation();
+          在讲应用启动之前，我们需要了解两个知识点
 
-    ...
+Binder IPC机制
+Zygote 机制  
 
-    final Runnable caller;
-    try {
-
-        boolean startSystemServer = false;
-        String socketName = &quot;zygote&quot;;
-        String abiList = null;
-        boolean enableLazyPreload = false;
-
-        // 为 zygote 命令连接(ZygoteConnection)注册一个 server socket
-        // 内部实现类 LocalServerSocket Os.listen 开始一个阻塞监听 socket 连接
-        zygoteServer.registerServerSocket(socketName);
-        ...
-
-        if (startSystemServer) {
-            // 创建系统进程
-            Runnable r = forkSystemServer(abiList, socketName, zygoteServer);
-            if (r != null) {
-                r.run();
-                return;
-            }
-        }
-
-        // SocketServer 阻塞监听连接
-        caller = zygoteServer.runSelectLoop(abiList);
-    } catch (Throwable ex) {
-        Log.e(TAG, &quot;System zygote died with exception&quot;, ex);
-        throw ex;
-    } finally {
-        zygoteServer.closeServerSocket();
-    }
-
-    // We&apos;re in the child process and have exited the select loop. Proceed to execute the
-    // command.
-    if (caller != null) {
-        caller.run();
-    }
-}
-</code></pre><h3 id="ZygoteServer-轮询连接"><a href="#ZygoteServer-轮询连接" class="headerlink" title="ZygoteServer 轮询连接"></a>ZygoteServer 轮询连接</h3><p>runSelectLoop 方法，来看看关键的代码，while(true) 死循环，轮询操作，接收一个新的连接，读取命令</p>
-<pre><code>Runnable runSelectLoop(String abiList) {
-    ArrayList&lt;FileDescriptor&gt; fds = new ArrayList&lt;FileDescriptor&gt;();
-    ArrayList&lt;ZygoteConnection&gt; peers = new ArrayList&lt;ZygoteConnection&gt;();
-
-    fds.add(mServerSocket.getFileDescriptor());
-    peers.add(null);
-    // 轮训 FileDescriptor，peers
-    while (true) {
-        StructPollfd[] pollFds = new StructPollfd[fds.size()];
-        ...
-        try {
-            if (i == 0) {
-                // 接收一个新的连接，保存到集合
-                ZygoteConnection newPeer = acceptCommandPeer(abiList);
-                peers.add(newPeer);
-                fds.add(newPeer.getFileDesciptor());
-            } else {
-                // 下一次 while轮训时， 拿到 socket 连接
-                ZygoteConnection connection = peers.get(i);
-                // 处理命令
-                final Runnable command = connection.processOneCommand(this);
-                ...
-            }
-        } catch (Exception e) {
-            ...
-        }
-    }
-}
-</code></pre><p>使用过 socket 的大佬应该很熟悉，</p>
-<ul>
-<li>ZygoteServer 相当于 SocketServer 服务端包装类</li>
-<li>ZygoteConnection 表示一个远端 Socket 连接</li>
-</ul>
-<h3 id="ZygoteConnection-处理命令"><a href="#ZygoteConnection-处理命令" class="headerlink" title="ZygoteConnection 处理命令"></a>ZygoteConnection 处理命令</h3><p>我们看看 ZygoteConnection 是怎么处理命令的，</p>
-<pre><code>Runnable processOneCommand(ZygoteServer zygoteServer) {
-    String args[];
-    Arguments parsedArgs = null;
-    FileDescriptor[] descriptors;
-
-    ...
-    // 实际创建进程的地方还是回到了 Zygote 类中
-    pid = Zygote.forkAndSpecialize(parsedArgs.uid, parsedArgs.gid, parsedArgs.gids,
-            parsedArgs.debugFlags, rlimits, parsedArgs.mountExternal, parsedArgs.seInfo,
-            parsedArgs.niceName, fdsToClose, fdsToIgnore, parsedArgs.instructionSet,
-            parsedArgs.appDataDir);
-
-    // 创建进程后的处理，异常处理，关闭连接等
-    ...
-}
-</code></pre><p>回到 Zygote forkAndSpecialize 中，</p>
-<pre><code> public static int forkAndSpecialize(int uid, int gid, int[] gids, int debugFlags,
-      int[][] rlimits, int mountExternal, String seInfo, String niceName, int[] fdsToClose,
-      int[] fdsToIgnore, String instructionSet, String appDataDir) {
-    // ZygoteHooks
-    VM_HOOKS.preFork();
-    // Resets nice priority for zygote process.
-    resetNicePriority();
-    // native 方法创建进程
-    int pid = nativeForkAndSpecialize(
-              uid, gid, gids, debugFlags, rlimits, mountExternal, seInfo, niceName, fdsToClose,
-              fdsToIgnore, instructionSet, appDataDir);
-    // Enable tracing as soon as possible for the child process.
-    ...
-    VM_HOOKS.postForkCommon();
-    return pid;
-}
-</code></pre><h3 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h3><p>至此， 我们大致了解了 zygote 是什么以及它的作用</p>
-<ul>
-<li>Zygote 是由 init 进程，通过执行脚本命令创建的一个进程，由 ZygoteInit main 方法完成初始化</li>
-<li>初始化时 启动一个 ZygoteServer，SocketServer 的Java包装类，监听 Socket 连接</li>
-<li>ZygoteServer 拿到 Socket 连接 ZygoteConnection(连接的包装类)，处理命令</li>
-<li>ZygoteConnection 主要是处理创建进程的命令，最后会回到 Zygote 类 forkAndSpecialize</li>
-<li>Zygote.forkAndSpecialize 调用 JNI native 方法实现进程的创建</li>
-</ul>
-<h2 id="App-的启动"><a href="#App-的启动" class="headerlink" title="App 的启动"></a>App 的启动</h2><p>理解了 Zygote 的作用后，我们以 Android O 源码为基础，分析 Android App 启动的流程，这有助于后续学习 Android framework ，<br>hook技术， dex等知识的学习</p>
-<h3 id="Launcher-里启动-App"><a href="#Launcher-里启动-App" class="headerlink" title="Launcher 里启动 App"></a>Launcher 里启动 App</h3><p>在 Launcher 源码里启动 App，调用的也是我们常用的 startActivity 方法。Activity 里的最后调用的是，</p>
-<pre><code>public void startActivityForResult(@RequiresPermission Intent intent, int requestCode,
-        @Nullable Bundle options) {
-    // mParent 指当前的 Activity 是否是嵌套在其他的 Activity 中，我们通常很少嵌套 Activity
-    if (mParent == null) {
-        // options 参数处理
-        options = transferSpringboardActivityOptions(options);
-        // 通过 Instrumentation 启动Activity
-        // mMainThread.getApplicationThread()返回的是 ApplicationThread，继承自 IApplicationThread.Stub
-        Instrumentation.ActivityResult ar =
-            mInstrumentation.execStartActivity(
-                this, mMainThread.getApplicationThread(), mToken, this,
-                intent, requestCode, options);
-        if (ar != null) {
-            // 发送启动结果
-            mMainThread.sendActivityResult(
-                mToken, mEmbeddedID, requestCode, ar.getResultCode(),
-                ar.getResultData());
-        }
-        ...
-    }
-    ...
-}
-</code></pre><p>Instrumentation 里 execStartActivity，关键的代码在 ActivityManager.getService().startActivity(…) 启动 Activity</p>
-<pre><code>public ActivityResult execStartActivity(
-    Context who, IBinder contextThread, IBinder token, String target,
-    Intent intent, int requestCode, Bundle options) {
-    ...
-    // ActivityManager.getService 拿到 IActivityManager 调用 startActivity
-    int result = ActivityManager.getService()
-        .startActivity(whoThread, who.getBasePackageName(), intent,
-                intent.resolveTypeIfNeeded(who.getContentResolver()),
-                token, target, requestCode, 0, null, options);
-    checkStartActivityResult(result, intent);
-    ...
-}
-</code></pre><p>ActivityManager.getService 返回的是 IActivityManager，命名方式可以看出是一个接口</p>
-<pre><code>public static IActivityManager getService() {
-    return IActivityManagerSingleton.get();
-}
-</code></pre><p>IActivityManagerSingleton 的初始化，</p>
-<pre><code>private static final Singleton&lt;IActivityManager&gt; IActivityManagerSingleton =
-    new Singleton&lt;IActivityManager&gt;() {
-        @Override
-        protected IActivityManager create() {
-            // 通过 ServiceManager 拿到 ActivityManagerService(AMS) 的 Service IBinder对象
-            final IBinder b = ServiceManager.getService(Context.ACTIVITY_SERVICE);
-            // IActivityManager.Stub.asInterface 
-            final IActivityManager am = IActivityManager.Stub.asInterface(b);
-            return am;
-        }
-    };
-</code></pre><p>看到 IActivityManager.Stub.asInterface 是不是有点似曾相似的感觉，是的，这里使用到的就是 AIDL 跨进程通信的机制， IActivityManager 是定义好的 AIDL 接口。Application 层的源码到这里就结束了，再往下，我们就要找 ServiceManager 了</p>
-<h3 id="framework-里启动"><a href="#framework-里启动" class="headerlink" title="framework 里启动"></a>framework 里启动</h3><h4 id="Binder-调用AMS"><a href="#Binder-调用AMS" class="headerlink" title="Binder 调用AMS"></a>Binder 调用AMS</h4><p>ServiceManager 在 android.os 包下，看看相关方法</p>
-<pre><code>public final class ServiceManager {
-    private static final String TAG = &quot;ServiceManager&quot;;
-    private static IServiceManager sServiceManager;
-    // 定义 HashMap 缓存各种 IBinder 实例，我们的 AMS 实例也是存储在该 hashmap 中
-    private static HashMap&lt;String, IBinder&gt; sCache = new HashMap&lt;String, IBinder&gt;();
-
-    private static IServiceManager getIServiceManager() {
-        ...
-        // ServiceManagerNative 将 Binder 转换为 IServiceManager
-        sServiceManager = ServiceManagerNative
-                .asInterface(Binder.allowBlocking(BinderInternal.getContextObject()));
-        return sServiceManager;
-    }
-
-    public static IBinder getService(String name) {
-        ...
-        // 调用 IServiceManager 的 getService 方法
-        return Binder.allowBlocking(getIServiceManager().getService(name));
-        ...
-    }
-}
-</code></pre><p>其中 BinderInternal.getContextObject() 是一个 native 方法，返回一个系统全局的 “context” 对象 IBinder，通常是 IServiceManager 的实现。<br>因为是 native 方法，我们可以猜到这个 IServiceManager 实现是由 C++ 来完成的。 这部分就复杂了，感觉越讲内容越多了，不是我们应用启动的内容暂时就到<br>这里。</p>
-<p>回到 ServiceManager.getService(“activity”)， 拿到的是 IActivityManager 的实现，AMS 在 com.android.server.am 包下。 调用的是<br>startActivityAsUser() ，这里又使用了 ActivityStarter 来启动</p>
-<pre><code>public class ActivityManagerService extends IActivityManager.Stub
-    implements Watchdog.Monitor, BatteryStatsImpl.BatteryCallback {
-
-    @Override
-    public final int startActivityAsUser(...) {
-        enforceNotIsolatedCaller(&quot;startActivity&quot;);
-        userId = mUserController.handleIncomingUser(Binder.getCallingPid(), Binder.getCallingUid(),
-                userId, false, ALLOW_FULL_ONLY, &quot;startActivity&quot;, null);
-        // 调用 ActivityStarter 方法启动
-        return mActivityStarter.startActivityMayWait(caller, -1, callingPackage, intent,
-                resolvedType, null, null, resultTo, resultWho, requestCode, startFlags,
-                profilerInfo, null, null, bOptions, false, userId, null, &quot;startActivityAsUser&quot;);
-    }
-}
-</code></pre><p>这里面就不一层层介绍了，实在太绕了，归纳如下流程</p>
-<pre><code>ActivityStarter.java:
---&gt;startActivityMayWait
-    --&gt;startActivityLocked
-        --&gt;startActivity
-            --&gt;startActivity
-                --&gt;startActivityUnchecked(来自ActivityStackSupervisor的方法) 
-
-ActivityStackSupervisor.java:
-    --&gt;resumeFocusedStackTopActivityLocked(来自ActivityStack的方法)  
-ActivityStack.java:
-    --&gt;resumeTopActivityUncheckedLocked
-        --&gt;resumeTopActivityInnerLocked
-            --&gt;startSpecificActivityLocked(来自ActivityStackSupervisor)
-                --&gt;startProcessLocked(来自AMS,启动新进程)
-</code></pre><p>startSpecificActivityLocked 这个方法，检查应用进程记录是否已经运行，</p>
-<ul>
-<li>如果App 进程记录已经存在，则执行 realStartActivityLocked</li>
-<li><p>如果不存在则运行 mService.startProcessLocked</p>
-<p>  void startSpecificActivityLocked(ActivityRecord r,</p>
-<pre><code>    boolean andResume, boolean checkConfig) {
-// 当前 Activity 的 application 是否在运行?
-ProcessRecord app = mService.getProcessRecordLocked(r.processName,
-        r.info.applicationInfo.uid, true);
-
-r.getStack().setLaunchTime(r);
-//app 正在运行，
-if (app != null &amp;&amp; app.thread != null) {
-    try {
-        if ((r.info.flags&amp;ActivityInfo.FLAG_MULTIPROCESS) == 0
-                || !&quot;android&quot;.equals(r.info.packageName)) {
-            app.addPackage(r.info.packageName, r.info.applicationInfo.versionCode,
-                    mService.mProcessStats);
-        }
-        // 1. 执行 realStartActivityLocked
-        realStartActivityLocked(r, app, andResume, checkConfig);
-        return;
-    } catch (RemoteException e) {
-        Slog.w(TAG, &quot;Exception when starting activity &quot;
-                + r.intent.getComponent().flattenToShortString(), e);
-    }
-}
-// 2. app 未启动， 执行 startProcessLocked，启动新进程
-mService.startProcessLocked(r.processName, r.info.applicationInfo, true, 0,
-        &quot;activity&quot;, r.intent.getComponent(), false, false, true);
-</code></pre><p>  }</p>
-</li>
-</ul>
-<h4 id="zygote-fork进程启动app"><a href="#zygote-fork进程启动app" class="headerlink" title="zygote fork进程启动app"></a>zygote fork进程启动app</h4><p>由上面的分析，我们知道，在 app 尚未启动时，会执行 mService.startProcessLocked 这个方法</p>
-<pre><code>final ProcessRecord startProcessLocked(...) {
-    return startProcessLocked(...);
-}
-
-final ProcessRecord startProcessLocked(...) {
-    long startTime = SystemClock.elapsedRealtime();
-    ProcessRecord app;
-    // 一系列检查操作
-    ...
-
-    // 开始创建进程，同时记录耗时时间
-    checkTime(startTime, &quot;startProcess: stepping in to startProcess&quot;);
-    startProcessLocked(
-            app, hostingType, hostingNameStr, abiOverride, entryPoint, entryPointArgs);
-    checkTime(startTime, &quot;startProcess: done starting proc!&quot;);
-    return (app.pid != 0) ? app : null;
-}
-</code></pre><p>startProcessLocked 里， <strong>这里稍微留一下，entryPoint 被赋值为 android.app.ActivityThread</strong></p>
-<pre><code>private final void startProcessLocked(ProcessRecord app, String hostingType,
-    String hostingNameStr, String abiOverride, String entryPoint, String[] entryPointArgs) {
-    ...
-    // Start the process.  It will either succeed and return a result containing
-    // the PID of the new process, or else throw a RuntimeException.
-    boolean isActivityProcess = (entryPoint == null);
-    if (entryPoint == null) entryPoint = &quot;android.app.ActivityThread&quot;;
-    ...
-    if (hostingType.equals(&quot;webview_service&quot;)) {
-        ...
-    } else {
-        // 这里就是开始创建进程的地方了
-        startResult = Process.start(entryPoint,
-                app.processName, uid, uid, gids, debugFlags, mountExternal,
-                app.info.targetSdkVersion, seInfo, requiredAbi, instructionSet,
-                app.info.dataDir, invokeWith, entryPointArgs);
-    }
-    ...
-</code></pre><p>来看看 Process 类里是怎么做的，方法也是一堆参数，先忽略了。 可以看到用到了 zygoteProcess 这个类</p>
-<pre><code>public static final ZygoteProcess zygoteProcess =
-        new ZygoteProcess(&quot;zygote&quot;, &quot;zygote_secondary&quot;);
-
- public static final ProcessStartResult start(...) {
-    return zygoteProcess.start(...);
-}
-</code></pre><p>简单看看 ZygoteProcess 的构造，可以发现跟 Socket 貌似有点关联，前面了解过 Zygote，我们大概能知道，<br>这里准备要涉及 Socket 来实现进程间的通讯</p>
-<pre><code>public class ZygoteProcess {
-    /**
-    * socket的名称，用于跟主zygote的交流
-    */
-    private final String mSocket;
-    /**
-    * 另外一个 zogote socket名称(适配不同 ABI)
-    */
-    private final String mSecondarySocket;
-
-    public ZygoteProcess(String primarySocket, String secondarySocket) {
-        mSocket = primarySocket;
-        mSecondarySocket = secondarySocket;
-    }
-
-    public final Process.ProcessStartResult start(...) {
-        // 通过 Zygote 来启动
-        return startViaZygote(processClass, niceName, uid, gid, gids,
-                debugFlags, mountExternal, targetSdkVersion, seInfo,
-                abi, instructionSet, appDataDir, invokeWith, zygoteArgs);
-    }
-    ...
-}
-</code></pre><p>startViaZygote， </p>
-<pre><code>/**
-* 启动一个新的进程，通过 zygote 机制. 
-*/
-private Process.ProcessStartResult startViaZygote(...)
-                                                  throws ZygoteStartFailedEx {
-    // zygote 参数集合                                                          
-    ArrayList&lt;String&gt; argsForZygote = new ArrayList&lt;String&gt;();
-
-    // --runtime-args, --setuid=, --setgid=,
-    // and --setgroups= must go first
-    argsForZygote.add(&quot;--runtime-args&quot;);
-    argsForZygote.add(&quot;--setuid=&quot; + uid);
-    argsForZygote.add(&quot;--setgid=&quot; + gid);
-    if ((debugFlags &amp; Zygote.DEBUG_ENABLE_JNI_LOGGING) != 0) {
-        argsForZygote.add(&quot;--enable-jni-logging&quot;);
-    }
-    // 省略的这部分都是往参数集合里加配置参数
-    ...
-    // 这里 processClass 是 AMS 里的 entryPoint
-    argsForZygote.add(processClass);
-
-    synchronized(mLock) {
-        // 将参数集合传递
-        return zygoteSendArgsAndGetResult(openZygoteSocketIfNeeded(abi), argsForZygote);
-    }
-}
-</code></pre><p>主要做了如下操作</p>
-<ol>
-<li>添加配置参数</li>
-<li>openZygoteSocketIfNeeded socket连接操作</li>
-<li>zygoteSendArgsAndGetResult 通过 socket 连接发送数据</li>
-</ol>
-<p>简单看看 zygoteSendArgsAndGetResult，</p>
-<pre><code>private static Process.ProcessStartResult zygoteSendArgsAndGetResult(
-        ZygoteState zygoteState, ArrayList&lt;String&gt; args)
-        throws ZygoteStartFailedEx {
-    ...
-    // IO 写操作
-    final BufferedWriter writer = zygoteState.writer;
-    final DataInputStream inputStream = zygoteState.inputStream;
-
-    writer.write(Integer.toString(args.size()));
-    writer.newLine();
-
-    for (int i = 0; i &lt; sz; i++) {
-        String arg = args.get(i);
-        writer.write(arg);
-        writer.newLine();
-    }
-    // 通过 ZygoteState.writer 写数据
-    writer.flush();
-
-    // 到这里，进程已经创建完成了，后续就是读取进程 pid 了
-    Process.ProcessStartResult result = new Process.ProcessStartResult();
-
-    result.pid = inputStream.readInt();
-    result.usingWrapper = inputStream.readBoolean();
-
-    if (result.pid &lt; 0) {
-        throw new ZygoteStartFailedEx(&quot;fork() failed&quot;);
-    }
-    return result;
-}
-</code></pre><p>了解过 zygote 机制的我们知道，IO 操作，数据会传递给 ZygoteServer 服务端轮询处理，而数据的处理在 ZygoteConnection.processOneCommand，最终通过 Zygote 调用 native 方法 fork 出新的进程</p>
-<h3 id="App-进程已存在"><a href="#App-进程已存在" class="headerlink" title="App 进程已存在"></a>App 进程已存在</h3><p>在App 的 Application已经在运行的情况下，会执行 ActivityStackSupervisor 的 realStartActivityLocked 方法</p>
-<pre><code>final boolean realStartActivityLocked(ActivityRecord r, ProcessRecord app,
-    boolean andResume, boolean checkConfig) throws RemoteException {
-        ...
-        app.thread.scheduleLaunchActivity(new Intent(r.intent), r.appToken,
-                    System.identityHashCode(r), r.info,
-                    mergedConfiguration.getGlobalConfiguration(),
-                    mergedConfiguration.getOverrideConfiguration(), r.compat,
-                    r.launchedFromPackage, task.voiceInteractor, app.repProcState, r.icicle,
-                    r.persistentState, results, newIntents, !andResume,
-                    mService.isNextTransitionForward(), profilerInfo);
-        ...
-}
-</code></pre><p>scheduleLaunchActivity 是来自 ActivityThread， 最终会使用 Handler 机制，发送 Message 消息去启动Activity</p>
-<pre><code>public final void scheduleLaunchActivity(...) {
-
-        updateProcessState(procState, false);
-
-        ActivityClientRecord r = new ActivityClientRecord();
-        ...
-
-        sendMessage(H.LAUNCH_ACTIVITY, r);
-}
-</code></pre><p>handleMessage 处理 LAUNCH_ACTIVITY 消息，</p>
-<pre><code>public void handleMessage(Message msg) {
-        if (DEBUG_MESSAGES) Slog.v(TAG, &quot;&gt;&gt;&gt; handling: &quot; + codeToString(msg.what));
-        switch (msg.what) {
-            case LAUNCH_ACTIVITY: {
-                Trace.traceBegin(Trace.TRACE_TAG_ACTIVITY_MANAGER, &quot;activityStart&quot;);
-                final ActivityClientRecord r = (ActivityClientRecord) msg.obj;
-
-                r.packageInfo = getPackageInfoNoCheck(
-                        r.activityInfo.applicationInfo, r.compatInfo);
-                handleLaunchActivity(r, null, &quot;LAUNCH_ACTIVITY&quot;);
-                Trace.traceEnd(Trace.TRACE_TAG_ACTIVITY_MANAGER);
-            } 
-            break;
-        }
-}
-</code></pre><p>handlerLaunchActivity 里的调用 performLaunchActivity 完成最终的启动</p>
-<pre><code>private Activity performLaunchActivity(ActivityClientRecord r, Intent customIntent) {
-    // 构建 component
-    ...
-
-    ContextImpl appContext = createBaseContextForActivity(r);
-    Activity activity = null;
-    try {
-        // 通过 ClassLoader 加载 Activity 类，启动
-        java.lang.ClassLoader cl = appContext.getClassLoader();
-        activity = mInstrumentation.newActivity(
-                cl, component.getClassName(), r.intent);
-        StrictMode.incrementExpectedActivityCount(activity.getClass());
-        r.intent.setExtrasClassLoader(cl);
-        r.intent.prepareToEnterProcess();
-        if (r.state != null) {
-            r.state.setClassLoader(cl);
-        }
-    } catch (Exception e) {
-        ...
-    }
-
-    try {
-        // 构建 Application
-        Application app = r.packageInfo.makeApplication(false, mInstrumentation);
-
-        if (activity != null) {
-            ...
-            // 调用 Activity attach 到 window
-            activity.attach(appContext, this, getInstrumentation(), r.token,
-                    r.ident, app, r.intent, r.activityInfo, title, r.parent,
-                    r.embeddedID, r.lastNonConfigurationInstances, config,
-                    r.referrer, r.voiceInteractor, window, r.configCallback);
-            ...
-    } catch (SuperNotCalledException e) {
-        throw e;
-    } catch (Exception e) {
-
-    }
-    return activity;
-}
-</code></pre><p>至此，Activity 的启动页就大致结束了，其他的细节我们就不关注了。<br>此外，这里 ActivityThread 也是我们着重关注的对象.</p>
-<h4 id="ActivityThread"><a href="#ActivityThread" class="headerlink" title="ActivityThread"></a>ActivityThread</h4><p>ActivityThread 在 Android 中它就代表了 Android 的主线程，但是并不是一个 Thread 类。</p>
-<p>严格来说，UI主线程不是 ActivityThread。ActivityThread 类是 Android APP 进程的初始类，它的 main 函数是这个 APP 进程的入口。<br>APP 进程中 UI 事件的执行代码段都是由 ActivityThread 提供的。也就是说，MainThread 实例是存在的，可以理解为 ActivityThread main方法所运行的线程。</p>
-<pre><code>public final class ActivityThread {
-    ...
-    private static ActivityThread sCurrentActivityThread;
-    final H mH = new H();
-
-    private void attach(boolean system) {
-        sCurrentActivityThread = this;
-        ...
-    }
-
-    public static void main(String[] args) {
-        ...
-
-        // 创建 Looper 和 MessageQueue 对象，用于处理主线程的消息
-        Looper.prepareMainLooper();
-
-        // 创建ActivityThread对象
-        ActivityThread thread = new ActivityThread(); 
-
-        // 建立Binder通道 (创建新线程)
-        thread.attach(false);
-
-        if (sMainThreadHandler == null) {
-            // sMainThreadHandler 即 mH
-            sMainThreadHandler = thread.getHandler();
-        }
-        // 消息循环运行
-        Looper.loop(); 
-        throw new RuntimeException(&quot;Main thread loop unexpectedly exited&quot;);
-    }
-
-    private class H extends Handler {
-        public static final int LAUNCH_ACTIVITY         = 100;
-        public static final int PAUSE_ACTIVITY          = 101;
-        public static final int PAUSE_ACTIVITY_FINISHING= 102;
-        public static final int STOP_ACTIVITY_SHOW      = 103;
-        public static final int STOP_ACTIVITY_HIDE      = 104;
-        public static final int SHOW_WINDOW             = 105;
-        public static final int HIDE_WINDOW             = 106;
-        public static final int RESUME_ACTIVITY         = 107;
-        public static final int SEND_RESULT             = 108;
-        public static final int DESTROY_ACTIVITY        = 109;
-        public static final int BIND_APPLICATION        = 110;
-        public static final int EXIT_APPLICATION        = 111;
-        public static final int NEW_INTENT              = 112;
-        public static final int RECEIVER                = 113;
-        public static final int CREATE_SERVICE          = 114;
-        public static final int SERVICE_ARGS            = 115;
-        public static final int STOP_SERVICE            = 116;
-        ...
-    }
-}
-</code></pre><p>mH Handler 里处理了四大组件的各种消息，如启动 Activity LAUNCH_ACTIVITY，创建Servie CREATE_SERVICE 等等。 可以说 ActivityThread 是 Activity 生命周期中一个至关重要的管理类， 也可以理解为是主线程操作的管理类。   </p>
-<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>大致的流程图如下</p>
-<p><img src="https://upload-images.jianshu.io/upload_images/1779563-242eb8b8d0813c17..jpg?imageMogr2/auto-orient/strip|imageView2/2/w/960/format/webp" alt="App启动"></p>
-<ol>
-<li>点击桌面App图标,Launcher进程采用Binder IPC 向 system_server 进程发起startActivity请求</li>
-<li>system_server进程接收到请求后,向zygote进程发送创建进程的请求</li>
-<li>Zygote进程fork出新的子进程,即App进程</li>
-<li>App进程,通过Binder IPC向sytem_server进程发起attachApplication请求</li>
-<li>system_server进程在收到请求后，进行一系列准备工作后,再通过binder IPC向App进程发送scheduleLaunchActivity请求</li>
-<li>App进程的binder线程（ApplicationThread）在收到请求后,通过handler向主线程发送LAUNCH_ACTIVITY消息<br>主线程在收到Message后，通过发射机制创建目标Activity,并回调Activity.onCreate()等方法</li>
-<li>App便正式启动，开始进入Activity生命周期，执行完onCreate/onStart/onResume方法，UI渲染结束后便可以看到App的主界面</li>
-</ol>
-
-          
+Binder IPC比较复杂，请移步Binder IPC机制
+Zygote？我们知道，Android 是基于 Linux 内核开发的，而在 Linux 中，所有的进程都是直接或者间接地由 init 进程 fork 出来的。Zygote 进程也不例外，它是在系统启动的过程，由 init 进程创建的。
+Zygote 的运行做过手机系统开发的大佬都
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2019/09/26/android/Android应用启动/#more" rel="contents">
+              Read more &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -973,301 +590,19 @@ private Process.ProcessStartResult startViaZygote(...)
       
         
           
-            <h2 id="RxJava-线程模型分析"><a href="#RxJava-线程模型分析" class="headerlink" title="RxJava 线程模型分析"></a>RxJava 线程模型分析</h2><p>RxJava的被观察者在使用操作符时可以利用线程调度器–Scheduler来切换线程，例如</p>
-<pre><code>Observable.just(&quot;hello&quot;,&quot;Rxjava&quot;)
+          RxJava 线程模型分析RxJava的被观察者在使用操作符时可以利用线程调度器–Scheduler来切换线程，例如
+Observable.just(&quot;hello&quot;,&quot;Rxjava&quot;)
         .observeOn(Schedulers.newThread())
         .map(new Function&lt;String, String&gt;() {
-            @Override
-            public String apply(@NonNull String s) throws Exception {
-                return s.toUpperCase();
-            }
-        })
-        .subscribeOn(Schedulers.single())
-        .observeOn(Schedulers.io())
-        .subscribe(new Consumer&lt;String&gt;() {
-            @Override
-            public void accept(@NonNull String s) throws Exception {
-                System.out.println(s);
-            }
-        });
-</code></pre><p>被观察者(Observable、Flowable…)发射数据流之后，其操作符可以在不同的线程中加工数据流，最后被观察者在前台线程中接受并响应数据。<br>下图不同的箭头颜色表示不同的线程。<br><img src="https://user-gold-cdn.xitu.io/2017/8/28/9d6e757cd24bd3370b9b08bf10fc2790?imageView2/0/w/1280/h/960/format/webp/ignore-error/1" alt="schedulers.png"></p>
-<h2 id="线程调度"><a href="#线程调度" class="headerlink" title="线程调度"></a>线程调度</h2><p>在默认情况下不做任何线程处理，观察者和被观察者是处于同一线程中的。RxJava提供了可以切换线程的便利 API ====&gt;&gt; subscribeOn(), observeOn()。</p>
-<p>我们知道，在最后一步 subscribe(…) 未调用时，之前的链式是不会执行的，那我们先来看看 subscribe 的细节</p>
-<pre><code> public final Disposable subscribe(Consumer&lt;? super T&gt; onNext, Consumer&lt;? super Throwable&gt; onError,
-        Action onComplete, Consumer&lt;? super Disposable&gt; onSubscribe) {
-    ...
-    // 构建一个 LambdaObserver，装饰者模式，对方法进行了增强
-    LambdaObserver&lt;T&gt; ls = new LambdaObserver&lt;T&gt;(onNext, onError, onComplete, onSubscribe);
-    // 执行订阅
-    subscribe(ls);
-
-    return ls;
-}
-
-public final void subscribe(Observer&lt;? super T&gt; observer) {
-    ...
-    ObjectHelper.requireNonNull(observer, &quot;Plugin returned null Observer&quot;);
-    // 订阅
-    subscribeActual(observer);
-    ...
-}
-</code></pre><p>可以看到，最后会执行 subscribeActual 方法，但是该方法实际上是一个抽象方法<br>。 也就是说，会执行 subscribe 上一步链式所创建的 Observable 实现，那我们往链式的上游看，即示例代码的 observeOn(Schedulers.io())</p>
-<h3 id="线程调度-observeOn"><a href="#线程调度-observeOn" class="headerlink" title="线程调度 observeOn"></a>线程调度 observeOn</h3><p>首先，先说结论：</p>
-<ul>
-<li>observeOn(scheduler) 接收一个 Scheduler 参数，用来指定后续操作运行在特定的线程调度器 Scheduler 上。  </li>
-<li>若多次执行 observeOn，则每次均起作用，线程会一直切换。  </li>
-</ul>
-<p>进入 observeOn() 的源码可以看到，每次调用 observeOn() 都会创建一个 ObservableObserveOn 对象。</p>
-<pre><code>public final Observable&lt;T&gt; observeOn(Scheduler scheduler) {
-    return observeOn(scheduler, false, bufferSize());
-}
-
-public final Observable&lt;T&gt; observeOn(Scheduler scheduler, boolean delayError, int bufferSize) {
-    ...
-    // 注意: 这里的 this 表示调用 observeOn 的 Observable 对象，也就是上一步的链式，这里有可能就是操作符，或者 subscribeOn 的 Observable实现，我们统称为 上游事件
-    return RxJavaPlugins.onAssembly(new ObservableObserveOn&lt;T&gt;(this, scheduler, delayError, bufferSize));
-}
-</code></pre><p>这时综上所述，你会发现示例里 subscribe 执行的其实就是 ObservableObserveOn 的 subscribeActual 实现。<br>这个设计就很巧妙了，采用 装饰者模式 + 责任链模式 的方式设计出简洁便利的API。</p>
-<p>继续看 subscribeActual 代码，</p>
-<pre><code>public ObservableObserveOn(ObservableSource&lt;T&gt; source, Scheduler scheduler, boolean delayError, int bufferSize) {
-    // source 即上游事件对象
-    super(source);
-    this.scheduler = scheduler;
-    this.delayError = delayError;
-    this.bufferSize = bufferSize;
-}
-
-@Override
-protected void subscribeActual(Observer&lt;? super T&gt; observer) {
-    if (scheduler instanceof TrampolineScheduler) {
-        // ObservableObserveOn 订阅 subscribe 里的 LambdaObserver，也就是所谓的 上游事件和下游事件立即产生订阅
-        source.subscribe(observer);
-    } else {
-        // 线程调度器创建任务封装 Scheduler.Worker
-        Scheduler.Worker w = scheduler.createWorker();
-        // 上游事件对象订阅下游事件 observer 的  ObserveOnObserver 封装
-        source.subscribe(new ObserveOnObserver&lt;T&gt;(observer, w, delayError, bufferSize));
-    }
-}
-</code></pre><p>ObserveOnObserver 是 ObservableObserveOn 的内部类，实现了 Observer、Runnable 接口。<br>此时，如果你稍微看一下其他操作符的实现时，你会发现执行流程基本是一致的，<br>因此，再一次综上所述，我们逆向层层递推，当推到链式反应的第一步时，此时的上游事件订阅下游事件，变成了当前事件(没有上游事件了)订阅下游事件，如示例中的 Observable.create()，</p>
-<pre><code>public final class ObservableCreate&lt;T&gt; extends Observable&lt;T&gt; {
-// source 即 Observable.create 时的 ObservableOnSubscribe 实现
-
-final ObservableOnSubscribe&lt;T&gt; source;
-
-public ObservableCreate(ObservableOnSubscribe&lt;T&gt; source) {
-    this.source = source;
-}
-
-@Override
-protected void subscribeActual(Observer&lt;? super T&gt; observer) {
-    // 方法增强 emitter 发射器
-    CreateEmitter&lt;T&gt; parent = new CreateEmitter&lt;T&gt;(observer);
-    // 下游事件调用 onSubscribe
-    observer.onSubscribe(parent);
-
-    try {
-        // 执行 source 实现, 通常我们会调用 emitter.onNext() 等操作，开始链式反应
-        source.subscribe(parent);
-    } catch (Throwable ex) {
-        Exceptions.throwIfFatal(ex);
-        parent.onError(ex);
-    }
-}
-</code></pre><p>当最上层的 emitter 发射数据的时候，优先调用了当前 Observer 的 onNext()，等到执行完后，再开始调用下一个 Observer 的 onNext()，这样达到了层层传递，层层处理的目的。</p>
-<p>最终会到达 ObserveOnObserver 的 onNext() 方法。schedule() 执行了具体调度的方法。</p>
-<pre><code>@Override
-public void onNext(T t) {
-    ...
-    schedule();
-}
-
-void schedule() {
-    if (getAndIncrement() == 0) {
-        worker.schedule(this);
-    }
-}
-</code></pre><p>其中，worker 是当前 scheduler 创建的 Worker，this 指的是当前的 ObserveOnObserver 对象， 实现了 Runnable 接口。<br>以 IoScheduler 为例，找到 io.reactivex.internal.schedulers.IoScheduler 的 worker 实现</p>
-<pre><code> static final class EventLoopWorker extends Scheduler.Worker {
-    private final CachedWorkerPool pool;
-    private final ThreadWorker threadWorker;
-
-    final AtomicBoolean once = new AtomicBoolean();
-
-    EventLoopWorker(CachedWorkerPool pool) {
-        this.pool = pool;
-        this.tasks = new CompositeDisposable();
-        // 缓存 worker 池
-        this.threadWorker = pool.get();
-    }
-
-    @Override
-    public Disposable schedule(@NonNull Runnable action, long delayTime, @NonNull TimeUnit unit) {
-        ...
-        // ThreadWorker 继承 NewThreadWorker
-        return threadWorker.scheduleActual(action, delayTime, unit, tasks);
-    }
-}
-</code></pre><p>最终会调用 scheduleActual 方法</p>
-<pre><code>public NewThreadWorker(ThreadFactory threadFactory) {
-    // executor 是 核心线程数为 1 的线程池 ScheduledExecutorService
-    executor = SchedulerPoolFactory.create(threadFactory);
-}
-
-public ScheduledRunnable scheduleActual(final Runnable run, long delayTime, TimeUnit unit, DisposableContainer parent) {
-    Runnable decoratedRun = RxJavaPlugins.onSchedule(run);
-
-    ScheduledRunnable sr = new ScheduledRunnable(decoratedRun, parent);
-    ...
-    Future&lt;?&gt; f;
-    try {
-        if (delayTime &lt;= 0) {
-            // 执行线程 
-            f = executor.submit((Callable&lt;Object&gt;)sr);
-        } else {
-            // 执行线程 
-            f = executor.schedule((Callable&lt;Object&gt;)sr, delayTime, unit);
-        }
-        sr.setFuture(f);
-    } catch (RejectedExecutionException ex) {
-        ...
-    }
-
-    return sr;
-}
-</code></pre><p>最终通过线程池执行 ObserveOnObserver 这个 Runnable 实现，即下游事件，来实现线程的切换</p>
-<pre><code>@Override
-public void run() {
-    if (outputFused) {
-        drainFused();
-    } else {
-        drainNormal();
-    }
-}
-</code></pre><p>因此，下游多次调用 observeOn() 的话，线程会一直切换。每一次切换线程，都会把对应的 Observer 对象的各个方法的处理交给指定线程池去调度</p>
-<h4 id="线程调度-subscribeOn"><a href="#线程调度-subscribeOn" class="headerlink" title="线程调度 subscribeOn"></a>线程调度 subscribeOn</h4><p>subscribeOn的结论：</p>
-<ul>
-<li>subscribeOn 通过接收一个 Scheduler 参数，来指定对数据的处理运行在特定的线程调度器 Scheduler 上。  </li>
-<li>若多次执行 subscribeOn，则只有一次起作用。</li>
-</ul>
-<p>进入 subscribeOn() 的源码可以看到，每次调用 subscribeOn() 都会创建一个 ObservableSubscribeOn 对象。</p>
-<pre><code>public final Observable&lt;T&gt; subscribeOn(Scheduler scheduler) {
-    ObjectHelper.requireNonNull(scheduler, &quot;scheduler is null&quot;);
-    return RxJavaPlugins.onAssembly(new ObservableSubscribeOn&lt;T&gt;(this, scheduler));
-}
-</code></pre><p>ObservableSubscribeOn 真正发生订阅的方法是 subscribeActual(Observer&lt;? super T&gt; observer)。</p>
-<pre><code>@Override
-public void subscribeActual(final Observer&lt;? super T&gt; s) {
-    // SubscribeOnObserver 是下游的 Observer 通过装饰器模式生成的。它实现了 Observer、Disposable 接口
-    final SubscribeOnObserver&lt;T&gt; parent = new SubscribeOnObserver&lt;T&gt;(s);
-    // 在上游的线程中执行下游 Observer 的 onSubscribe(Disposable disposabel)方法。
-    s.onSubscribe(parent);
-
-    parent.setDisposable(scheduler.scheduleDirect(new SubscribeTask(parent)));
-}
-</code></pre><p>然后，将子线程的操作加入 Disposable 管理中，加入 Disposable 后可以方便上下游的统一管理。</p>
-<pre><code>parent.setDisposable(scheduler.scheduleDirect(new SubscribeTask(parent)));
-</code></pre><p>在这里，已经调用对应 scheduler 的 scheduleDirect() 方法，最终会调用 对应 Worker 的 schedule 方法，通过线程池完成调度。<br>scheduleDirect() 传入的是一个Runnable，也就是下面的 SubscribeTask。</p>
-<pre><code>final class SubscribeTask implements Runnable {
-    private final SubscribeOnObserver&lt;T&gt; parent;
-
-    SubscribeTask(SubscribeOnObserver&lt;T&gt; parent) {
-        this.parent = parent;
-    }
-
-    @Override
-    public void run() {
-        // 对上游的 Observable 进行订阅。此时，已经在对应的 Scheduler 线程中运行了。
-        source.subscribe(parent);
-    }
-}
-</code></pre><p>在RxJava的链式操作中，数据的处理是自下而上，这点跟数据发射正好相反。如果多次调用 subscribeOn，最上面的线程切换最晚执行，所以变成了只有第一次切换线程才有效。</p>
-<h3 id="为什么-subscribeOn-只有第一次切换有效"><a href="#为什么-subscribeOn-只有第一次切换有效" class="headerlink" title="为什么 subscribeOn() 只有第一次切换有效"></a>为什么 subscribeOn() 只有第一次切换有效</h3><p>写到这里我们这个问题也就能回答了<br>因为 RxJava 最终能影响 ObservableOnSubscribe 这个匿名实现接口的运行环境的只能是最后一次运行的 subscribeOn() ，又因为 RxJava 订阅的时候是从下往上订阅，所以从上往下第一个 subscribeOn() 就是最后运行的，这就造成了写多个 subscribeOn() 并没有什么用的现象。</p>
-<h3 id="示例"><a href="#示例" class="headerlink" title="示例"></a>示例</h3><p>RxJava 线程切换非常方便，直接看代码<br>线程切换示例代码:</p>
-<pre><code>Observable.create(ObservableOnSubscribe&lt;String&gt; {
-        Log.e(&quot;RxThreadTest&quot;, &quot;create &quot; + Thread.currentThread().name)
-        it.onNext(&quot;hello&quot;)
-        it.onComplete()
-    })
-            .observeOn(AndroidSchedulers.mainThread())   //指定下面的 call 在主线程中执行
-            .flatMap {
-                Log.e(&quot;RxThreadTest&quot;, &quot;flatMap1 &quot; + Thread.currentThread().name)
-                Observable.just(it)
-            }
-            .observeOn(Schedulers.io()) //指定下面的 call  在IO 线程中执行
-            .flatMap {
-                Log.e(&quot;RxThreadTest&quot;, &quot;flatMap2 &quot; + Thread.currentThread().name)
-                Observable.just(it)
-            }
-            .subscribeOn(Schedulers.io())   //  指定上面未指定的 Observable 在 IO 线程中执行，即最开始的ObservableOnSubscribe
-            .observeOn(AndroidSchedulers.mainThread())  // 指定下面的 subscribe 在主线程执行
-            .subscribe({
-                Log.e(&quot;RxThreadTest&quot;, &quot;$it - ${Thread.currentThread().name}&quot;)
-            }, {
-                Log.e(&quot;RxThreadTest&quot;, it.message)
-            }, {
-                Log.e(&quot;RxThreadTest&quot;, &quot;OnComplete&quot;)
-            })
-</code></pre><p>输出结果：</p>
-<pre><code>15:20:21.073  create RxCachedThreadScheduler-1
-15:20:21.149  flatMap1 main
-15:20:21.157  flatMap2 RxCachedThreadScheduler-2
-15:20:21.287  hello - main
-15:20:21.287  OnComplete
-</code></pre><p>示例代码2</p>
-<pre><code>val o1 = Observable.create(ObservableOnSubscribe&lt;String&gt; {
-           Log.e(&quot;RxThreadTest&quot;, &quot;o1 ${Thread.currentThread().name}&quot;)
-           it.onNext(&quot;o1&quot;)
-       }).subscribeOn(Schedulers.io())
-
-       val o2 = Observable.create(ObservableOnSubscribe&lt;String&gt; {
-           Log.e(&quot;RxThreadTest&quot;, &quot;o2 ${Thread.currentThread().name}&quot;)
-           it.onNext(&quot;o2&quot;)
-       }).subscribeOn(Schedulers.io())
-
-       val o3 = Observable.create(ObservableOnSubscribe&lt;String&gt; {
-           Log.e(&quot;RxThreadTest&quot;, &quot;o3 ${Thread.currentThread().name}&quot;)
-           it.onNext(&quot;o3&quot;)
-       }).subscribeOn(Schedulers.io())
-
-       Observable.create(ObservableOnSubscribe&lt;String&gt; {
-           Log.e(&quot;RxThreadTest&quot;, &quot;create ${Thread.currentThread().name}&quot;)
-           it.onNext(&quot;create&quot;)
-           it.onComplete()
-       })
-               .subscribeOn(Schedulers.io())
-               .observeOn(AndroidSchedulers.mainThread())
-               .flatMap {
-                   Log.e(&quot;RxThreadTest&quot;, &quot;flatMap1 ${Thread.currentThread().name}&quot;)
-                   o1
-               }
-               .observeOn(AndroidSchedulers.mainThread())
-               .flatMap {
-                   Log.e(&quot;RxThreadTest&quot;, &quot;flatMap2 ${Thread.currentThread().name}&quot;)
-                   o2
-               }
-               .flatMap {
-                   Log.e(&quot;RxThreadTest&quot;, &quot;flatMap3 ${Thread.currentThread().name}&quot;)
-                   o3
-               }
-               .observeOn(AndroidSchedulers.mainThread())
-               .subscribe {
-                   Log.e(&quot;RxThreadTest&quot;, &quot;onNext ${Thread.currentThread().name}&quot;)
-               }
-</code></pre><p>输出结果</p>
-<pre><code>15:50:46.763 E/RxThreadTest: create RxCachedThreadScheduler-1
-15:50:46.848 E/RxThreadTest: flatMap1 main
-15:50:46.848 E/RxThreadTest: o1 RxCachedThreadScheduler-1
-15:50:46.968 E/RxThreadTest: flatMap2 main
-15:50:46.969 E/RxThreadTest: o2 RxCachedThreadScheduler-1
-15:50:46.969 E/RxThreadTest: flatMap3 RxCachedThreadScheduler-1
-15:50:46.971 E/RxThreadTest: o3 RxCachedThreadScheduler-2
-15:50:46.986 E/RxThreadTest: onNext main
-
-flatMap3 没有指定线程，会继续使用之前 Observable 操作符使用的线程，事例中即 o2 执行的线程 RxCachedThreadScheduler-1。 需要注意的是，如果 flatMap2 修改为 map 操作符时，因为 map 没有返回操作符，此时 flatMap3 则会用 map 的线程即 main 线程
-</code></pre><p>参考 <a href="https://www.jianshu.com/p/a9ebf730cd08" target="_blank" rel="noopener">详解 RxJava2的线程切换原理</a></p>
-
-          
+            
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2019/09/15/android/RxJava源码分析/#more" rel="contents">
+              Read more &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -1385,46 +720,20 @@ flatMap3 没有指定线程，会继续使用之前 Observable 操作符使用�
       
         
           
-            <p>Android sqlite 并不是线程安全的，因此我们通常会使用，单例 SqliteOpenHelper，锁，或者事务来保证线程的安全。</p>
-<h2 id="Dbflow"><a href="#Dbflow" class="headerlink" title="Dbflow"></a>Dbflow</h2><p>Dbflow 是开源的一个关系型数据库，设计方式对程序员非常友好，如简单的查询：</p>
-<pre><code>select(name, screenSize)  
+          Android sqlite 并不是线程安全的，因此我们通常会使用，单例 SqliteOpenHelper，锁，或者事务来保证线程的安全。
+DbflowDbflow 是开源的一个关系型数据库，设计方式对程序员非常友好，如简单的查询：
+select(name, screenSize)  
     .from(Android.class)  
     .where(name.is(“Nexus 5x”))  
-    .and(version.is(6.0))  
-    .querySingle()
-</code></pre><p>与 sql 语句非常相似，对于中小型应用的快速开发，是非常适合的。 根据官网介绍， Dbflow 支持 Trigger,ModelView, Index, Migration, <strong>所有的数据库操作都在同一个线程（线程安全）</strong></p>
-<p>在性能方面，DBFlow 基于 AnnotationProcessing (注解处理器），通过编译期代码生成，运行时对性能是零损耗的。通过模板来为你维护生成的代码。通过缓存和尽可能地重用对象，我们得到了比原生SQLite更快的速度。同时我们还支持懒加载（lazy-loading），比如对于@ForeignKey和@OneToMany，这使得我们有着更高效得查询效率。</p>
-<h2 id="Realm"><a href="#Realm" class="headerlink" title="Realm"></a>Realm</h2><p>首先 Realm 最大的特点就是速度快，然后是线程安全的，关于多线程有以下特点</p>
-<ol>
-<li>RealmObject 自带线程保护功能，只能在创建它的线程中访问，在子线程中不能访问。</li>
-<li>如果 Realm 关闭，所有查询得到的 RealmObject 都不能使用了。</li>
-<li>尽管 Realm 文件支持多线程访问，但还不支持多进程访问。不同进程请使用不同的 Realm 文件拷贝</li>
-</ol>
-<p>其次，Realm 是自己研发出来的一个关系型数据库，上手容易，性能会比 Android 自带的sqlite 等其他数据库，如Dbflow，greenDao等等快上不少，以空间换时间的方式，在不合理管理 Realm 生命周期的情况下，很可能会使应用的存储大小暴增，如暴增到 2G,4G 的大小。对性能要求敏感的，不妨试试 Realm。 </p>
-<p><strong>性能对比参考<a href="https://www.jianshu.com/p/f001acf3d733" target="_blank" rel="noopener">Android中Sqlite、Realm与GreenDao性能比较</a></strong>   </p>
-<p>此外，Realm 还有如下一些坑，</p>
-<ul>
-<li>如果想在 Realm.close() 之后继续操作查询得到的对象，只能复制一份数据传出来。</li>
-<li>如果直接修改或删除 query 得到的数据，必须在transaction中完成…</li>
-</ul>
-<p>但是这些都可以通过代码来解决， Realm 适合有界面的应用，方便跟 Activity 绑定生命周期。常驻后台多线程应用的场景可能就比较麻烦。</p>
-<p>那么要跨线程的时候怎么办呢？</p>
-<h3 id="跨线程使用-Realm"><a href="#跨线程使用-Realm" class="headerlink" title="跨线程使用 Realm"></a>跨线程使用 Realm</h3><p>请谨记：Realm、RealmObject 和RealmResults 实例都不可以跨线程使用。但是你可以使用异步查询和异步事务来将部分操作放入后台线程进行，待完成时调用线程被通知以获取结果。</p>
-<p>当你需要跨线程访问同一部分数据时，只需简单地在该线程重新获取一个 Realm 实例（例如：Realm.getInstance(RealmConfiguration config) 或是其他类似方法），然后通过这个 Realm 实例来查询获得你需要的数据。查询获得的对象会映射到 Realm 中的相同数据，由此方法获得对象在其线程中任何地方都可读写！</p>
-<p>更详细的可以参考 <a href="https://realm.io/cn/docs/java/latest/#%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8" target="_blank" rel="noopener">Realm 文档</a></p>
-<h2 id="greenDAO"><a href="#greenDAO" class="headerlink" title="greenDAO"></a>greenDAO</h2><p>greenDAO 是Android上，一个轻量，快速的，对象关系映射(ORM)数据库解决方案，本质上使用的还是 SQLite<br>greenDAO 有以下几个特点，</p>
-<ul>
-<li>稳定性好，于2011创建，应用于众多大型应用场景中</li>
-<li>简单易用，简单明了的API，v3版本注释丰富</li>
-<li>轻量，greenDAO 小于 150K，只有Java的jar，没有native相关的依赖</li>
-<li>快速，可能是 Android 上速度最快的 ORM(其他数据库大家都这么介绍自己)</li>
-<li>加密: 支持 SQLCipher 加密数据库</li>
-</ul>
-<p>详细API，请移步 <a href="http://greenrobot.org/greendao/" target="_blank" rel="noopener">greenDAO官网</a></p>
-<p><a href="https://github.com/AlexeyZatsepin/Android-ORM-benchmark" target="_blank" rel="noopener">其他数据库的性能对比</a>  </p>
-<p>总而言之，最“快”的ORM是Realm，GreenDAO，ORMLite和Room，但如果性能对项目至关重要，那么带有自定义缓存的“干净”SQLite仍然是最佳选择。在其他参数上，最好的是Realm，DBFlow和GreenDAO。因此，对于中等复杂度的小项目和项目，我建议使用DBFlow或GreenDAO，如果apk的大小不重要 -  Realm。 Realm和Room适合大型项目。并且只有当他们的功能由于某种原因不够，或者ORM方法不适合你时，才能返回使用内置的SQLite API。</p>
-
-          
+    .and(versio
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2019/09/10/android/数据库多线程研究/#more" rel="contents">
+              Read more &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -1542,127 +851,20 @@ flatMap3 没有指定线程，会继续使用之前 Observable 操作符使用�
       
         
           
-            <p>首先认识关于内存的两个重要知识</p>
-<ul>
-<li>内存溢出（Out of Memory）：系统会给每个APP分配内存也就是Heap Size值。当APP占用的内存加上我们申请的内存资源超过了Dalvik虚拟机的最大内存时就会抛出的Out Of Memory异常。</li>
-<li>内存泄漏（Memory Leak）：当一个对象不在使用了，本应该被垃圾回收器（JVM）回收。但是这个对象由于被其他正在使用的对象所持有，造成无法被回收的结果。内存泄漏最终会导致内存溢出。</li>
-</ul>
-<p>区别：内存泄露是由于 GC 无法及时或者无法识别可以回收的数据进行及时的回收，导致内存的浪费；内存溢出是由于数据所需要的内存无法得到满足，导致数据无法正常存储到内存中。内存泄露的多次表现就是会导致内存溢出。</p>
-<h2 id="内存优化"><a href="#内存优化" class="headerlink" title="内存优化"></a>内存优化</h2><h3 id="Handler，Thread等内部类造成的内存泄漏"><a href="#Handler，Thread等内部类造成的内存泄漏" class="headerlink" title="Handler，Thread等内部类造成的内存泄漏"></a>Handler，Thread等内部类造成的内存泄漏</h3><p>在Activity中创建非静态内部类，非静态内部类会持有Activity的隐式引用，若内部类生命周期长于Activity，会导致Activity实例无法被回收。（屏幕旋转后会重新创建Activity实例，如果内部类持有引用，将会导致旋转前的实例无法被回收）。  </p>
-<p>解决办法： </p>
-<ul>
-<li><p>如果一定要使用内部类，就改用static内部类(静态的内部类不会持有外部类的一个隐式引用)，在内部类中通过 WeakReference 的方式引用外界资源。对Handler、Thread、Runnable等使用弱引用，并且调用removeCallbacksAndMessages 等移除。</p>
-</li>
-<li><p>在关闭Activity的时候停掉你的后台线程。线程停掉了，就相当于切断了Handler和外部连接的线，Activity自然会在合适的时候被回收。</p>
-</li>
-</ul>
-<h3 id="资源未及时关闭造成内存泄漏"><a href="#资源未及时关闭造成内存泄漏" class="headerlink" title="资源未及时关闭造成内存泄漏"></a>资源未及时关闭造成内存泄漏</h3><p>对于使用了 BraodcastReceiver，ContentObserver，Cursor，File，Stream，ContentProvider，Bitmap，动画，I/O，数据库，网络的连接等资源的使用，应该在Activity 销毁时及时关闭或者注销，否则这些资源将不会被回收，造成内存泄漏。</p>
-<ul>
-<li>广播 BroadcastReceiver：记得注销注册unregisterReceiver();</li>
-<li>IO 流：记得关闭流 InputStream / OutputStream.close();</li>
-<li>数据库游标 Cursor：使用后关闭游标cursor.close()</li>
-<li>对于图片资源Bitmap：当它不再被使用时，应调用recycle() 回收此对象的像素所占用的内存，再赋为 null</li>
-<li>动画：属性动画或循环动画，在 Activity 退出时需要停止动画。在属性动画中有一类无限循环动画，如果在Activity中播放这类动画并且在 onDestroy 中没有去停止动画，那么这个动画将会一直播放下去，这时候 Activity 会被 View 所持有，从而导致 Activity 无法被释放。在 Activity 中onDestroy 去调用 objectAnimator.cancel() 来停止动画。</li>
-</ul>
-<h3 id="static关键字修饰的变量由于生命周期过长，容易造成内存泄漏"><a href="#static关键字修饰的变量由于生命周期过长，容易造成内存泄漏" class="headerlink" title="static关键字修饰的变量由于生命周期过长，容易造成内存泄漏"></a>static关键字修饰的变量由于生命周期过长，容易造成内存泄漏</h3><p>static 对象的生命周期过长，应该谨慎使用。一定要使用要及时进行 null 处理。</p>
-<p>静态变量 Activity 和 View 会导致内存泄漏。例如：context，textView 实例的生命周期与应用的生命周期一样，而他们都持有当前 Activity ，当 Activity 销毁，而它们的引用一直被持有，就不会被回收。因此就产生内存泄漏了。</p>
-<h3 id="不合理使用Context造成内存泄漏"><a href="#不合理使用Context造成内存泄漏" class="headerlink" title="不合理使用Context造成内存泄漏"></a>不合理使用Context造成内存泄漏</h3><p>单例模式造成的内存泄漏，如 Context 的使用，单例中传入的是 Activity，在关闭 Activity时，因单例持有Activity 的引用, 导致Activity 无法被回收。</p>
-<p>建议使用 application 替代 Activity， 或者 activity.getApplicationContext() 获取 context</p>
-<h3 id="WebView造成内存泄露"><a href="#WebView造成内存泄露" class="headerlink" title="WebView造成内存泄露"></a>WebView造成内存泄露</h3><p>关于 WebView 的内存泄露，因为 WebView 在加载网页后会长期占用内存而不能被释放，因此我们在 Activity 销毁后把 webview 从父控件内 remove ，同时调用它的 destory() 方法来销毁它以释放内存。</p>
-<h3 id="String-频繁的字符串拼接"><a href="#String-频繁的字符串拼接" class="headerlink" title="String 频繁的字符串拼接"></a>String 频繁的字符串拼接</h3><p>严格的讲，String拼接只能归结到内存抖动中，因为产生的String副本能够被GC，不会造成内存泄露。</p>
-<p>使用 StringBuffer 或者 StringBuilder 代替 String，可以在一定程度上避免OOM和内存抖动。</p>
-<h3 id="MVP架构不合理应用"><a href="#MVP架构不合理应用" class="headerlink" title="MVP架构不合理应用"></a>MVP架构不合理应用</h3><p>在 MVP 的架构中，通常 Presenter 要同时持有 View 和 Model 的引用，如果在 Activity 退出的时候，Presenter 正在进行一个耗时操作，那么 Presenter 的生命周期会比 Activity 长，导致 Activity 无法回收，造成内存泄漏</p>
-<p>解决方法：，在 onDestory 方法中把 presenter 中的 相关资源销毁，如停止线程等等</p>
-<h3 id="其他方式调整"><a href="#其他方式调整" class="headerlink" title="其他方式调整"></a>其他方式调整</h3><p>gradle 配置，heapsize会增大2-3倍，缓解OOM的发生</p>
-<pre><code>android:largeHeap=&quot;true&quot;
-</code></pre><p>修改 JVM 配置 -XXM等等</p>
-<h2 id="性能优化"><a href="#性能优化" class="headerlink" title="性能优化"></a>性能优化</h2><p>app 性能方面的问题分类</p>
-<ol>
-<li>渲染问题：过度绘制、布局冗杂</li>
-<li>内存问题：内存浪费（内存管理）、内存泄漏</li>
-<li>功耗问题：耗电</li>
-</ol>
-<h3 id="渲染优化"><a href="#渲染优化" class="headerlink" title="渲染优化"></a>渲染优化</h3><p>常见的渲染问题有，</p>
-<ol>
-<li>人为在UI线程中做轻微耗时操作，导致UI线程卡顿；</li>
-<li>布局Layout过于复杂，无法在16ms内完成渲染；</li>
-<li>同一时间动画执行的次数过多，导致CPU或GPU负载过重；</li>
-<li>View 过度绘制，导致某些像素在同一帧时间内被绘制多次，从而使CPU或GPU负载过重；</li>
-<li>View 频繁的触发 measure, layout，导致measure, layout累计耗时过多及整个View频繁的重新渲染；</li>
-<li>内存频繁触发GC过多(内存抖动), 导致暂时阻塞渲染操作；</li>
-<li>冗余资源及逻辑等导致加载和执行缓慢；</li>
-<li>臭名昭著的ANR；</li>
-</ol>
-<p>常用解决办法：</p>
-<ul>
-<li>优化布局，ConstraintLayout 减少布局嵌套等等</li>
-<li>移除多余的背景</li>
-<li>GPU检测工具，优化布局</li>
-<li>自定义view时，clipRect和clipPath 只在限定范围内绘制</li>
-<li>启用严格模式，异步处理耗时，删除冗余资源，操作，</li>
-</ul>
-<h3 id="集合优化"><a href="#集合优化" class="headerlink" title="集合优化"></a>集合优化</h3><p>不必要的内崔浪费也是我们开发中着重要优化的地方<br>针对 Java 原生集合 Map 的优化，在数据量1000以内时，使用 Google Android 推荐的集合</p>
-<pre><code>android.util.SparseArray&lt;E&gt;
-android.util.SparseBooleanArray
-android.util.SparseIntArray
-android.util.SparseLongArray
+          首先认识关于内存的两个重要知识
 
-android.support.v4.util.ArrayMap&lt;K, V&gt;
-android.support.v4.util.ArraySet&lt;E&gt;
-android.support.v4.util.LongSparseArray&lt;E&gt;
-android.support.v4.util.SparseArrayCompat&lt;E&gt;
-android.support.v4.util.CircularArray&lt;E&gt;
-</code></pre><p>简单介绍下ArrayMap原理：</p>
-<pre><code>内部存储是使用两个数组，一个存储 key 的 hash 值，一个存储 value 值
+内存溢出（Out of Memory）：系统会给每个APP分配内存也就是Heap Size值。当APP占用的内存加上我们申请的内存资源超过了Dalvik虚拟机的最大内存时就会抛出的Out Of Memory异常。
+内存泄漏（Memory Leak）：当一个对象不在使用了，本应该被垃圾回收器（JVM）回收。但是这个对象由于被其他正在使用的对象所持有，造成无法被回收的结果。内存泄漏最终会导致内存溢出。
 
-当你想获取某个value的时候，ArrayMap会计算输入key转换过后的hash值，然后对hash数组使用二分查找法寻找到对应的index
-
-然后我们可以通过这个index在另外一个数组中直接访问到需要的键值对。
-</code></pre><p>这些集合都比Java原生的集合更适合在移动设备上使用，在内存和效率上都做了很多优化。跟 Java集合相比有以下不同：</p>
-<p>数据结构不同  </p>
-<ul>
-<li>ArrayMap 和 SparseArray 采用的都是两个数组，Android专门针对内存优化而设计的  </li>
-<li>HashMap采用的是数据 + 链表 + 红黑树  </li>
-</ul>
-<p>内存优化  </p>
-<ul>
-<li>ArrayMap 比 HashMap 更节省内存，综合性能方面在数据量不大的情况下，推荐使用ArrayMap；</li>
-<li>Hash需要创建一个额外对象来保存每一个放入map的entry，且容量的利用率比ArrayMap低，整体更消耗内存</li>
-<li>SparseArray比ArrayMap节省1/3的内存，但SparseArray只能用于key为int类型的Map，所以int类型的Map数据推荐使用SparseArray；</li>
-</ul>
-<p>性能方面： </p>
-<ul>
-<li>ArrayMap查找时间复杂度O(logN)；ArrayMap增加、删除操作需要移动成员，速度相比较慢，对于个数小于1000的情况下，性能基本没有明显差异</li>
-<li>HashMap查找、修改的时间复杂度为O(1)；</li>
-<li>SparseArray 少了拆箱的操作，适合频繁删除和插入来回执行的场景，性能比较好</li>
-</ul>
-<p>缓存机制</p>
-<ul>
-<li>ArrayMap 针对容量为4和8的对象进行缓存，可避免频繁创建对象而分配内存与GC操作，这两个缓存池大小的上限为10个，防止缓存池无限增大；</li>
-<li>HashMap 没有缓存机制</li>
-<li>SparseArray 有延迟回收机制，提供删除效率，同时减少数组成员来回拷贝的次数</li>
-</ul>
-<p>扩容机制</p>
-<ul>
-<li>ArrayMap是在容量满的时机触发容量扩大至原来的1.5倍，在容量不足1/3时触发内存收缩至原来的0.5倍，更节省的内存扩容机制</li>
-<li>HashMap是在容量的0.75倍时触发容量扩大至原来的2倍，且没有内存收缩机制。HashMap扩容过程有hash重建，相对耗时。所以能大致知道数据量，可指定创建指定容量的对象，能减少性能浪费。</li>
-</ul>
-<p>并发问题</p>
-<ul>
-<li>ArrayMap是非线程安全的类，大量方法中通过对mSize判断是否发生并发，来决定抛出异常。但没有覆盖到所有并发场景，比如大小没有改变而成员内容改变的情况就没有覆盖</li>
-<li>HashMap是在每次增加、删除、清空操作的过程将modCount加1，在关键方法内进入时记录当前mCount，执行完核心逻辑后，再检测mCount是否被其他线程修改，来决定抛出异常。这一点的处理比ArrayMap更有全面。</li>
-</ul>
-<p>如果在知道集合使用大小的情况下，在初始化的时候可以直接指明，避免不必要的浪费</p>
-<h3 id="避免使用-enum-枚举"><a href="#避免使用-enum-枚举" class="headerlink" title="避免使用 enum 枚举"></a>避免使用 enum 枚举</h3><p>普通的 int 型常量，enum 增长量是使用static int的13倍！！！<br>不仅仅如此，使用enum，运行时还会产生额外的内存占用，</p>
-<ul>
-<li>每个enum值会增加 20+ byte</li>
-<li>会额外增加 12~16 bytes 给数组</li>
-</ul>
-<h2 id="线程优化"><a href="#线程优化" class="headerlink" title="线程优化"></a>线程优化</h2><p>线程的创建和销毁会带来比较大的性能开销。因此在频繁使用线程的场景下，优化也很有必要。<br>查看项目中是否存在随意 new Thread() ，线程缺乏管理的情况。使用 AsyncTask 或者线程池对线程进行管理，可以提升 APP的 性能。另外，推荐使用 Rxjava 来实现异步操作，既方便又优雅。</p>
-<p>在项目中异常：<br>RxJava 毫秒级定期执行线程任务时，内存直接暴走,线程数暴增， 最终采用线程池定期执行任务，或者 interval 操作符</p>
-<h2 id="电量优化"><a href="#电量优化" class="headerlink" title="电量优化"></a>电量优化</h2><p><a href="https://ticooops.github.io/2018/10/14/android/Battery-historian%E7%94%B5%E9%87%8F%E4%BC%98%E5%8C%96/" target="_blank" rel="noopener">电量监测-BatteryHistorian</a><br>项目优化点：<br>手机待机后需要时时同步各种数据，使用WakeLock操作，导致耗电增加。采用 JobScheduler 方案来优化，在手机待机的时候不主动做任何同步，交由 JobScheduler 在条件允许下只做数次同步即可，在唤醒手机时做必要的同步即可，大大节省了 CPU 的使用，节省流量，网络的使用，耗电量显著下降</p>
-
-          
+区
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2019/09/08/android/内存优化汇总/#more" rel="contents">
+              Read more &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -1780,284 +982,18 @@ android.support.v4.util.CircularArray&lt;E&gt;
       
         
           
-            <h3 id="代理模式"><a href="#代理模式" class="headerlink" title="代理模式"></a>代理模式</h3><p>在代理模式（Proxy Pattern）中，一个类代表另一个类的功能。这种类型的设计模式属于结构型模式。</p>
-<p>在代理模式中，我们创建具有现有对象的对象，以便向外界提供功能接口。</p>
-<h4 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h4><p>意图：为其他对象提供一种代理以控制对这个对象的访问。</p>
-<p>主要解决：在直接访问对象时带来的问题，比如说：要访问的对象在远程的机器上。在面向对象系统中，有些对象由于某些原因（比如对象创建开销很大，或者某些操作需要安全控制，或者需要进程外的访问），直接访问会给使用者或者系统结构带来很多麻烦，我们可以在访问此对象时加上一个对此对象的访问层<br>何时使用：想在访问一个类时做一些控制<br>如何解决：增加中间层<br>关键代码：实现与被代理类组合<br>优点： 1、职责清晰。 2、高扩展性。 3、智能化。  </p>
-<p>缺点： </p>
-<ol>
-<li>由于在客户端和真实主题之间增加了代理对象，因此有些类型的代理模式可能会造成请求的处理速度变慢。 </li>
-<li>实现代理模式需要额外的工作，有些代理模式的实现非常复杂。</li>
-</ol>
-<p>使用场景<br>按职责来划分，通常有以下使用场景： </p>
-<ol>
-<li>远程代理</li>
-<li>虚拟代理</li>
-<li>Copy-on-Write 代理</li>
-<li>保护（Protect or Access）代理</li>
-<li>Cache代理</li>
-<li>防火墙（Firewall）代理</li>
-<li>同步化（Synchronization）代理</li>
-<li>智能引用（Smart Reference）代理</li>
-</ol>
-<p>但在开发实践中, 我们通常只分为</p>
-<ol>
-<li>静态代理</li>
-<li>动态代理.  </li>
-</ol>
-<p><strong>注意事项</strong></p>
-<ol>
-<li>和适配器模式的区别：适配器模式主要改变所考虑对象的接口，而代理模式不能改变所代理类的接口</li>
-<li>和装饰器模式的区别：装饰器模式为了增强功能，而代理模式是为了加以控制。</li>
-</ol>
-<h3 id="实现"><a href="#实现" class="headerlink" title="实现"></a>实现</h3><p>我们将创建一个 Image 接口和实现了 Image 接口的实体类。ProxyImage 是一个代理类，减少 RealImage 对象加载的内存占用。<br><img src="http://www.runoob.com/wp-content/uploads/2014/08/proxy_pattern_uml_diagram.jpg" alt="proxy"></p>
-<p>ProxyPatternDemo，我们的演示类使用 ProxyImage 来获取要加载的 Image 对象，并按照需求进行显示。</p>
-<h5 id="步骤-1"><a href="#步骤-1" class="headerlink" title="步骤 1"></a>步骤 1</h5><p>创建一个接口。</p>
-<pre><code>public interface Image {
-   void display();
-}
-</code></pre><h5 id="步骤-2"><a href="#步骤-2" class="headerlink" title="步骤 2"></a>步骤 2</h5><p>创建实现接口的实体类。</p>
-<pre><code>public class RealImage implements Image {
-
-   private String fileName;
-
-   public RealImage(String fileName){
-      this.fileName = fileName;
-      loadFromDisk(fileName);
-   }
-
-   @Override
-   public void display() {
-      System.out.println(&quot;Displaying &quot; + fileName);
-   }
-
-   private void loadFromDisk(String fileName){
-      System.out.println(&quot;Loading &quot; + fileName);
-   }
-}
-
-public class ProxyImage implements Image{
-
-   private RealImage realImage;
-   private String fileName;
-
-   public ProxyImage(String fileName){
-      this.fileName = fileName;
-   }
-
-   @Override
-   public void display() {
-      if(realImage == null){
-         realImage = new RealImage(fileName);
-      }
-      realImage.display();
-   }
-}
-</code></pre><h5 id="步骤-3"><a href="#步骤-3" class="headerlink" title="步骤 3"></a>步骤 3</h5><p>当被请求时，使用 ProxyImage 来获取 RealImage 类的对象。</p>
-<pre><code>public class ProxyPatternDemo {
-
-   public static void main(String[] args) {
-      Image image = new ProxyImage(&quot;test_10mb.jpg&quot;);
-
-      // 图像将从磁盘加载
-      image.display(); 
-      System.out.println(&quot;&quot;);
-      // 图像不需要从磁盘加载
-      image.display();  
-   }
-}
-</code></pre><h5 id="步骤-4"><a href="#步骤-4" class="headerlink" title="步骤 4"></a>步骤 4</h5><p>执行程序，输出结果：</p>
-<pre><code>Loading test_10mb.jpg
-Displaying test_10mb.jpg
-
-Displaying test_10mb.jpg
-</code></pre><h3 id="动态代理"><a href="#动态代理" class="headerlink" title="动态代理"></a>动态代理</h3><p>java.lang.reflect.Proxy:生成动态代理类和对象；<br>java.lang.reflect.InvocationHandler（处理器接口）：可以通过invoke方法实现<br>对真实角色的代理访问</p>
-<p>每次通过 Proxy 生成的代理类对象都要指定对应的处理器对象。</p>
-<p>代码：</p>
-<pre><code>public interface Subject {
-    public int sellBooks();
-
-    public String speak();
-}
-
-public class RealSubject implements Subject{
-    @Override
-    public int sellBooks() {
-        System.out.println(&quot;卖书&quot;);
-        return 1 ;
-    }
-
-    @Override
-    public String speak() {
-        System.out.println(&quot;说话&quot;);
-        return &quot;张三&quot;;
-    }
-}
-
-/**
- * 定义一个处理器
- * @author gnehcgnaw
- * @date 2018/11/5 19:26
- */
-public class MyInvocationHandler implements InvocationHandler {
-    /**
-     * 因为需要处理真实角色，所以要把真实角色传进来
-     */
-    Subject realSubject ;
-
-    public MyInvocationHandler(Subject realSubject) {
-        this.realSubject = realSubject;
-    }
-
-    /**
-     *
-     * @param proxy    代理类
-     * @param method    正在调用的方法
-     * @param args      方法的参数
-     * @return
-     * @throws Throwable
-     */
-    @Override
-    public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
-        System.out.println(&quot;调用代理类&quot;);
-        if(method.getName().equals(&quot;sellBooks&quot;)){
-            int invoke = (int)method.invoke(realSubject, args);
-            System.out.println(&quot;调用的是卖书的方法&quot;);
-            return invoke ;
-        }else {
-            String string = (String) method.invoke(realSubject,args) ;
-            System.out.println(&quot;调用的是说话的方法&quot;);
-            return  string ;
-        }
-    }
-}
-</code></pre><p>客户端调用</p>
-<pre><code>public class Client {
-    public static void main(String[] args) {
-        //真实对象
-        Subject realSubject =  new RealSubject();
-        MyInvocationHandler myInvocationHandler = new MyInvocationHandler(realSubject);
-        //代理对象
-        Subject proxyClass = (Subject) Proxy.newProxyInstance(ClassLoader.getSystemClassLoader(), new Class[]{Subject.class}, myInvocationHandler);
-        proxyClass.sellBooks();
-        proxyClass.speak();
-    }
-}
-</code></pre><h3 id="Proxy应用案例"><a href="#Proxy应用案例" class="headerlink" title="Proxy应用案例"></a>Proxy应用案例</h3><p>Retrofit2的简单使用</p>
-<pre><code>Retrofit retrofit = new Retrofit.Builder()
-    .baseUrl(API_URL)
-    .addConverterFactory(GsonConverterFactory.create())
-    .build();
-
-UserApi api = retrofit.create(UserApi.class);
-Call&lt;Author&gt; call = api.getAuthor(&quot;xxx&quot;);
-</code></pre><p>其中, 这几步看似非常简单的操作里, 精髓的代码就在 retrofit.create 这一步里. 来看源码</p>
-<pre><code>public &lt;T&gt; T create(final Class&lt;T&gt; service) {
-  ...
-  return (T) Proxy.newProxyInstance(service.getClassLoader(), new Class&lt;?&gt;[] { service },
-    new InvocationHandler() {
-      private final Platform platform = Platform.get();
-
-        @Override 
-        public Object invoke(Object proxy, Method method, Object... args)
-          throws Throwable {
-            // 在执行真实主题前，做额外的处理
-            if (method.getDeclaringClass() == Object.class) {
-                // 如果方法是来自 Object，则直接调用
-                return method.invoke(this, args);
-            }
-
-            if (platform.isDefaultMethod(method)) {
-                // always flase, ignore
-                return platform.invokeDefaultMethod(method, service, proxy, args);
-            }
-
-            ServiceMethod serviceMethod = loadServiceMethod(method);
-            // 创建实际的主题对象
-            OkHttpCall okHttpCall = new OkHttpCall&lt;&gt;(serviceMethod, args);
-            return serviceMethod.callAdapter.adapt(okHttpCall);
-        }
-});
-</code></pre><p>这里 create 方法就是返回了一个 Proxy.newProxyInstance 动态代理对象, 故 api 其实是动态代理对象,  当 api 对象调用 getAuthor 方法时会被动态代理拦截，然后调用 Proxy.newProxyInstance 方法中的 InvocationHandler 对象. Retrofit 就会使用 method 和它的参数 args，通过 loadServiceMethod 拿到方法(缓存优化)来调用。<br>方法对象 ServiceMethod 的生成是由 ServiceMethod.Builder 来构建  </p>
-<pre><code>ServiceMethod&lt;?, ?&gt; loadServiceMethod(Method method) {
-    ServiceMethod&lt;?, ?&gt; result = serviceMethodCache.get(method);
-    if (result != null) return result;
-
-    synchronized (serviceMethodCache) {
-        result = serviceMethodCache.get(method);
-        if (result == null) {
-            result = new ServiceMethod.Builder&lt;&gt;(this, method).build();
-            serviceMethodCache.put(method, result);
-        }
-    }
-    return result;
-}
-</code></pre><p>而 ServiceMethod 是什么呢? </p>
-<pre><code>/** Adapts an invocation of an interface method into an HTTP call. */
-final class ServiceMethod&lt;R, T&gt; {
-    // Upper and lower characters, digits, underscores, and hyphens, starting with a character.
-    static final String PARAM = &quot;[a-zA-Z][a-zA-Z0-9_-]*&quot;;
-    static final Pattern PARAM_URL_REGEX = Pattern.compile(&quot;\\{(&quot; + PARAM + &quot;)\\}&quot;);
-    static final Pattern PARAM_NAME_REGEX = Pattern.compile(PARAM);
-
-    final okhttp3.Call.Factory callFactory;
-    final CallAdapter&lt;R, T&gt; callAdapter;
-
-    private final HttpUrl baseUrl;
-    private final Converter&lt;ResponseBody, R&gt; responseConverter;
-    private final String httpMethod;
-    private final String relativeUrl;
-    private final Headers headers;
-    private final MediaType contentType;
-    private final boolean hasBody;
-    private final boolean isFormEncoded;
-    private final boolean isMultipart;
-    private final ParameterHandler&lt;?&gt;[] parameterHandlers;
-
-    ServiceMethod(Builder&lt;R, T&gt; builder) {
-        this.callFactory = builder.retrofit.callFactory();
-        this.callAdapter = builder.callAdapter;
-        this.baseUrl = builder.retrofit.baseUrl();
-        this.responseConverter = builder.responseConverter;
-        this.httpMethod = builder.httpMethod;
-        this.relativeUrl = builder.relativeUrl;
-        this.headers = builder.headers;
-        this.contentType = builder.contentType;
-        this.hasBody = builder.hasBody;
-        this.isFormEncoded = builder.isFormEncoded;
-        this.isMultipart = builder.isMultipart;
-        this.parameterHandlers = builder.parameterHandlers;
-    }
-
-    /** Builds an HTTP request from method arguments. */
-    Request toRequest(Object... args) throws IOException {
-        RequestBuilder requestBuilder = new RequestBuilder(httpMethod, baseUrl, relativeUrl, headers,
-        contentType, hasBody, isFormEncoded, isMultipart);
-
-        @SuppressWarnings(&quot;unchecked&quot;) // It is an error to invoke a method with the wrong arg types.
-        ParameterHandler&lt;Object&gt;[] handlers = (ParameterHandler&lt;Object&gt;[]) parameterHandlers;
-
-        int argumentCount = args != null ? args.length : 0;
-        if (argumentCount != handlers.length) {
-            throw new IllegalArgumentException(&quot;Argument count (&quot; + argumentCount
-                + &quot;) doesn&apos;t match expected count (&quot; + handlers.length + &quot;)&quot;);
-        }
-
-        for (int p = 0; p &lt; argumentCount; p++) {
-            handlers[p].apply(requestBuilder, args[p]);
-        }
-
-        return requestBuilder.build();
-    }
-
-    /** Builds a method return value from an HTTP response body. */
-    R toResponse(ResponseBody body) throws IOException {
-        return responseConverter.convert(body);
-    }
-</code></pre><p>它就像是一个中央处理器，包含 api  的域名、path、http请求方法、请求头、body、multipart等信息。 ServiceMethod 主要就做两件事情, 将传入的 Retrofit 对象和 Method 对象，调用各个接口和解析器，调用 toRequest 方法生成一个 Request 请求. 另一个是将 ResponseBody 转换成返回的类型.   </p>
-<p>总结：<br>Retrofit2 利用动态代理需要的所需要的参数，方法 Method，方法所需的参数，方法返回数据类型，动态的构建 ServicerMethod，构建Http请求，大大简化了开发者的网络请求代码</p>
-
-          
+          代理模式在代理模式（Proxy Pattern）中，一个类代表另一个类的功能。这种类型的设计模式属于结构型模式。
+在代理模式中，我们创建具有现有对象的对象，以便向外界提供功能接口。
+介绍意图：为其他对象提供一种代理以控制对这个对象的访问。
+主要解决：在直接访问对象时带来的问题，比如说：要访问的对象在远程的机器上。在面向对象系统中，有些对象由于某些原因（比如对象创建开销很大，或者某些操作需要安全控制，或者需要进程外的访问），直接访问会给使
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2019/09/06/design/设计模式之代理模式-Proxy/#more" rel="contents">
+              Read more &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -2175,87 +1111,22 @@ final class ServiceMethod&lt;R, T&gt; {
       
         
           
-            <h3 id="三角引用的对象"><a href="#三角引用的对象" class="headerlink" title="三角引用的对象"></a>三角引用的对象</h3><p>废话不多说, 直接实践一下, 三角引用的对象能否被 GC 回收呢?</p>
-<pre><code>public class MainActivity extends AppCompatActivity {
+          三角引用的对象废话不多说, 直接实践一下, 三角引用的对象能否被 GC 回收呢?
+public class MainActivity extends AppCompatActivity {
     A a = new A();
     A1 a1 = new A1();
     A2 a2 = new A2();
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        ...
-
-        a.a1 = a1;
-        a1.a2 = a2;
-        a2.a = a;
-
-        a = null;
-        a1 = null;
-        a2 = null;
-    }
-</code></pre><p>手动执行GC前, A, A1, A2 是存活的<br><img src="https://note.youdao.com/yws/api/personal/file/WEB67c7aed0a19cbf76669dba03406db003?method=download&amp;shareKey=87e94d5a0d43225a9fd8dd0d763b743f" alt="GC前"></p>
-<p>手动执行GC后, 我们发现,相互引用的对象 A, A1, A2 消失了<br><img src="https://note.youdao.com/yws/api/personal/file/WEB15c0b73eb082343338b9fa4947f94231?method=download&amp;shareKey=70efe35552076303e1cbeb0a1673a355" alt="GC后"></p>
-<p>意味着虚拟机并没有因为这三个对象互相引用就不回收它们，这也从侧面说明虚拟机并不是通过引用计数算法来判断对象是否存活的。 同理两个相互引用的对象.</p>
-<p>其实虚拟机使用的是 “可达性算法(根搜索算法)”</p>
-<h3 id="可达性算法"><a href="#可达性算法" class="headerlink" title="可达性算法"></a>可达性算法</h3><p>原理：通过一系列的称为”GC Roots”的对象作为起始点，从这些节点开始向下搜索，搜索所走过的路径称为引用链，当一个对象到GC Roots没有任何引用链相连（用图论的话说，就是从GC Roots到这个对象不可达）时，则证明此对象是不可用的。</p>
-<p><img src="http://images2015.cnblogs.com/blog/926638/201706/926638-20170615182136556-421577821.jpg" alt="GC Root"></p>
-<p>图中，对象object 5、object 6、object 7虽然互相有关联，但是它们到GC Roots是不可达的，所以它们将会被判定为是可回收的对象。</p>
-<p>在Java语言中，可作为GC Roots的对象包括下面几种：</p>
-<ul>
-<li>虚拟机栈（栈帧中的本地变量表）中引用的对象</li>
-<li>方法区中类静态属性引用的对象</li>
-<li>方法区中常量引用的对象</li>
-<li>本地方法栈中 JNI（即一般说的Native方法）引用的对象</li>
-</ul>
-<p>在JDK 1.2之后，Java对引用的概念进行了扩充，将引用分为强引用（Strong Reference）、软引用（Soft Reference）、弱引用（Weak Reference）、虚引用（Phantom Reference）四种，这四种引用强度依次逐渐减弱</p>
-<h3 id="强引用"><a href="#强引用" class="headerlink" title="强引用"></a>强引用</h3><p>强引用是使用最普遍的引用。如果一个对象具有强引用，那垃圾回收器绝不会回收它。如下：</p>
-<pre><code>A a = new A();
-</code></pre><p>当内存空间不足，虚拟机会抛出 OutOfMemoryError 错误，使程序异常终止，而不是随意回收具有强引用的对象来解决内存不足的问题。如果强引用的对象不使用时，要通过如下方式来弱化引用，如下：</p>
-<pre><code>a = null; // 帮助垃圾收集器回收此对象
-</code></pre><p>显式地设置 a 为null，或超出对象的生命周期范围，则 gc 认为该对象不可达，这时就可以回收这个对象。</p>
-<h3 id="软引用"><a href="#软引用" class="headerlink" title="软引用"></a>软引用</h3><p>用来描述一些还有用，但并非必需的对象。</p>
-<p>如果一个对象只具有软引用，则内存空间足够，垃圾回收器就不会回收它；如果内存空间不足了，就会回收这些对象的内存。只要垃圾回收器没有回收它，该对象就可以被程序使用。<strong>软引用可用来实现内存敏感的高速缓存。</strong></p>
-<pre><code>String str = new String(&quot;abc&quot;);                                     // 强引用
-SoftReference&lt;String&gt; softRef = new SoftReference&lt;String&gt;(str);     // 软引用
-</code></pre><p>当内存不足时，等价于：</p>
-<pre><code>If(JVM.内存不足()) {
-    str = null;  // 转换为软引用
-    System.gc(); // 垃圾回收器进行回收
-}
-</code></pre><p>软引用在实际中有重要的应用，例如抖音的上滑下滑播放视频。当上滑下滑时播放的视频是重新进行请求还是从缓存中取出呢？</p>
-<ol>
-<li>如果视频在浏览结束时(上滑下滑)就进行内容的回收，则下滑查看上一个视频时，需要重新构建</li>
-<li>如果将浏览过的视频存储到内存中会造成内存的大量浪费，甚至会造成内存溢出</li>
-</ol>
-<p>这时候就可以使用软引用。</p>
-<pre><code>Video prev = new Video();               // 获取视频进行浏览
-SoftReference sr = new SoftReference(prev); // 浏览完毕后置为软引用        
-if(sr.get() != null) { 
-    rev = (Video) sr.get();             // 还没有被回收器回收，直接获取
-} else {
-    prev = new Video();                 // 由于内存吃紧，所以对软引用的对象回收了
-    sr = new SoftReference(prev);       // 重新构建
-}
-</code></pre><p>这样就很好的解决了实际的问题。 当然了, 以上并不是抖音真实的做法, 只是举个例子.</p>
-<p>软引用可以和一个引用队列（ReferenceQueue）联合使用，如果软引用所引用的对象被垃圾回收器回收，Java虚拟机就会把这个软引用加入到与之关联的引用队列中。</p>
-<h3 id="弱引用"><a href="#弱引用" class="headerlink" title="弱引用"></a>弱引用</h3><p>也是用来描述非必需对象的，但是它的强度比软引用更弱一些，被弱引用关联的对象只能生存到下一次垃圾收集发生之前。  </p>
-<p>只具有弱引用的对象拥有更短暂的生命周期。在垃圾回收器线程扫描它所管辖的内存区域的过程中，一旦发现了只具有弱引用的对象，不管当前内存空间足够与否，都会回收它的内存。不过，由于垃圾回收器是一个优先级很低的线程，因此不一定会很快发现那些只具有弱引用的对象。</p>
-<pre><code>String str = new String(&quot;weakRef&quot;);
-WeakReference weakReference = new WeakReference&lt;String&gt;(str);
-str = null;
-</code></pre><p>如果这个对象是偶尔的使用，并且希望在使用时随时就能获取到，但又不想影响此对象的垃圾收集，那么你应该用 Weak Reference 来记住此对象。   </p>
-<p>下面的代码会让str再次变为一个强引用：</p>
-<pre><code>String str2 = weakReference.get();
-</code></pre><p>弱引用可以和一个引用队列（ReferenceQueue）联合使用，如果弱引用所引用的对象被垃圾回收，Java虚拟机就会把这个弱引用加入到与之关联的引用队列中。<br>当你想引用一个对象，但是这个对象有自己的生命周期，你不想介入这个对象的生命周期，这时候你就是用弱引用。</p>
-<h3 id="虚引用"><a href="#虚引用" class="headerlink" title="虚引用"></a>虚引用</h3><p>“虚引用”顾名思义，就是形同虚设，也称为幽灵引用或者幻影引用，它是最弱的一种引用关系。一个对象是否有虚引用的存在，完全不会对其生存时间构成影响，也无法通过虚引用来取得一个对象实例。为一个对象设置虚引用关联的唯一目的就是希望能在这个对象被收集器回收时收到一个系统通知。<br>在JDK 1.2之后，提供了PhantomReference类来实现虚引用。  </p>
-<p>虚引用，与其他几种引用都不同，虚引用并不会决定对象的生命周期。如果一个对象仅持有虚引用，那么它就和没有任何引用一样，在任何时候都可能被垃圾回收器回收。  </p>
-<p>虚引用主要用来跟踪对象被垃圾回收器回收的活动。  </p>
-<p>虚引用与软引用和弱引用的一个区别在于：虚引用必须和引用队列 （ReferenceQueue）联合使用。当垃圾回收器准备回收一个对象时，如果发现它还有虚引用，就会在回收对象的内存之前，把这个虚引用加入到与之关联的引用队列中。  </p>
-<p>我们可以声明虚引用来引用我们感兴趣的对象，在GC要回收的时候，GC收集器会把这个对象添加到ReferenceQueue，这样我们如果检测到ReferenceQueue中有我们感兴趣的对象的时候，说明GC将要回收这个对象了。此时我们可以在GC回收之前做一些其他事情，比如记录些日志什么的。  </p>
-<p>简单图表表示他们的关系<br><img src="http://images2015.cnblogs.com/blog/926638/201706/926638-20170615190455431-1242218510.png" alt="四种引用关系"></p>
-<p>额外的,<br>注意：任何一个对象的finalize()方法都只会被系统自动调用一次，如果对象面临下一次回收，它的finalize()方法不会被再次执行，因此第二段代码的自救行动失败了，并且建议大家尽量避免使用它 。</p>
-
-          
+    protected void onCreate(Bundle savedInstanc
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2019/09/06/java/GC是如何响应不同的引用关系/#more" rel="contents">
+              Read more &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -2373,15 +1244,19 @@ str = null;
       
         
           
-            <h2 id="蓝牙数据传输基础"><a href="#蓝牙数据传输基础" class="headerlink" title="蓝牙数据传输基础"></a>蓝牙数据传输基础</h2><p>Android蓝牙中涉及通用数据传输协议的有两种：</p>
-<ul>
-<li><p>SPP协议<br>SPP协议是Android 2.0引入的API，是通过Socket的形式来实现数据传输及交互，有分客户端和服务端，手机一般以客户端的角色主动连接SPP协议设备。</p>
-</li>
-<li><p>BLE(Bluetooth low energy)协议<br>BLE协议是Android 4.3引入的API，但手机厂商大部份在Android 4.4上才支持BLE，即低功耗蓝牙，一般我们开发的话是使用中央（BluetoothGatt）或者外围（BluetoothGattServer）来进行开发的，手机正常情况下当作中央设备来接收信息，而蓝牙模块当作是外围设备发送数据。</p>
-</li>
-</ul>
-<h2 id="SPP-协议"><a href="#SPP-协议" class="headerlink" title="SPP 协议"></a>SPP 协议</h2><h2 id="BLE-协议"><a href="#BLE-协议" class="headerlink" title="BLE 协议"></a>BLE 协议</h2>
-          
+          蓝牙数据传输基础Android蓝牙中涉及通用数据传输协议的有两种：
+
+SPP协议SPP协议是Android 2.0引入的API，是通过Socket的形式来实现数据传输及交互，有分客户端和服务端，手机一般以客户端的角色主动连接SPP协议设备。
+
+BLE(Bluetooth low energy)协议BLE协议是Android 4.3引入的API，但手机厂商大部份在Android 4.4上才支持BLE，即低功耗蓝牙，一般我们开发的话是使用中
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2019/09/06/android/蓝牙传输基础/#more" rel="contents">
+              Read more &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -2499,8 +1374,15 @@ str = null;
       
         
           
-            <h2 id="轻量级线程–Coroutines"><a href="#轻量级线程–Coroutines" class="headerlink" title="轻量级线程–Coroutines"></a>轻量级线程–Coroutines</h2>
+          轻量级线程–Coroutines
           
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2019/09/06/kotlin/Kotlin-coroutines协程/#more" rel="contents">
+              Read more &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -2618,904 +1500,16 @@ str = null;
       
         
           
-            <p>Kotlin是一种针对Java 平台的新编程语言。Kotlin简洁、安全、务实，并且专注于与Java代码的互操作性。它几乎可以用在现在Java使用的任何地方：服务端开发、Android应用等等。Kotlin 可以很好地和所有现存的Java库和框架一起工作，而且性能和Java旗鼓相当。</p>
-<p><strong>兼容性：</strong> Kotlin 与 JDK 6 完全兼容，保障了 Kotlin 应用程序可以在较旧的 Android 设备上运行而无任何问题。Kotlin 工具在 Android Studio 中会完全支持，并且兼容 Android 构建系统。  </p>
-<p><strong>性能：</strong> 由于非常相似的字节码结构，Kotlin 应用程序的运行速度与 Java 类似。 随着 Kotlin 对内联函数的支持，使用 lambda 表达式的代码通常比用 Java 写的代码运行得更快。</p>
-<p><strong>互操作性：</strong> Kotlin 可与 Java 进行 100％ 的互操作，允许在 Kotlin 应用程序中使用所有现有的 Android 库 。这包括注解处理，所以数据绑定与 Dagger 也是一样。<br><strong>占用：</strong> Kotlin 具有非常紧凑的运行时库，可以通过使用 ProGuard 进一步减少。 在实际应用程序中，Kotlin 运行时只增加几百个方法以及 .apk 文件不到 100K 大小。  </p>
-<p><strong>编译时长：</strong> Kotlin 支持高效的增量编译，所以对于清理构建会有额外的开销，增量构建通常与 Java 一样快或者更快。  </p>
-<p><strong>学习曲线：</strong> 对于 Java 开发人员，Kotlin 入门很容易。包含在 Kotlin 插件中的自动 Java 到 Kotlin 的转换器有助于迈出第一步。Kotlin 心印 通过一系列互动练习提供了语言主要功能的指南。</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/09/05/android/Glide源码研究/">
-
-    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="pickerX">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Hello,world">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2019/09/05/android/Glide源码研究/" itemprop="url">Glide源码研究</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-09-05T10:32:42+08:00">
-                2019-09-05
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>本文专注 Glide 核心的代码做研究与学习，网上的相关文章大多比较旧，Glide 代码已经做了改动和优化升级，很有参考学习的必要，故做了该篇内容，也便于面试时有所帮助。</p>
-<p><strong>注意：本文代码基于 Glide v4.8.0版本</strong></p>
-<h2 id="Glide-图片加载流程"><a href="#Glide-图片加载流程" class="headerlink" title="Glide 图片加载流程"></a>Glide 图片加载流程</h2><p>Glide 的通常用法</p>
-<pre><code>Glide.with(this)
-    .load(url)
-    .into(target)
-</code></pre><p>with 方法返回一个 RequestManager ，是由 RequestManagerFactory 的实现类创建的</p>
-<pre><code>public static RequestManager with(@NonNull FragmentActivity activity) {
-    return getRetriever(activity).get(activity);
-}
-</code></pre><p>具体创建在 </p>
-<p>   private static final RequestManagerFactory DEFAULT_FACTORY = new RequestManagerFactory() {<br>        @Override<br>        public RequestManager build(@NonNull Glide glide, @NonNull Lifecycle lifecycle,<br>            @NonNull RequestManagerTreeNode requestManagerTreeNode, @NonNull Context context) {<br>        return new RequestManager(glide, lifecycle, requestManagerTreeNode, context);<br>        }<br>    };</p>
-<p>拿到 RequestManager 后，就可以调用 load 一个图片，io文件流或者图片地址等等，比如加载网络图片</p>
-<pre><code>public RequestBuilder&lt;Drawable&gt; load(@Nullable String string) {
-    return asDrawable().load(string);
-}
-</code></pre><p>asDrawable() 创建并返回一个 RequestBuilder 对象，用于构造请求，load方法</p>
-<p>  public RequestBuilder<transcodetype> load(@Nullable String string) {<br>    return loadGeneric(string);<br>  }</transcodetype></p>
-<p>  private RequestBuilder<transcodetype> loadGeneric(@Nullable Object model) {<br>    // 保存 model 信息，这里是 图片 url 地址<br>    this.model = model;<br>    isModelSet = true;<br>    return this;<br>  }</transcodetype></p>
-<p>最后的在调用 RequestBuilder 的 into 方法</p>
-<pre><code>private &lt;Y extends Target&lt;TranscodeType&gt;&gt; Y into(
-  @NonNull Y target,
-  @Nullable RequestListener&lt;TranscodeType&gt; targetListener,
-  @NonNull RequestOptions options) {
-Util.assertMainThread();
-// 判断 target 是否为 null
-Preconditions.checkNotNull(target);
-// isModelSet false 时中断加载
-if (!isModelSet) {
-  throw new IllegalArgumentException(&quot;You must call #load() before calling #into()&quot;);
-}
-
-options = options.autoClone();
-// build 一个实际的 Request 请求对象
-Request request = buildRequest(target, targetListener, options);
-
-Request previous = target.getRequest();
-if (request.isEquivalentTo(previous)
-    &amp;&amp; !isSkipMemoryCacheWithCompletePreviousRequest(options, previous)) {
-  // 如果请求与上一次相同，
-  // 1. 上一次请求还未完成，忽略当前重复请求      
-  // 2. 上一次请求已完成，并且 MemoryCacheable 是 true，则会加载上一次已请求的缓存数据
-  request.recycle();
-  if (!Preconditions.checkNotNull(previous).isRunning()) {
-    // 使用之前的请求，避免重新初始化
-    previous.begin();
-  }
-  return target;
-}
-// 清除旧数据
-requestManager.clear(target);
-// 重新设置 request
-target.setRequest(request);
-// track 方法开始执行加载任务
-requestManager.track(target, request);
-
-return target;
-</code></pre><p>  }</p>
-<p>track 方法如下</p>
-<pre><code>void track(@NonNull Target&lt;?&gt; target, @NonNull Request request) {
-  targetTracker.track(target);
-  // 执行请求
-  requestTracker.runRequest(request);
-}
-
-private final Set&lt;Request&gt; requests =
-  Collections.newSetFromMap(new WeakHashMap&lt;Request, Boolean&gt;());
-
-public void runRequest(@NonNull Request request) {
-    requests.add(request);
-    if (!isPaused) {
-        // begin 开始执行任务
-        request.begin();
-    } else {
-        request.clear();
-        if (Log.isLoggable(TAG, Log.VERBOSE)) {
-            Log.v(TAG, &quot;Paused, delaying request&quot;);
-        }
-        pendingRequests.add(request);
-    }
-}
-</code></pre><p>因此，这个 request 就是任务的载体了， 通过上面，我们知道 request 是 into 方法里调用 buildRequest 创建出来的。那具体是在，</p>
-<p>  private Request buildRequestRecursive(<br>      Target<transcodetype> target,<br>      @Nullable RequestListener<transcodetype> targetListener,<br>      @Nullable RequestCoordinator parentCoordinator,<br>      TransitionOptions&lt;?, ? super TranscodeType&gt; transitionOptions,<br>      Priority priority,<br>      int overrideWidth,<br>      int overrideHeight,<br>      RequestOptions requestOptions) {</transcodetype></transcodetype></p>
-<pre><code>// Build the ErrorRequestCoordinator first if necessary so we can update parentCoordinator.
-ErrorRequestCoordinator errorRequestCoordinator = null;
-if (errorBuilder != null) {
-  errorRequestCoordinator = new ErrorRequestCoordinator(parentCoordinator);
-  parentCoordinator = errorRequestCoordinator;
-}
-// 主要的构造
-Request mainRequest =
-    buildThumbnailRequestRecursive(
-        target,
-        targetListener,
-        parentCoordinator,
-        transitionOptions,
-        priority,
-        overrideWidth,
-        overrideHeight,
-        requestOptions);
-
-if (errorRequestCoordinator == null) {
-  return mainRequest;
-}
-// 异常处理
-...
-return errorRequestCoordinator;
-</code></pre><p>  }</p>
-<p>buildThumbnailRequestRecursive 方法里</p>
-<pre><code>private Request buildThumbnailRequestRecursive(
-    Target&lt;TranscodeType&gt; target,
-    RequestListener&lt;TranscodeType&gt; targetListener,
-    @Nullable RequestCoordinator parentCoordinator,
-    TransitionOptions&lt;?, ? super TranscodeType&gt; transitionOptions,
-    Priority priority,
-    int overrideWidth,
-    int overrideHeight,
-    RequestOptions requestOptions) {
-    // 缩略图的 Builder thumbnailBuilder 不为 null
-    if (thumbnailBuilder != null) {
-        ...
-        return coordinator;
-    } else if (thumbSizeMultiplier != null) {
-        // 缩略图配置不为 null
-        // Base case: thumbnail multiplier generates a thumbnail request, but cannot recurse.
-        ...
-        return coordinator;
-    } else {
-        // 无缩略图时
-        return obtainRequest(
-            target,
-            targetListener,
-            requestOptions,
-            parentCoordinator,
-            transitionOptions,
-            priority,
-            overrideWidth,
-            overrideHeight);
-    }
-}
-</code></pre><p>可以看到，根据缩略图做了一个不同的处理，那最终会调用到这里， 创建出来的是一个 SingleRequest 对象</p>
-<pre><code>private Request obtainRequest(...) {
-    return SingleRequest.obtain(
-        context,
-        glideContext,
-        model,
-        transcodeClass,
-        requestOptions,
-        overrideWidth,
-        overrideHeight,
-        priority,
-        target,
-        targetListener,
-        requestListeners,
-        requestCoordinator,
-        glideContext.getEngine(),
-        transitionOptions.getTransitionFactory());
-</code></pre><p>  }</p>
-<p>所以，实际加载在 SingleRequest 的 begin 方法里，</p>
-<pre><code>public void begin() {
-    // 状态记录，异常检测等等
-    ...
-
-    // Restarts for requests that are neither complete nor running can be treated as new requests
-    // and can run again from the beginning.
-    status = Status.WAITING_FOR_SIZE;
-    if (Util.isValidDimensions(overrideWidth, overrideHeight)) {
-        // 开始执行任务
-        onSizeReady(overrideWidth, overrideHeight);
-    } else {
-        // this 指 SizeReadyCallback 实现，回调是 onSizeReady，同上
-        target.getSize(this);
-    }
-    ...
-}
-</code></pre><p>onSizeReady 实现，这里的 engine 是 Glide 里核心的加载类 Engine ，缓存加载方式也在这个类中</p>
-<pre><code>public void onSizeReady(int width, int height) {
-    ...
-    loadStatus = engine.load(
-        glideContext,
-        model,
-        requestOptions.getSignature(),
-        this.width,
-        this.height,
-        requestOptions.getResourceClass(),
-        transcodeClass,
-        priority,
-        requestOptions.getDiskCacheStrategy(),
-        requestOptions.getTransformations(),
-        requestOptions.isTransformationRequired(),
-        requestOptions.isScaleOnlyOrNoTransform(),
-        requestOptions.getOptions(),
-        requestOptions.isMemoryCacheable(),
-        requestOptions.getUseUnlimitedSourceGeneratorsPool(),
-        requestOptions.getUseAnimationPool(),
-        requestOptions.getOnlyRetrieveFromCache(),
-        this);
-    ...
-}
-</code></pre><h2 id="Glide-缓存加载机制"><a href="#Glide-缓存加载机制" class="headerlink" title="Glide 缓存加载机制"></a>Glide 缓存加载机制</h2><p>关键的缓存加载代码在 com.bumptech.glide.load.engine 包 Engine 这个类。 Engine 里有一个 load 方法加载缓存, 该方法比较长我们逐层分析，先来看看这个方法的构造吧. 注释如下翻译</p>
-<h3 id="构造高速缓存的-key"><a href="#构造高速缓存的-key" class="headerlink" title="构造高速缓存的 key"></a>构造高速缓存的 key</h3><pre><code>/**
-* 根据给定参数，启动一个加载流程
-* 必须要在主线程中调用
-* 任何请求的流程如下
-*   1. 检查当前使用的资源集是否存在，若是则返回 active 的资源，同时
-*   移动最新的 inactive 状态的资源到 memory Cache里
-*   2. 检查 memory cache 是否存在，若是则返回缓存的资源
-*   3. 检查当前正在加载的集合，并且将 ResourceCallback 添加到集合中
-*   4. 若都不满足，加载一个新图片
-*
-* 活动资源是指已提供给至少一个请求但尚未提供的资源
-* 被释放了。一旦资源的所有使用者都释放了该资源，那么
-* 转到缓存。如果资源从缓存返回给新的使用者，则将其重新添加到
-* 有效资源。如果资源从缓存中逐出，则其资源将被回收并
-* 如果可能，请重新使用，资源将被丢弃。没有严格的要求
-* 消费者释放了他们的资源，因此活动资源被弱持有。
-*/
-public &lt;R&gt; LoadStatus load(...) {
-    Util.assertMainThread();
-    long startTime = VERBOSE_IS_LOGGABLE ? LogTime.getLogTime() : 0;
-
-    EngineKey key = keyFactory.buildKey(model, signature, width, height, transformations,
-        resourceClass, transcodeClass, options);
-</code></pre><p>方法参数比较多，就不一一介绍了，有好几个参数是用来构造 EngineKey 的。 EngineKey 是用来干嘛的呢? 它是一种只在内存中使用的高速缓存密钥，用于多路传输负载，简单的理解就是 HashMap 的key，用于寻址用的。</p>
-<p>具体是一个什么样的 key，感兴趣的伙伴可以往下看，大佬可以直接跳过，关注缓存机制即可</p>
-<p>从 EngineKeyFactory 可以找到，这个key是直接 new 出来的. EngineKey 的详细如下 </p>
-<pre><code>class EngineKey implements Key {
-    ...
-
-    EngineKey(...) {
-        // Preconditions 是 Google Guava的一个工具集合，很便利
-        // 代码也很优雅，不了解的同学可以关注一下
-        this.model = Preconditions.checkNotNull(model);
-        this.signature = Preconditions.checkNotNull(signature, &quot;Signature must not be null&quot;);
-        this.width = width;
-        this.height = height;
-        this.transformations = Preconditions.checkNotNull(transformations);
-        this.resourceClass =
-            Preconditions.checkNotNull(resourceClass, &quot;Resource class must not be null&quot;);
-        this.transcodeClass =
-            Preconditions.checkNotNull(transcodeClass, &quot;Transcode class must not be null&quot;);
-        this.options = Preconditions.checkNotNull(options);
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (o instanceof EngineKey) {
-            EngineKey other = (EngineKey) o;
-            return model.equals(other.model)
-                &amp;&amp; signature.equals(other.signature)
-                &amp;&amp; height == other.height
-                &amp;&amp; width == other.width
-                &amp;&amp; transformations.equals(other.transformations)
-                &amp;&amp; resourceClass.equals(other.resourceClass)
-                &amp;&amp; transcodeClass.equals(other.transcodeClass)
-                &amp;&amp; options.equals(other.options);
-        }
-        return false;
-    }
-
-    @Override
-    public int hashCode() {
-        if (hashCode == 0) {
-            hashCode = model.hashCode();
-            hashCode = 31 * hashCode + signature.hashCode();
-            hashCode = 31 * hashCode + width;
-            hashCode = 31 * hashCode + height;
-            hashCode = 31 * hashCode + transformations.hashCode();
-            hashCode = 31 * hashCode + resourceClass.hashCode();
-            hashCode = 31 * hashCode + transcodeClass.hashCode();
-            hashCode = 31 * hashCode + options.hashCode();
-        }
-        return hashCode;
-    }
-}
-</code></pre><p>可以发现，是一个很普通的 Java 实体对象, 不同的是，它重写了 equals 和 hashCode 方法. 至于为什么这么写，还在研究中…</p>
-<h3 id="一级缓存"><a href="#一级缓存" class="headerlink" title="一级缓存"></a>一级缓存</h3><p>拿到 EngineKey后，就到了加载一级缓存的地方了， 使用 EngineKey 来查找调用 loadFromActiveResources， 返回一个 EngineResource，不为 null 就会调用 ResourceCallback 也就是 cb.onResourceReady 方法，将结果回传</p>
-<pre><code>EngineResource&lt;?&gt; active = loadFromActiveResources(key, isMemoryCacheable);
-if (active != null) {
-    cb.onResourceReady(active, DataSource.MEMORY_CACHE);
-    if (VERBOSE_IS_LOGGABLE) {
-        logWithTimeAndKey(&quot;Loaded resource from active resources&quot;, startTime, key);
-    }
-    return null;
-}
-</code></pre><p>loadFromActiveResources 里是从 ActiveResources 里获取 EngineResource</p>
-<pre><code>private final ActiveResources activeResources;
-
-@Nullable
-private EngineResource&lt;?&gt; loadFromActiveResources(Key key, boolean isMemoryCacheable) {
-    ...
-    // 从一级缓存中读取
-    EngineResource&lt;?&gt; active = activeResources.get(key);
-    if (active != null) {
-        // 不为空，EngineResource 的引用计数 + 1
-        active.acquire();
-    }
-
-    return active;
-}
-</code></pre><p>来看看 Glide 的一级缓存究竟是如何实现的，这里也就是核心的地方了，要学习的小伙伴记得做好笔记了</p>
-<pre><code>final class ActiveResources {
-
-    // HashMap 一级缓存，用于保存 active 状态的 ResourceWeakReference
-    final Map&lt;Key, ResourceWeakReference&gt; activeEngineResources = new HashMap&lt;&gt;();
-
-    // EngineResource 引用队列， 触发 GC 时，通知用户线程
-    private ReferenceQueue&lt;EngineResource&lt;?&gt;&gt; resourceReferenceQueue;
-
-    // 清理引用队列数据的线程
-    private Thread cleanReferenceQueueThread;
-    ...
-
-    /**
-    * 将一个 EngineResource 标识为 activate，并存储在一级缓存中 
-    */
-    void activate(Key key, EngineResource&lt;?&gt; resource) {
-        // 创建一个 ResourceWeakReference，存储到   
-        // 一级缓存 HashMap 中
-        ResourceWeakReference toPut =
-            new ResourceWeakReference(
-                key,
-                resource,
-                getReferenceQueue(),
-                isActiveResourceRetentionAllowed);
-
-        ResourceWeakReference removed = activeEngineResources.put(key, toPut);
-        if (removed != null) {
-            removed.reset();
-        }
-    }
-
-    /**
-    * 从一级缓存中获取 EngineResource
-    * /
-    EngineResource&lt;?&gt; get(Key key) {
-        ResourceWeakReference activeRef = activeEngineResources.get(key);
-        if (activeRef == null) {
-            return null;
-        }
-
-        EngineResource&lt;?&gt; active = activeRef.get();
-        if (active == null) {
-            cleanupActiveReference(activeRef);
-        }
-        return active;
-    }
-    ...
-</code></pre><p>可以发现，我们需要的 EngineResource 被封装到 ResourceWeakReference 中。<br>ResourceWeakReference 其实是一个弱引用，封装了 Key，Resource 等信息</p>
-<pre><code>static final class ResourceWeakReference extends WeakReference&lt;EngineResource&lt;?&gt;&gt; {
-
-    @SuppressWarnings(&quot;WeakerAccess&quot;) @Synthetic final Key key;
-    @SuppressWarnings(&quot;WeakerAccess&quot;) @Synthetic final boolean isCacheable;
-
-    @Nullable @SuppressWarnings(&quot;WeakerAccess&quot;) @Synthetic Resource&lt;?&gt; resource;
-
-    @Synthetic
-    @SuppressWarnings(&quot;WeakerAccess&quot;)
-    ResourceWeakReference(
-        @NonNull Key key,
-        @NonNull EngineResource&lt;?&gt; referent,
-        @NonNull ReferenceQueue&lt;? super EngineResource&lt;?&gt;&gt; queue,
-        boolean isActiveResourceRetentionAllowed) {
-        super(referent, queue);
-        this.key = Preconditions.checkNotNull(key);
-        this.resource =
-            referent.isCacheable() &amp;&amp; isActiveResourceRetentionAllowed
-                ? Preconditions.checkNotNull(referent.getResource()) : null;
-        isCacheable = referent.isCacheable();
-    }
-
-    void reset() {
-        resource = null;
-        clear();
-    }
-}
-</code></pre><p>也就是说一级缓存，本质上就是通过弱引用实现的一个内存缓存机制，在 GC 没有触发时，就能快速的从内存中拿到图片缓存</p>
-<h3 id="二级缓存"><a href="#二级缓存" class="headerlink" title="二级缓存"></a>二级缓存</h3><p>如果一级缓存没有获取到资源，则会从 loadFromCache 方法中读取二级缓存的资源，该步骤也是从内存中读取</p>
-<pre><code>EngineResource&lt;?&gt; cached = loadFromCache(key, isMemoryCacheable);
-if (cached != null) {
-    cb.onResourceReady(cached, DataSource.MEMORY_CACHE);
-    if (VERBOSE_IS_LOGGABLE) {
-        logWithTimeAndKey(&quot;Loaded resource from cache&quot;, startTime, key);
-    }
-    return null;
-}
-</code></pre><p>loadFromCache 方法中，调用 getEngineResourceFromCache 方法获取，如果拿到缓存，acquire 操作，计数器 +1， 同时存储到一级缓存 activeResources 中</p>
-<pre><code>private EngineResource&lt;?&gt; loadFromCache(Key key, boolean isMemoryCacheable) {
-    ...
-
-    EngineResource&lt;?&gt; cached = getEngineResourceFromCache(key);
-    if (cached != null) {
-        cached.acquire();
-        // 存储到一级缓存中
-        activeResources.activate(key, cached);
-    }
-    return cached;
-}
-</code></pre><p>而 getEngineResourceFromCache 方法中，使用到了 MemoryCache，读取的缓存类型是 Resource，如果不是 EngineResource 类型，则封装为 EngineResource 返回</p>
-<pre><code>private final MemoryCache cache;
-
-private EngineResource&lt;?&gt; getEngineResourceFromCache(Key key) {
-    // 这里调用的是 remove，从二级缓存中移除
-    Resource&lt;?&gt; cached = cache.remove(key);
-
-    final EngineResource&lt;?&gt; result;
-    if (cached == null) {
-        result = null;
-    } else if (cached instanceof EngineResource) {
-        // Save an object allocation if we&apos;ve cached an EngineResource (the typical case).
-        result = (EngineResource&lt;?&gt;) cached;
-    } else {
-        result = new EngineResource&lt;&gt;(cached, true /*isMemoryCacheable*/, true /*isRecyclable*/);
-    }
-    return result;
-}
-</code></pre><p>逻辑很清楚，主要来看看 Glide 二级缓存是怎么个实现法。我们发现，其实 MemoryCache 是一个接口对象，具体的实现并不在 Engine 类中，而是在 GlideBuilder 中</p>
-<pre><code>Glide build(@NonNull Context context) {
-...
-if (memoryCache == null) {
-    memoryCache = new LruResourceCache(memorySizeCalculator.getMemoryCacheSize());
-}
-...
-</code></pre><p>也就是说，如果我们没有实现 MemoryCache 接口自定义二级缓存的方式，则默认是使用 LruResourceCache，继承自 LruCache 类，这个是 Glide 自己实现的,跟 Android 系统提供给我们的 LruCache 不太一样。  </p>
-<pre><code>public class LruResourceCache extends LruCache&lt;Key, Resource&lt;?&gt;&gt; implements MemoryCache {
-    ...
-}
-
-public class LruCache&lt;T, Y&gt; {
-    // LRU算法的核心 LinkedHashMap
-    private final Map&lt;T, Y&gt; cache = new LinkedHashMap&lt;&gt;(100, 0.75f, true);
-    ...
-    public LruCache(long size) {
-        this.initialMaxSize = size;
-        // 最大的缓存大小
-        this.maxSize = size;
-    }
-
-    /**
-    * 重新设置最大缓存大小，如果超出，则重新计算，驱逐出旧数据 evict()
-    */
-    public synchronized void setSizeMultiplier(float multiplier) {
-        if (multiplier &lt; 0) {
-            throw new IllegalArgumentException(&quot;Multiplier must be &gt;= 0&quot;);
-        }
-        maxSize = Math.round(initialMaxSize * multiplier);
-        evict();
-    }
-
-    ...
-
-    /**
-    * 根据 key 缓存 item，并返回已存在 key 对应的旧 item
-    * 如果 item 的大小超过最大缓存大小，item 将不会被缓存，onItemEvicted 将会被触发调用
-    */
-    @Nullable
-    public synchronized Y put(@NonNull T key, @Nullable Y item) {
-        final int itemSize = getSize(item);
-        if (itemSize &gt;= maxSize) {
-            // 超过最大缓存大小，放弃缓存，告知用户线程
-            onItemEvicted(key, item);
-            return null;
-        }
-
-        if (item != null) {
-            currentSize += itemSize;
-        }
-        @Nullable final Y old = cache.put(key, item);
-        if (old != null) {
-            // 如果存在旧 item 值，重新计算当前缓存大小
-            currentSize -= getSize(old);
-
-            if (!old.equals(item)) {
-                // 大小不一致时，驱逐出旧数据，告知用户线程
-                onItemEvicted(key, old);
-            }
-        }
-        // 执行驱逐算法
-        evict();
-
-        return old;
-    }
-
-    /**
-    * 移除 key 对应的缓存
-    */
-    @Nullable
-    public synchronized Y remove(@NonNull T key) {
-        final Y value = cache.remove(key);
-        if (value != null) {
-            currentSize -= getSize(value);
-        }
-        return value;
-    }
-
-    /**
-    * 当当前的缓存大小大于 size 参数时，
-    * 移除最近最少使用的 item
-    */
-    protected synchronized void trimToSize(long size) {
-        Map.Entry&lt;T, Y&gt; last;
-        Iterator&lt;Map.Entry&lt;T, Y&gt;&gt; cacheIterator;
-        while (currentSize &gt; size) {
-            cacheIterator  = cache.entrySet().iterator();
-            last = cacheIterator.next();
-            final Y toRemove = last.getValue();
-            currentSize -= getSize(toRemove);
-            final T key = last.getKey();
-            cacheIterator.remove();
-            onItemEvicted(key, toRemove);
-        }
-    }
-
-    private void evict() {
-        trimToSize(maxSize);
-    }
-}
-</code></pre><p>二级缓存很好的展示了如何自己实现一个 LruCache， 最关键的是使用了 LinkedHashMap。 LinkedHashMap 是 Hashmap 和链表的结合体，通过链表来记录元素的顺序和链接关系，通过HashMap来存储数据,它可以控制元素的被遍历时候输出的顺序（按照最近访问顺序来排序，还是按插入顺序）</p>
-<h3 id="三级缓存"><a href="#三级缓存" class="headerlink" title="三级缓存"></a>三级缓存</h3><p>如果二级Lru缓存里也没有数据的情况下，那么就到了三级缓存 ==&gt;&gt; Jobs!!</p>
-<pre><code>EngineJob&lt;?&gt; current = jobs.get(key, onlyRetrieveFromCache);
-if (current != null) {
-    current.addCallback(cb);
-    if (VERBOSE_IS_LOGGABLE) {
-        logWithTimeAndKey(&quot;Added to existing load&quot;, startTime, key);
-    }
-    return new LoadStatus(cb, current);
-}
-</code></pre><p>这里 Jobs 三级缓存代码不多，使用 HashMap 来缓存 EngineJob 对象</p>
-<pre><code>final class Jobs {
-    private final Map&lt;Key, EngineJob&lt;?&gt;&gt; jobs = new HashMap&lt;&gt;();
-    private final Map&lt;Key, EngineJob&lt;?&gt;&gt; onlyCacheJobs = new HashMap&lt;&gt;();
-
-    @VisibleForTesting
-    Map&lt;Key, EngineJob&lt;?&gt;&gt; getAll() {
-        return Collections.unmodifiableMap(jobs);
-    }
-
-    EngineJob&lt;?&gt; get(Key key, boolean onlyRetrieveFromCache) {
-        return getJobMap(onlyRetrieveFromCache).get(key);
-    }
-
-    void put(Key key, EngineJob&lt;?&gt; job) {
-        getJobMap(job.onlyRetrieveFromCache()).put(key, job);
-    }
-
-    void removeIfCurrent(Key key, EngineJob&lt;?&gt; expected) {
-        Map&lt;Key, EngineJob&lt;?&gt;&gt; jobMap = getJobMap(expected.onlyRetrieveFromCache());
-        if (expected.equals(jobMap.get(key))) {
-            jobMap.remove(key);
-        }
-    }
-
-    private Map&lt;Key, EngineJob&lt;?&gt;&gt; getJobMap(boolean onlyRetrieveFromCache) {
-        return onlyRetrieveFromCache ? onlyCacheJobs : jobs;
-    }
-}
-</code></pre><p>而这个关键的 EngineJob 是什么呢？ 可以想象得到至少包含了图片缓存的相关信息</p>
-<h3 id="四级缓存？"><a href="#四级缓存？" class="headerlink" title="四级缓存？"></a>四级缓存？</h3><p>在前面三级缓存都没有加载到图片的情况下， 则会创建一个 EngineJob, 并保存到 jobs 三级缓存中</p>
-<pre><code>EngineJob&lt;R&gt; engineJob =
-    engineJobFactory.build(
-        key,
-        isMemoryCacheable,
-        useUnlimitedSourceExecutorPool,
-        useAnimationPool,
-        onlyRetrieveFromCache);
-
-DecodeJob&lt;R&gt; decodeJob =
-    decodeJobFactory.build(
-        ...
-        engineJob);
-// 添加到缓存 jobs
-jobs.put(key, engineJob);
-// 添加callback，这里的 cb 是指 SingleRequest
-engineJob.addCallback(cb);
-// EngineJob 线程池启动 DecodeJob
-engineJob.start(decodeJob);
-...
-// 返回图片加载结果的状态
-return new LoadStatus(cb, engineJob);
-</code></pre><p>  }</p>
-<p>启动 engineJob 时，会用线程池开启异步任务，执行 DecodeJob. 这一步就不再算是缓存了，最终返回了一个 LoadStatus 加载结果的状态对象。<br>到这里稍微总结下，可以发现 Glide 内部实现了三级缓存，分别是</p>
-<ol>
-<li>使用 WeakReference + HashMap 实现一级缓存</li>
-<li>实现 MemoryCache 接口，自定义了 LruCache 的方式来当做二级缓存</li>
-<li>使用两个 HashMap 保存 EngineJob 信息的 三级缓存</li>
-</ol>
-<h3 id="下载图片"><a href="#下载图片" class="headerlink" title="下载图片"></a>下载图片</h3><p>在上一步的，EngineJob 和 DecodeJob 创建过程中, engineJob.start(decodeJob) ， 调用 DecodeJob 的 run 方法</p>
-<pre><code>public void run() {
-    ...
-    // 核心的图片下载实现 DataFetcher
-    DataFetcher&lt;?&gt; localFetcher = currentFetcher;
-    try {
-        if (isCancelled) {
-            notifyFailed();
-            return;
-        }
-        runWrapped();
-    } catch (Throwable t) {
-        ...
-    }
-    ...
-}
-</code></pre><p>runWrapped， 第一次加载图片，走 INITIALIZE 逻辑</p>
-<pre><code>private void runWrapped() {
-    switch (runReason) {
-    case INITIALIZE:
-        // 获取下一步的 stage: Stage.RESOURCE_CACHE
-        stage = getNextStage(Stage.INITIALIZE);
-        // 根据状态更换 currentGenerator 生成器: ResourceCacheGenerator
-        currentGenerator = getNextGenerator();
-        runGenerators();
-        break;
-        ...
-    }
-}
-
-private Stage getNextStage(Stage current) {
-    switch (current) {
-    case INITIALIZE:
-        // 这里的 diskCacheStrategy 来自 RequestOptions 的默认配置
-        // DiskCacheStrategy diskCacheStrategy = DiskCacheStrategy.AUTOMATIC;
-        // decodeCachedResource 返回 true
-        return diskCacheStrategy.decodeCachedResource()
-            ? Stage.RESOURCE_CACHE : getNextStage(Stage.RESOURCE_CACHE);
-    case RESOURCE_CACHE:
-        // decodeCachedData 返回 true
-        return diskCacheStrategy.decodeCachedData()
-            ? Stage.DATA_CACHE : getNextStage(Stage.DATA_CACHE);
-    case DATA_CACHE:
-        // Skip loading from source if the user opted to only retrieve the resource from cache.
-        return onlyRetrieveFromCache ? Stage.FINISHED : Stage.SOURCE;
-        ...
-    }
-}
-
-private DataFetcherGenerator getNextGenerator() {
-    switch (stage) {
-    case RESOURCE_CACHE:
-        // 第一次加载时，创建 ResourceCacheGenerator
-        return new ResourceCacheGenerator(decodeHelper, this);
-    case DATA_CACHE:
-        return new DataCacheGenerator(decodeHelper, this);
-    case SOURCE:
-        return new SourceGenerator(decodeHelper, this);
-    case FINISHED:
-        return null;
-    default:
-        throw new IllegalStateException(&quot;Unrecognized stage: &quot; + stage);
-    }
-}
-</code></pre><p>runGenerators</p>
-<pre><code>private void runGenerators() {
-    ...
-    // 调用生成器 ResourceCacheGenerator 的 startNext 
-    while (!isCancelled &amp;&amp; currentGenerator != null
-        &amp;&amp; !(isStarted = currentGenerator.startNext())) {
-        // 加载完后，获取下一步的状态和生成器
-        stage = getNextStage(stage);
-        currentGenerator = getNextGenerator();
-
-        if (stage == Stage.SOURCE) {
-            // 重新运行 run 方法
-            reschedule();
-            return;
-        }
-    }
-    ...
-}
-</code></pre><p>startNext 方法，截取关键部分， ModelLoader 的来源比较复杂，就直接替大家找到了是 </p>
-<pre><code>public boolean startNext() {
-    ...
-    loadData = null;
-    boolean started = false;
-    // 第一次满足条件
-    while (!started &amp;&amp; hasNextModelLoader()) {
-        ModelLoader&lt;File, ?&gt; modelLoader = modelLoaders.get(modelLoaderIndex++);
-        loadData = modelLoader.buildLoadData(cacheFile,
-            helper.getWidth(), helper.getHeight(), helper.getOptions());
-        if (loadData != null &amp;&amp; helper.hasLoadPath(loadData.fetcher.getDataClass())) {
-            started = true;
-            // loadData 开始加载数据
-            loadData.fetcher.loadData(helper.getPriority(), this);
-        }
-    }
-
-    return started;
-}
-</code></pre><p>loadData 是 HttpGlideUrlLoader ，而 loadData.fetcher 是 HttpUrlFetcher</p>
-<pre><code>HttpGlideUrlLoader.java 
-// 构建包含 HttpUrlFetcher 的 LoadData
-@Override
-public LoadData&lt;InputStream&gt; buildLoadData(@NonNull GlideUrl model, int width, int height,
-    @NonNull Options options) {
-    GlideUrl url = model;
-    if (modelCache != null) {
-        url = modelCache.get(model, 0, 0);
-        if (url == null) {
-            modelCache.put(model, 0, 0, model);
-            url = model;
-        }
-    }
-    int timeout = options.get(TIMEOUT);
-    return new LoadData&lt;&gt;(url, new HttpUrlFetcher(url, timeout));
-}
-</code></pre><p>loadData</p>
-<pre><code>@Override
-public void loadData(@NonNull Priority priority,
-    @NonNull DataCallback&lt;? super InputStream&gt; callback) {
-    ...
-    InputStream result = loadDataWithRedirects(glideUrl.toURL(), 0, null, glideUrl.getHeaders());
-    callback.onDataReady(result);
-    ...
-}
-</code></pre><p>到这里就是具体加载图片的细节了，用的是 HttpURLConnection 来下载图片</p>
-<pre><code>private InputStream loadDataWithRedirects(URL url, int redirects, URL lastUrl,
-  Map&lt;String, String&gt; headers) throws IOException {
-    if (redirects &gt;= MAXIMUM_REDIRECTS) {
-        throw new HttpException(&quot;Too many (&gt; &quot; + MAXIMUM_REDIRECTS + &quot;) redirects!&quot;);
-    } else {
-        // Comparing the URLs using .equals performs additional network I/O and is generally broken.
-        // See http://michaelscharf.blogspot.com/2006/11/javaneturlequals-and-hashcode-make.html.
-        try {
-            if (lastUrl != null &amp;&amp; url.toURI().equals(lastUrl.toURI())) {
-            throw new HttpException(&quot;In re-direct loop&quot;);
-
-            }
-        } catch (URISyntaxException e) {
-            // Do nothing, this is best effort.
-        }
-    }
-
-    urlConnection = connectionFactory.build(url);
-    for (Map.Entry&lt;String, String&gt; headerEntry : headers.entrySet()) {
-        urlConnection.addRequestProperty(headerEntry.getKey(), headerEntry.getValue());
-    }
-    urlConnection.setConnectTimeout(timeout);
-    urlConnection.setReadTimeout(timeout);
-    urlConnection.setUseCaches(false);
-    urlConnection.setDoInput(true);
-
-    // Stop the urlConnection instance of HttpUrlConnection from following redirects so that
-    // redirects will be handled by recursive calls to this method, loadDataWithRedirects.
-    urlConnection.setInstanceFollowRedirects(false);
-
-    // Connect explicitly to avoid errors in decoders if connection fails.
-    urlConnection.connect();
-    // Set the stream so that it&apos;s closed in cleanup to avoid resource leaks. See #2352.
-    stream = urlConnection.getInputStream();
-    if (isCancelled) {
-        return null;
-    }
-    final int statusCode = urlConnection.getResponseCode();
-    if (isHttpOk(statusCode)) {
-        return getStreamForSuccessfulRequest(urlConnection);
-    } else if (isHttpRedirect(statusCode)) {
-        String redirectUrlString = urlConnection.getHeaderField(&quot;Location&quot;);
-        if (TextUtils.isEmpty(redirectUrlString)) {
-            throw new HttpException(&quot;Received empty or null redirect url&quot;);
-        }
-        URL redirectUrl = new URL(url, redirectUrlString);
-        // Closing the stream specifically is required to avoid leaking ResponseBodys in addition
-        // to disconnecting the url connection below. See #2352.
-        cleanup();
-        return loadDataWithRedirects(redirectUrl, redirects + 1, url, headers);
-    } else if (statusCode == INVALID_STATUS_CODE) {
-        throw new HttpException(statusCode);
-    } else {
-        throw new HttpException(urlConnection.getResponseMessage(), statusCode);
-    }
-</code></pre><p>  }</p>
-<p>综上，ModelLoader 里存放着 glide 的网络下载组件 ModelLoader，ModelLoader 里有网络下载器的实现细节 DataFetcher 。<br>因此，当我们需要自定义网络配置时，就要实现这两个接口，然后注册到 Registry 即可</p>
-
-          
+          Kotlin是一种针对Java 平台的新编程语言。Kotlin简洁、安全、务实，并且专注于与Java代码的互操作性。它几乎可以用在现在Java使用的任何地方：服务端开发、Android应用等等。Kotlin 可以很好地和所有现存的Java库和框架一起工作，而且性能和Java旗鼓相当。
+兼容性： Kotlin 与 JDK 6 完全兼容，保障了 Kotlin 应用程序可以在较旧的 Android 设备上运行而无任何问题。Kotlin 工具在
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2019/09/06/kotlin/Kotlin与Java的区别/#more" rel="contents">
+              Read more &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -3599,7 +1593,7 @@ public void loadData(@NonNull Priority priority,
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">37</span>
+                  <span class="site-state-item-count">38</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
@@ -3612,7 +1606,7 @@ public void loadData(@NonNull Priority priority,
               
               <div class="site-state-item site-state-tags">
                 
-                  <span class="site-state-item-count">10</span>
+                  <span class="site-state-item-count">11</span>
                   <span class="site-state-item-name">tags</span>
                 
               </div>
@@ -3667,7 +1661,7 @@ public void loadData(@NonNull Priority priority,
 
 
 
-  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a> v5.1.4</div>
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Gemini</a> v5.1.4</div>
 
 
 

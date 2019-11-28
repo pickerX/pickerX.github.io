@@ -5,7 +5,7 @@
   
 
 
-<html class="theme-next pisces use-motion" lang="">
+<html class="theme-next gemini use-motion" lang="">
 <head><meta name="generator" content="Hexo 3.8.0">
   <meta charset="UTF-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -93,7 +93,7 @@
   var NexT = window.NexT || {};
   var CONFIG = {
     root: '/',
-    scheme: 'Pisces',
+    scheme: 'Gemini',
     version: '5.1.4',
     sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
     fancybox: true,
@@ -229,6 +229,138 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/09/05/android/Glide源码研究/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="pickerX">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hello,world">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/09/05/android/Glide源码研究/" itemprop="url">Glide源码研究</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-09-05T10:32:42+08:00">
+                2019-09-05
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+          本文专注 Glide 核心的代码做研究与学习，网上的相关文章大多比较旧，Glide 代码已经做了改动和优化升级，很有参考学习的必要，故做了该篇内容，也便于面试时有所帮助。
+注意：本文代码基于 Glide v4.8.0版本
+Glide 图片加载流程Glide 的通常用法
+Glide.with(this)
+    .load(url)
+    .into(target)
+with 方法返回一个 RequestManager ，是由 Requ
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2019/09/05/android/Glide源码研究/#more" rel="contents">
+              Read more &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/09/03/android/RxJava里map-flatMap操作区别/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
@@ -300,112 +432,19 @@
       
         
           
-            <p>map， flatmap 操作符在 RxJava 里都是用于数据类型转换</p>
-<h4 id="相同点"><a href="#相同点" class="headerlink" title="相同点:"></a>相同点:</h4><p>参数相同, 都是使用 Function(入参，返回值) 进行转换（将一个类型依据程序逻辑转换成另一种类型，根据入参和返回值）,都能在转换后直接被 subscribe</p>
-<h3 id="不同点："><a href="#不同点：" class="headerlink" title="不同点："></a>不同点：</h3><h4 id="返回参数不同"><a href="#返回参数不同" class="headerlink" title="返回参数不同"></a>返回参数不同</h4><ol>
-<li>map返回的是 Function&lt;? super T, ? extends R&gt; R 类型，</li>
-<li>flatmap返回的是Function&lt;? super T, ? extends ObservableSource&lt;? extends R&gt;&gt;, 包含R类型的 ObservableSource 对象</li>
-</ol>
-<h4 id="使用方式不同"><a href="#使用方式不同" class="headerlink" title="使用方式不同,"></a>使用方式不同,</h4><ol>
-<li>map只能单一转换，单一只的是只能一对一进行转换, map被订阅时每传递一个事件执行一次onNext方法   </li>
-<li>flatmap多用于多对多，一对多，再被转化为多个时，一般利用from/just进行一一分发，被订阅时将所有数据传递完毕汇总到一个Observable然后一一执行onNext方法</li>
-</ol>
-<h3 id="Sample"><a href="#Sample" class="headerlink" title="Sample"></a>Sample</h3><p>map 测试</p>
-<pre><code>Observable.just(&quot;hello&quot;, &quot;sealink&quot;, &quot;what&quot;, &quot;are&quot;, &quot;you&quot;, &quot;doing&quot;, &quot;?&quot;)
-           .map(new Function&lt;String, Integer&gt;() {
-               @Override
-               public Integer apply(String s) {
-                   Log.e(&quot;RxJava&quot;, &quot;map apply:&quot; + s);
-                   return s.length();
-               }
-           })
-           .subscribeOn(Schedulers.newThread())
-           .observeOn(AndroidSchedulers.mainThread())
-           .subscribe(new Observer&lt;Integer&gt;() {
-               @Override
-               public void onSubscribe(Disposable d) {
-
-               }
-
-               @Override
-               public void onNext(Integer integer) {
-                   Log.e(&quot;RxJava&quot;, &quot;map onNext:&quot; + integer);
-               }
-
-               @Override
-               public void onError(Throwable e) {
-
-               }
-
-               @Override
-               public void onComplete() {
-
-               }
-           });
-</code></pre><p>输出结果</p>
-<pre><code>03-05 13:43:01.088 13889-13914/? E/RxJava: map apply:hello
-    map apply:sealink
-03-05 13:43:01.089 13889-13914/? E/RxJava: map apply:what
-    map apply:are
-    map apply:you
-    map apply:doing
-    map apply:?
-03-05 13:43:01.089 13889-13889/? E/RxJava: map onNext:5
-    map onNext:7
-    map onNext:4
-    map onNext:3
-    map onNext:3
-    map onNext:5
-    map onNext:1
-</code></pre><p>flatMap 测试</p>
-<pre><code>Observable.just(&quot;hello&quot;, &quot;sealink&quot;, &quot;what&quot;, &quot;are&quot;, &quot;you&quot;, &quot;doing&quot;, &quot;?&quot;)
-            flatMap(new Function&lt;String, ObservableSource&lt;Integer&gt;&gt;() {
-                @Override
-                public ObservableSource&lt;Integer&gt; apply(String s) {
-                    Log.e(&quot;RxJava&quot;, &quot;flatMap apply: &quot; + s);
-                    return Observable.just(s.length());
-                }
-            })
-            .subscribeOn(Schedulers.newThread())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe(new Observer&lt;Integer&gt;() {
-                @Override
-                public void onSubscribe(Disposable d) {
-
-                }
-
-                @Override
-                public void onNext(Integer integer) {
-                    Log.e(&quot;RxJava&quot;, &quot;flatMap onNext: &quot; + integer);
-                }
-
-                @Override
-                public void onError(Throwable e) {
-
-                }
-
-                @Override
-                public void onComplete() {
-
-                }
-            });
-</code></pre><p>输出结果</p>
-<pre><code>03-05 13:44:49.518 14089-14113/? E/RxJava: flatMap apply: hello
-    flatMap apply: sealink
-    flatMap apply: what
-    flatMap apply: are
-    flatMap apply: you
-    flatMap apply: doing
-    flatMap apply: ?
-03-05 13:44:49.518 14089-14089/? E/RxJava: flatMap onNext: 5
-    flatMap onNext: 7
-    flatMap onNext: 4
-    flatMap onNext: 3
-    flatMap onNext: 3
-    flatMap onNext: 5
-    flatMap onNext: 1
-</code></pre>
-          
+          map， flatmap 操作符在 RxJava 里都是用于数据类型转换
+相同点:参数相同, 都是使用 Function(入参，返回值) 进行转换（将一个类型依据程序逻辑转换成另一种类型，根据入参和返回值）,都能在转换后直接被 subscribe
+不同点：返回参数不同
+map返回的是 Function&lt;? super T, ? extends R&gt; R 类型，
+flatmap返回的是Function&lt;? super T
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2019/09/03/android/RxJava里map-flatMap操作区别/#more" rel="contents">
+              Read more &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -523,74 +562,17 @@
       
         
           
-            <p>要介绍MVP，MVVM，我们不得不提 MVC 框架，因为 MVC 是最早出现的软件设计典范，其他的都是在此基础上迭代更新而来的，各有优势，适用的场景各有不同，但他们的共同点是他们的目的都是为了复用代码。<br><strong>注意: 这些架构模式跟设计模式是两种不同的东西。</strong></p>
-<h3 id="MVC架构"><a href="#MVC架构" class="headerlink" title="MVC架构"></a>MVC架构</h3><p>MVC 的概念最早出现在二十世纪八十年代的 施乐帕克 实验室中（就是那个发明图形用户界面和鼠标的实验室），当时施乐帕克为 Smalltalk 发明了这种软件设计模式。  </p>
-<p>Model 模型</p>
-<p>模型表示抽象数据和业务规则。在MVC的三个部件中，模型拥有最多的处理任务。例如它可能用像 Hibernate 这样的构件对象来处理数据库。被模型返回的数据是中立的，就是说模型与数据格式无关，这样一个模型能为多个视图提供数据。良好的 Model 能很好的复用在各种 View 视图中 </p>
-<p>View 视图 </p>
-<p>视图是用户看到并与之交互的界面。对Web应用程序来说，视图就是由HTML元素组成的界面。对于Android则是 Activity 和布局文件构成的 UI 界面</p>
-<p>Controller 控制器 </p>
-<p>控制器接受用户的输入并调用模型和视图去完成用户的需求。所以当用户操作 View 视图发起请求，如登录请求等等，控制器本身不输出任何东西和做任何处理。它只是接收请求并决定调用哪个模型构件去处理请求，然后用确定用哪个视图来显示模型处理返回的数据。 </p>
-<p>最典型的MVC就是JSP + servlet + JavaBean的模式。</p>
-<h3 id="MVP"><a href="#MVP" class="headerlink" title="MVP"></a>MVP</h3><p>Model-View-Presenter 的简称。 MVP 是从经典的模式 MVC 演变而来，它们的基本思想有相通的地方：Controller/Presenter 负责逻辑的处理，Model 提供数据，View 负责显示。</p>
-<p>和MVC不同的是，MVP 里的 Presenter 层会定义一个协议 Contract, 抽象出View层里会调用的接口， 比如查询数据等等，封装到 Presenter 接口里，以及抽象出 具体的 Presenter 实现中，需要调用的 UI 操作，比如查询完数据要将数据回传给 View 层</p>
-<p>简单的伪代码例子，</p>
-<pre><code>// 在 Contract 里，定义好 Presenter 接口和 View 相关接口
-public interface ListDataContract {
-
-    interface ListDataView extends BaseView {
-        // 填充数据
-        void fillData(List&lt;Item&gt; obj);
-    }
-
-    interface Presenter extends BasePresenter {
-        // 返回指定数据
-        boolean queryData();
-    }
-}
-</code></pre><p>在 View 里使用</p>
-<pre><code>public class MainActivity extends BaseActivity  implements ListDataContract.ListDataView {
-
-    ListDataContract.Presenter mPresenter;
-
-    void init() {
-        ...
-        mPresenter.getData();
-        ...
-    }
-
-    void fillData(List&lt;Item&gt; obj) {
-        // 更新 UI
-    }
-
-}
-</code></pre><p>而实际的 Presenter 实现,</p>
-<pre><code>public class ListPresenter implements   ListDataContract.Presenter {
-
-    ListDataContract.ListDataView mView;
-
-    boolean getData() {
-        // 通过 model 获取数据
-        List&lt;Item&gt; data = model.queryData();
-        // 更新到视图里
-        mView.fillData(data);
-    }
-}
-</code></pre><p>可以看出， MVP 很好的将 View 和 Model 分开，解耦效果出众。 如果我们的 Presenter 定义良好，就可以达到很好的复用代码效果，不仅 model 层可以复用， 就连 Precenter 层也可以复用， 这也是 MVP 和 MVC 很大的一个区别之处，因为 MVC 里的 Controller 很难达到复用的效果。 还有一个优点是，不需要引入很多的其他框架就可以使用</p>
-<p>不过 MVP 的缺点也比较明显， 就是需要创建大量的 Contract 接口类</p>
-<h3 id="MVVM"><a href="#MVVM" class="headerlink" title="MVVM"></a>MVVM</h3><p>MVVM 是 Model-View-ViewModel 的简写。<br>MVVM 在使用当中，通常还会利用双向绑定技术，使得 Model 变化时，ViewModel 会自动更新，而 ViewModel 变化时，View 也会自动变化。所以，MVVM 模式有些时候又被称作：model-view-binder 模式。</p>
-<p>在理解了 MVP 之后，MVVM 其实是在 MVP 的基础上演变而来的，功能基本相同，因此 ViewModel 其实就是相当于 MVP 里的 Presenter，用于将 View 和 Model 解耦。不同的是， MVVM 采用的是 数据绑定技术，或者数据的双向绑定技术。ViewModel 通常要实现一个 observer 观察者，当数据发生变化，ViewModel 能够监听到数据的这种变化，然后通知到对应的视图做自动更新。而当用户操作视图，ViewModel 也能监听到视图的变化，然后通知数据做改动，这实际上就实现了数据的双向绑定。并且 MVVM 中的 View 和 ViewModel 可以互相通信。MVVM 流程图如下：</p>
-<p>推荐Google 官网的 Android MVVM 组件<br><a href="https://developer.android.com/jetpack/#architecture-components" target="_blank" rel="noopener">Architecture Components</a></p>
-<h4 id="MVVM-的作用和问题"><a href="#MVVM-的作用和问题" class="headerlink" title="MVVM 的作用和问题"></a>MVVM 的作用和问题</h4><p>MVVM 在实际使用中，确实能够使得 Model 层和 View 层解耦，但是如果你需要实现 MVVM 中的双向绑定的话，那么通常就需要引入更多复杂的框架来实现了。<br>对此，MVVM 的作者 John Gossman 的 批评 应该是最为中肯的。John Gossman 对 MVVM 的批评主要有两点：</p>
-<ol>
-<li><p>数据绑定使得 Bug 很难被调试。你看到界面异常了，有可能是你 View 的代码有 Bug，也可能是 Model 的代码有问题。数据绑定使得一个位置的 Bug 被快速传递到别的位置，要定位原始出问题的地方就变得不那么容易了。</p>
-</li>
-<li><p>对于过大的项目，数据绑定需要花费更多的内存。</p>
-</li>
-</ol>
-<p>某种意义上来说，我认为就是数据绑定使得 MVVM 变得复杂和难用了。但是，这个缺点同时也被很多人认为是优点。</p>
-
-          
+          要介绍MVP，MVVM，我们不得不提 MVC 框架，因为 MVC 是最早出现的软件设计典范，其他的都是在此基础上迭代更新而来的，各有优势，适用的场景各有不同，但他们的共同点是他们的目的都是为了复用代码。注意: 这些架构模式跟设计模式是两种不同的东西。
+MVC架构MVC 的概念最早出现在二十世纪八十年代的 施乐帕克 实验室中（就是那个发明图形用户界面和鼠标的实验室），当时施乐帕克为 Smalltalk 发明了这种软件设计模式。  
+Mod
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2019/09/03/android/MVVM-MVP框架对比/#more" rel="contents">
+              Read more &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -708,23 +690,18 @@ public interface ListDataContract {
       
         
           
-            <h3 id="String"><a href="#String" class="headerlink" title="String"></a>String</h3><p>我们都知道 String 是 final 修饰的类，因此它的值是不可变的，这就导致每次对String的操作都会生成新的 String 对象。<br>很明显，频繁对 String 做操作时，不仅效率低下，而且大量浪费有限的内存空间。<br>简单的例子如</p>
-<pre><code>String str = &quot;hello&quot;;
+          String我们都知道 String 是 final 修饰的类，因此它的值是不可变的，这就导致每次对String的操作都会生成新的 String 对象。很明显，频繁对 String 做操作时，不仅效率低下，而且大量浪费有限的内存空间。简单的例子如
+String str = &quot;hello&quot;;
 str += &quot;world!&quot;;
-</code></pre><p>普通的 String + 操作, 由于 String 不可修改值， 因此会在内存中占用三个位置，分别为， “hello”, “world!”, “hello world!”</p>
-<h3 id="StringBuilder-amp-StringBuffer"><a href="#StringBuilder-amp-StringBuffer" class="headerlink" title="StringBuilder &amp; StringBuffer"></a>StringBuilder &amp; StringBuffer</h3><p>当我们需要对字符串进行修改的时候，Java提供了 StringBuffer 和 StringBuilder 类。<br>和 String 类不同的是，StringBuffer 和 StringBuilder 类的对象能够被多次的修改，并且不产生新的未使用对象。二者的区别是 </p>
-<ol>
-<li>StringBuilder 的方法不是线程安全的</li>
-<li>StringBuilder 速度会比 StringBuffer 快</li>
-</ol>
-<p>因此，在实际开发过程中，</p>
-<ol>
-<li>如果要操作少量的数据用 String；</li>
-<li>多线程操作字符串缓冲区下操作大量数据 StringBuffer；</li>
-<li>单线程操作字符串缓冲区下操作大量数据 StringBuilder。</li>
-</ol>
-
-          
+普通的 String + 操作, 由于 String 不可修改值， 因此会
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2019/09/02/java/String-StringBuilder-StringBuffer区别/#more" rel="contents">
+              Read more &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -842,243 +819,18 @@ str += &quot;world!&quot;;
       
         
           
-            <p>Google Launcher3默认是抽屉型的桌面，到Android 8.0依然是没有这样的功能。这样的功能是手机厂商提供给我们的，不得不说，横向排列的桌面<br>更适合国人的使用习惯，可能是使用iphone的习惯吧。</p>
-<p>好，那我们如何实现这样功能呢?其实并不会太难的。</p>
-<p>在Launcher加载流程里，我们知道桌面的数据是在LauncherModel的 LoaderTask完成加载的</p>
-<p>我们在loadAndBindAllApps()方法调用之后添加一个verifyApplications()方法调用，为什么在这里调用呢？<br>因为只用当应用数据加载完全后，我们才能讲所有的应用进行横向绑定到Workspace的操作</p>
-<pre><code>@Override
-public void run() {
-    AppTypeHelper.configSystemAppIcon(mContext);
-
-    synchronized (mLock) {
-        if (mStopped) {
-            return;
-        }
-        mIsLoaderTaskRunning = true;
-    }
-    // Optimize for end-user experience: if the Launcher is up and // running with the
-    // All Apps interface in the foreground, load All Apps first. Otherwise, load the
-    // workspace first (default).
-    keep_running:
-    {
-        if (DEBUG_LOADERS) {
-            Log.d(TAG, &quot;step 1: loading workspace&quot;);
-        }
-        loadAndBindWorkspace();
-
-        if (mStopped) {
-            break keep_running;
-        }
-
-        waitForIdle();
-
-        // second step
-        if (DEBUG_LOADERS) {
-            Log.d(TAG, &quot;step 2: loading all apps&quot;);
-        }
-        loadAndBindAllApps();
-    }
-
-    if (LauncherAppState.getInstance().getInvariantDeviceProfile()
-            .isDisableAllApps) {
-        verifyApplications();
-    }
-    // Clear out this reference, otherwise we end up holding it until all of the
-    // callback runnables are done.
-    mContext = null;
-
-    synchronized (mLock) {
-        // If we are still the last one to be scheduled, remove ourselves.
-        if (mLoaderTask == this) {
-            mLoaderTask = null;
-        }
-        mIsLoaderTaskRunning = false;
-        mHasLoaderCompletedOnce = true;
-    }
-}
-</code></pre><p>这里呢，我简单的添加了一个布尔值 LauncherAppState.getInstance().getInvariantDeviceProfile().isDisableAllApps 表示是否启用横屏桌面，小伙伴开发的时候建议做成开关的方式，以满足不同的产品需求。</p>
-<p>verifyApplications方法里怎么实现呢？来看</p>
-<pre><code>private void verifyApplications() {
-    final Context context = mApp.getContext();
-
-    // Cross reference all the applications in our apps list with items in the workspace
-    ArrayList&lt;ItemInfo&gt; tmpInfos;
-    ArrayList&lt;ItemInfo&gt; added = new ArrayList&lt;ItemInfo&gt;();
-    synchronized (sBgLock) {
-        for (AppInfo app : mBgAllAppsList.data) {
-            tmpInfos = getItemInfoForComponentName(app.componentName, app.user);
-            if (tmpInfos.isEmpty()) {
-                // ignore the apps
-                if (mIgnoreAppsList.contain(app.componentName.getPackageName())) {
-                    continue;
-                }
-                // We are missing an application icon, so add this to the workspace
-                added.add(app);
-                // This is a rare event, so lets log it
-                // Log.e(TAG, &quot;Missing Application on load: &quot; + app);
-            }
-        }
-    }
-    if (!added.isEmpty()) {
-        addAndBindAddedWorkspaceItems(context, added);
-    }
-}
-</code></pre><p>如果小伙伴有用心看加载流程的细节的话，在loadAndBindAllApps()方法里，会把获取到的所有应用信息保存到 AllAppsList这个类里，也就是 mBgAllAppsList.data 里面，故<br>我们遍历data数据，将需要绑定的数据绑定到Workspace上就可以了。这里还有一个方法 getItemInfoForComponentName ，作用是 mBgAllAppsList.data的数据跟sBgItemsIdMap里<br>的数据做匹配，避免因为线程的关系将不必要的数据添加到桌面</p>
-<p>拿到数据的备份added集合后，我们使用LauncherModel里的 addAndBindAddedWorkspaceItems 方法添加item</p>
-<p>   /**</p>
-<pre><code> * Adds the provided items to the workspace.
- */
-public void addAndBindAddedWorkspaceItems(final Context context,
-                                          final ArrayList&lt;? extends ItemInfo&gt; workspaceApps) {
-    final Callbacks callbacks = getCallback();
-    if (workspaceApps.isEmpty()) {
-        return;
-    }
-    // Process the newly added applications and add them to the database first
-    Runnable r = new Runnable() {
-        @Override
-        public void run() {
-            final ArrayList&lt;ItemInfo&gt; addedShortcutsFinal = new ArrayList&lt;ItemInfo&gt;();
-            final ArrayList&lt;Long&gt; addedWorkspaceScreensFinal = new ArrayList&lt;Long&gt;();
-
-            // Get the list of workspace screens.  We need to append to this list and
-            // can not use sBgWorkspaceScreens because loadWorkspace() may not have been
-            // called.
-            ArrayList&lt;Long&gt; workspaceScreens = loadWorkspaceScreensDb(context);
-            synchronized (sBgLock) {
-                for (ItemInfo item : workspaceApps) {
-
-                    if (item instanceof ShortcutInfo) {
-                        // Short-circuit this logic if the icon exists somewhere on the workspace
-                        if (shortcutExists(context, item.getIntent(), item.user)) {
-                            continue;
-                        }
-                    }
-                    // Find appropriate space for the item.
-                    Pair&lt;Long, int[]&gt; coords = findSpaceForItem(context,
-                            workspaceScreens, addedWorkspaceScreensFinal,
-                            1, 1);
-                    long screenId = coords.first;
-                    int[] cordinates = coords.second;
-
-                    ItemInfo itemInfo;
-                    if (item instanceof ShortcutInfo || item instanceof FolderInfo) {
-                        itemInfo = item;
-                    } else if (item instanceof AppInfo) {
-                        itemInfo = ((AppInfo) item).makeShortcut();
-                    } else {
-                        throw new RuntimeException(&quot;Unexpected info type&quot;);
-                    }
-
-                    // Add the shortcut to the db
-                    addItemToDatabase(context, itemInfo,
-                            LauncherSettings.Favorites.CONTAINER_DESKTOP,
-                            screenId, cordinates[0], cordinates[1]);
-                    // Save the ShortcutInfo for binding in the workspace
-                    addedShortcutsFinal.add(itemInfo);
-                }
-            }
-
-            // Update the workspace screens
-            updateWorkspaceScreenOrder(context, workspaceScreens);
-
-            if (!addedShortcutsFinal.isEmpty()) {
-                runOnMainThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        Callbacks cb = getCallback();
-                        if (callbacks == cb &amp;&amp; cb != null) {
-                            final ArrayList&lt;ItemInfo&gt; addAnimated = new ArrayList&lt;ItemInfo&gt;();
-                            final ArrayList&lt;ItemInfo&gt; addNotAnimated = new ArrayList&lt;ItemInfo&gt;();
-                            if (!addedShortcutsFinal.isEmpty()) {
-                                ItemInfo info = addedShortcutsFinal.get(addedShortcutsFinal.size() - 1);
-                                long lastScreenId = info.screenId;
-                                for (ItemInfo i : addedShortcutsFinal) {
-                                    if (i.screenId == lastScreenId) {
-                                        addAnimated.add(i);
-                                    } else {
-                                        addNotAnimated.add(i);
-                                    }
-                                }
-                            }
-                            callbacks.bindAppsAdded(addedWorkspaceScreensFinal,
-                                    addNotAnimated, addAnimated, null);
-                        }
-                    }
-                });
-            }
-        }
-    };
-    runOnWorkerThread(r);
-}
-</code></pre><p>这里就跟加载流程里的绑定worksspace的Screen类似了。简单的介绍一下细节，</p>
-<ol>
-<li>从数据库拿到ScreenId信息 workspaceScreens，遍历需要添加的item信息  </li>
-<li>通过findSpaceForItem 方法在workspace上找到空余的位置，如果没有位置会新创建一个Screen出来。  </li>
-<li>根据ItemInfo的类型创建ShortcutInfo，将ShortcutInfo，screen order信息更新到数据库</li>
-<li><p>拿到Launcher 这个callbacks调用 bindAppsAdded，开始绑定到workspace</p>
-<p> @Override<br> public void bindAppsAdded(final ArrayList<long> newScreens,</long></p>
-<pre><code>                      final ArrayList&lt;ItemInfo&gt; addNotAnimated,
-                      final ArrayList&lt;ItemInfo&gt; addAnimated,
-                      final ArrayList&lt;AppInfo&gt; addedApps) {
-Log.e(TAG, &quot;bindAppsAdded&quot;);
-Runnable r = new Runnable() {
-    @Override
-    public void run() {
-        bindAppsAdded(newScreens, addNotAnimated, addAnimated, addedApps);
-    }
-};
-if (waitUntilResume(r)) {
-    return;
-}
-
-// Add the new screens
-if (newScreens != null) {
-    bindAddScreens(newScreens);
-}
-
-// We add the items without animation on non-visible pages, and with
-// animations on the new page (which we will try and snap to).
-if (addNotAnimated != null &amp;&amp; !addNotAnimated.isEmpty()) {
-    bindItems(addNotAnimated, 0,
-            addNotAnimated.size(), false);
-}
-if (addAnimated != null &amp;&amp; !addAnimated.isEmpty()) {
-    bindItems(addAnimated, 0,
-            addAnimated.size(), true);
-}
-
-// Remove the extra empty screen
-mWorkspace.removeExtraEmptyScreen(false, false);
-
-if (addedApps != null &amp;&amp; mAppsView != null) {
-    mAppsView.addApps(addedApps);
-}
-</code></pre><p> }</p>
-</li>
-</ol>
-<p>可以发现，会先使用新生成的ScreenId创建screen，之后才开始bindItems， 如果继续往bindItems里看你就会发现，会在WorkSpace里调用addInScreenFromBind，完成图标的创建。</p>
-<p>这里有个地方值得我们提一下，就是 waitUntilResume 方法的使用，在很多地方都会使用这个方法。 作用是在Launcher onResume的时候再执行我们的Runnable。通常，类似的操作<br>我们会直接在onResume调用或实现，如果操作一多，onResume里就会很臃肿，不好维护</p>
-<pre><code>@Thunk
-boolean waitUntilResume(Runnable run, boolean deletePreviousRunnables) {
-    if (mPaused) {
-        if (LOGD) {
-            Log.d(TAG, &quot;Deferring update until onResume&quot;);
-        }
-        if (deletePreviousRunnables) {
-            while (mBindOnResumeCallbacks.remove(run)) {
-            }
-        }
-        mBindOnResumeCallbacks.add(run);
-        return true;
-    } else {
-        return false;
-    }
-}
-</code></pre><p>这里使用的是一个状态的机制，在mPaused的状态，把需要执行的runnable添加到mBindOnResumeCallbacks，在onResume的时候在遍历出来执行即可.<br>这样就能将抽屉型的Launcher改造成横向的Launcher了，当然改完之后可能会有一些bug，比如桌面里的应用都是 ShortcutInfo类型的，在拖拽时没有查看信息的功能等等<br>就需要小伙伴自己修改啦</p>
-<p>感谢阅读～</p>
-
-          
+          Google Launcher3默认是抽屉型的桌面，到Android 8.0依然是没有这样的功能。这样的功能是手机厂商提供给我们的，不得不说，横向排列的桌面更适合国人的使用习惯，可能是使用iphone的习惯吧。
+好，那我们如何实现这样功能呢?其实并不会太难的。
+在Launcher加载流程里，我们知道桌面的数据是在LauncherModel的 LoaderTask完成加载的
+我们在loadAndBindAllApps()方法调用之后添加一
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2019/01/02/android/Launcher3抽屉型桌面改造成横屏桌面/#more" rel="contents">
+              Read more &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -1196,74 +948,19 @@ boolean waitUntilResume(Runnable run, boolean deletePreviousRunnables) {
       
         
           
-            <h3 id="左一屏"><a href="#左一屏" class="headerlink" title="左一屏"></a>左一屏</h3><p>可能有的小伙伴不清楚什么是左一屏，或者是负一屏。以我的了解，在智能手机还没有普及的时候，最早的左一屏的概念是来自Apple 苹果电脑的dashboard操作面板,如下图</p>
-<p><img src="http://upload-images.jianshu.io/upload_images/2621624-76e486193011177e.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="dashboard"></p>
-<p>后来iphone, Android也都使用了这个概念，相对PC而言，手机上的dashboard相对的精简了许多。如图<br><img src="http://upload-images.jianshu.io/upload_images/2621624-98eedeba52a96b23.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="iphone dashboard"></p>
-<p>以上图片来源于Apple官网</p>
-<p>用过Google亲儿子手机的小伙伴都会发现，原生的Launcher并没有左一屏的功能，而像最近新出的手机都带了这个功能。<br>但其实dashboard的功能Google已经提供给我们了.</p>
-<p>我们找到WorkSpace里的 createCustomContentContainer ，这个方法就是创建dashboard的功能。</p>
-<pre><code>WorkSpace.java
+          左一屏可能有的小伙伴不清楚什么是左一屏，或者是负一屏。以我的了解，在智能手机还没有普及的时候，最早的左一屏的概念是来自Apple 苹果电脑的dashboard操作面板,如下图
 
-public void createCustomContentContainer() {
-    CellLayout customScreen = (CellLayout)
-            mLauncher.getLayoutInflater().inflate(R.layout.workspace_screen, this, false);
-    customScreen.disableDragTarget();
-    customScreen.disableJailContent();
-
-    mWorkspaceScreens.put(CUSTOM_CONTENT_SCREEN_ID, customScreen);
-    mScreenOrder.add(0, CUSTOM_CONTENT_SCREEN_ID);
-
-    // We want no padding on the custom content
-    customScreen.setPadding(0, 0, 0, 0);
-
-    addFullScreenPage(customScreen);
-
-    // Ensure that the current page and default page are maintained.
-    mDefaultPage = mOriginalDefaultPage + 1;
-
-    // Update the custom content hint
-    if (mRestorePage != INVALID_RESTORE_PAGE) {
-        mRestorePage = mRestorePage + 1;
-    } else {
-        setCurrentPage(getCurrentPage() + 1);
-    }
-    updateCustomContentMarker();
-}
-</code></pre><p>我们都知道Launcher的工作台是WorkSpace，而Workspace里的每一屏就是CellLayout啦。可以发现，从布局 R.layout.workspace_screen inflate出CellLayout，然后以全屏的方式添加到WorkSpace中，指定dashboard的特定screenId CUSTOM_CONTENT_SCREEN_ID -301，同时更新我们的默认主页 mDefaultPage。</p>
-<p>知道创建的方法，那怎么把它启用呢？<br>找到它的调用方法，在Launcher的bindScreens方法里。创建dashboard的条件是 hasCustomContentToLeft()</p>
-<pre><code>@Override
-public void bindScreens(ArrayList&lt;Long&gt; orderedScreenIds) {
-    bindAddScreens(orderedScreenIds);
-    // If there are no screens, we need to have an empty screen
-    if (orderedScreenIds.size() == 0) {
-        mWorkspace.addExtraEmptyScreen();
-    }
-
-    // Create the custom content page (this call updates mDefaultScreen which calls
-    // setCurrentPage() so ensure that all pages are added before calling this).
-    if (hasCustomContentToLeft()) {
-        mWorkspace.createCustomContentContainer();
-        populateCustomContentContainer();
-    }
-}
-</code></pre><p>hasCustomContentToLeft方法，有一个LauncherCallbacks的回调，这样我们就有思路了</p>
-<pre><code> /**
- * To be overridden by subclasses to hint to Launcher that we have custom content
- */
-protected boolean hasCustomContentToLeft() {
-    if (mLauncherCallbacks != null) {
-        return mLauncherCallbacks.hasCustomContentToLeft();
-    }
-    return false;
-}
-</code></pre><ol>
-<li>可以在继承Launcher的子类里设置一个LauncherCallbacks， 并让hasCustomContentToLeft() 方法返回true即可  </li>
-<li>或者直接修改这个方法，直接返回true也可以</li>
-</ol>
-<p>但其实上面的方法都不太好，因为在众多的体验中，有人喜欢这个功能，也有人不喜欢这个功能。故我们比较好的做法是设计一个开关的功能，<br>让用户自行选择即可。</p>
-<p>至于dashboard放什么内容就很值得考究了，设计得好的话就会让用户爱不释手，这个就交给产品经理吧。</p>
-
-          
+后来iphone, Android也都使用了这个概念，相对PC而言，手机上的dashboard相对的精简了许多。如图
+以上图片来源于Apple官网
+用过Google亲儿子手机的小伙伴都会发现，原生的Launcher并没有左一屏的功能，而像最近新出的手机都带了这个
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2019/01/02/android/Launcher3负一屏的定制开发/#more" rel="contents">
+              Read more &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -1381,19 +1078,17 @@ protected boolean hasCustomContentToLeft() {
       
         
           
-            <h3 id="引言"><a href="#引言" class="headerlink" title="引言"></a>引言</h3><p>当用户买了一台新的Android手机时，除了安装常用的应用，换壁纸，换主题也是用户一个高频的操作。如果我们占据了用户的主入口，那么我们就拥有了全世界，咳咳，一不小心暴露了野心了。  </p>
-<h3 id="目的"><a href="#目的" class="headerlink" title="目的"></a>目的</h3><p>为什么要介绍Launcher呢？Launcher源码里没有使用流行的开源库，都是活用Android API，优秀的稳定性，高性能都很值得我们学习。复杂的自定义View，炒鸡复杂的拖拽处理等等，都是我们向高级Android进阶所要掌握的知识。</p>
-<p>值得注意的是，Launcher里基本没有接口调用，相对独立，对于没有web开发知识的朋友，想做出一款属于自己的应用，却又没有思路，不知从何开始，不妨可以考虑做Launcher的开发。<br>国内的各大应用市场和Google Play上，能搜索到其实也不少，其中比较令人惊艳的有Hola桌面等，我个人比较喜欢的是Android 8.0 Oreo桌面，有机会在Android 8.0的源码上开发一款Launcher。从Play商店上看，各种桌面的下载量都不错，而且质量都会比国内的好。对于不能翻墙的用户，是不是我们也可以开发一款更适合国内用户使用习惯的桌面呢？</p>
-<h3 id="目录"><a href="#目录" class="headerlink" title="目录"></a>目录</h3><p>桌面的开发是基于Android N的Launcher3，文章会分如下几篇文章，</p>
-<ol>
-<li><a href="https://www.jianshu.com/p/3e918982e5c6" target="_blank" rel="noopener">Launcher3 桌面加载流程分析(上)</a></li>
-<li><a href="https://www.jianshu.com/p/7035b2d8136e" target="_blank" rel="noopener">Launcher3 桌面加载流程分析(下)</a></li>
-<li><a href="https://www.jianshu.com/p/d8c97bf13c25" target="_blank" rel="noopener">Launcher3 抽屉型桌面改造成横屏桌面</a></li>
-<li><a href="https://www.jianshu.com/p/85e56d560c0c" target="_blank" rel="noopener">Launcher3 负一屏的定制开发</a></li>
-<li><a href="https://www.jianshu.com/p/ed497d123f5b" target="_blank" rel="noopener">Launcher3 添加主题功能</a></li>
-</ol>
-
-          
+          引言当用户买了一台新的Android手机时，除了安装常用的应用，换壁纸，换主题也是用户一个高频的操作。如果我们占据了用户的主入口，那么我们就拥有了全世界，咳咳，一不小心暴露了野心了。  
+目的为什么要介绍Launcher呢？Launcher源码里没有使用流行的开源库，都是活用Android API，优秀的稳定性，高性能都很值得我们学习。复杂的自定义View，炒鸡复杂的拖拽处理等等，都是我们向高级Android进阶所要掌握的知识。
+值得注
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2019/01/02/android/Launcher3桌面开发简述/#more" rel="contents">
+              Read more &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -1511,263 +1206,18 @@ protected boolean hasCustomContentToLeft() {
       
         
           
-            <p>Android中，Handler虽然不是四大组件，但用的次数也不比Activity，Service等四大组件少。虽然大家都知道怎么使用Handler，但是我们不能仅仅停留在使用的层面，对其机制的分析会加深我们对Android的理解。当然了，最终的目的就是在面试的时候碾压面试官，本系列将会对Handler机制做详细的分析。</p>
-<p>由于篇幅可能比较长，该系列将分文下面几篇文章：</p>
-<ol>
-<li><a href="http://www.jianshu.com/p/408d550c4c77" target="_blank" rel="noopener">Handler,MessageQueue,与Looper三者关系分析</a>  </li>
-<li><a href="http://www.jianshu.com/p/73c7fbb4cc76" target="_blank" rel="noopener">HandlerThread源码分析</a>  </li>
-<li><a href="http://www.jianshu.com/p/95ff2b82ff38" target="_blank" rel="noopener">IntentService源码分析</a>  </li>
-<li><a href="http://www.jianshu.com/p/26d0a03e5a35" target="_blank" rel="noopener">Handler常见应用场景和常见问题分析</a></li>
-</ol>
-<h3 id="Handler-MessageQueue-Looper的关系分析"><a href="#Handler-MessageQueue-Looper的关系分析" class="headerlink" title="Handler,MessageQueue,Looper的关系分析"></a>Handler,MessageQueue,Looper的关系分析</h3><p>要理清这三者的暧昧关系，我们先分别简单介绍一下它们</p>
-<h4 id="Handler"><a href="#Handler" class="headerlink" title="Handler"></a>Handler</h4><pre><code>A Handler allows you to send and process Message and Runnable
-objects associated with a thread&apos;s MessageQueue.
-</code></pre><p>如官网描述的，我们可以用Handler发送并处理Message对象或者一个Runnable对象，并关联到一个线程的消息队列里，即MessageQueue，而关联的线程就是创建Handler的线程。</p>
-<p>Handler使用场景</p>
-<ol>
-<li>在未来某个时间点上处理Message或者执行Runnable</li>
-<li>将需要执行的操作通过Handler发送消息在其他线程里执行</li>
-</ol>
-<h3 id="Lopper"><a href="#Lopper" class="headerlink" title="Lopper"></a>Lopper</h3><p>通常线程默认是不具备循环处理消息的能力的，我们也不能直接在子线程里 new Handler 的，而Looper就是用来给线程提供循环处理消息能力的类。<br>当我们需要循环处理消息时，我们在创建Handler的线程里调用Looper.prepare()准备好Looper，之后再调用Looper.loop()开始循环处理消息。<br>如果我们是在主线程创建的Handler，就不需要做上面的两个操作了，因为主线程已经帮我们处理好了</p>
-<p>一个经典的用法如下</p>
-<pre><code>class LooperThread extends Thread {
-    public Handler mHandler;
+          Android中，Handler虽然不是四大组件，但用的次数也不比Activity，Service等四大组件少。虽然大家都知道怎么使用Handler，但是我们不能仅仅停留在使用的层面，对其机制的分析会加深我们对Android的理解。当然了，最终的目的就是在面试的时候碾压面试官，本系列将会对Handler机制做详细的分析。
+由于篇幅可能比较长，该系列将分文下面几篇文章：
 
-    public void run() {
-        Looper.prepare();
-
-        mHandler = new Handler() {
-            public void handleMessage(Message msg) {
-                // process incoming messages here
-            }
-        };
-
-        Looper.loop();
-    }
-}
-</code></pre><h3 id="MessageQueue"><a href="#MessageQueue" class="headerlink" title="MessageQueue"></a>MessageQueue</h3><p>顾名思义，消息队列。持有Handler发送的消息列表，我们可以使用<br>Looper.myQueue()来拿到这个对象。</p>
-<p>除了上面的三个大头外，还有一个虽然也很重要，但我们不用对他做太多文章，因为它只起到承载信息的作用，也就是我们的Message对象。Handler发送和处理的对象都是它，可能你会说Handler的方法里不一定要使用Message来发送呀，不着急，等等分析源码的时候我们就为什么这么说了</p>
-<h3 id="工作原理"><a href="#工作原理" class="headerlink" title="工作原理"></a>工作原理</h3><p>当我们创建Handler时，每个Handler实例都会关联一个线程以及这个线程的消息队列，这个线程指的就是创建Handler的线程。</p>
-<p>怎么理解呢？ 其实很简单，Android里线程无非就是主线程(或UI线程)和子线程，从这点入手，我们就可以理解，如果在主线程创建Handler，会关联到主线程以及主线程里的消息队列, 子线程创建的Handler会关联到子线程以及子线程的消息队列</p>
-<p>具体是怎么实现的呢？我们从源码入手看看端倪，</p>
-<h4 id="初始化"><a href="#初始化" class="headerlink" title="初始化"></a>初始化</h4><p>当我们new Handler()时，会调用到下面这个构造方法，其中 Callback是null，async是false</p>
-<pre><code>public Handler(Callback callback, boolean async) {
-    if (FIND_POTENTIAL_LEAKS) {
-        final Class&lt;? extends Handler&gt; klass = getClass();
-        if ((klass.isAnonymousClass() || klass.isMemberClass() || klass.isLocalClass()) &amp;&amp;
-                (klass.getModifiers() &amp; Modifier.STATIC) == 0) {
-            Log.w(TAG, &quot;The following Handler class should be static or leaks might occur: &quot; +
-                klass.getCanonicalName());
-        }
-    }
-
-    mLooper = Looper.myLooper();
-    if (mLooper == null) {
-        throw new RuntimeException(
-            &quot;Can&apos;t create handler inside thread that has not called Looper.prepare()&quot;);
-    }
-    mQueue = mLooper.mQueue;
-    mCallback = callback;
-    mAsynchronous = async;
-}
-</code></pre><p>溢出标识FIND_POTENTIAL_LEAKS默认是flase, 故会先执行 Looper.myLooper, 发现就只调用了ThreadLocal的get方法返回一个Looper</p>
-<pre><code>public static Looper myLooper() {
-    return sThreadLocal.get();
-}
-</code></pre><p>ThreadLocal里的get实现</p>
-<pre><code>/**
-    * Returns the value of this variable for the current thread. If an entry
-    * doesn&apos;t yet exist for this variable on this thread, this method will
-    * create an entry, populating the value with the result of
-    * {@link #initialValue()}.
-    *
-    * @return the current value of the variable for the calling thread.
-    */
-@SuppressWarnings(&quot;unchecked&quot;)
-public T get() {
-    // Optimized for the fast path.
-    Thread currentThread = Thread.currentThread();
-    Values values = values(currentThread);
-    if (values != null) {
-        Object[] table = values.table;
-        int index = hash &amp; values.mask;
-        if (this.reference == table[index]) {
-            return (T) table[index + 1];
-        }
-    } else {
-        values = initializeValues(currentThread);
-    }
-
-    return (T) values.getAfterMiss(this);
-}
-
-/**
-    * Gets Values instance for this thread and variable type.
-    */
-Values values(Thread current) {
-    return current.localValues;
-}
-</code></pre><p>我们看到，获取到当前的线程并取得其ThreadLocal.Values成员变量, 而这个成员变量的初始化的地方也就是在这个get方法里调用initializeValues(currentThread)</p>
-<pre><code>/**
- * Creates Values instance for this thread and variable type.
- */
-Values initializeValues(Thread current) {
-    return current.localValues = new Values();
-}
-</code></pre><p>Value的构造</p>
-<pre><code>/**
- * Constructs a new, empty instance.
- */
-Values() {
-    initializeTable(INITIAL_SIZE);
-    this.size = 0;
-    this.tombstones = 0;
-}
-
-private void initializeTable(int capacity) {
-    this.table = new Object[capacity * 2];
-    this.mask = table.length - 1;
-    this.clean = 0;
-    this.maximumLoad = capacity * 2 / 3; // 2/3
-}
-</code></pre><p>ThreadLocal和Value功能就是提供一个Map功能的Object数组来存储数据。</p>
-<p>初始化完线程的ThreadLocal.Value后，Looper.myLooper() 最后会调用 ThreadLocal get方法里的 values.getAfterMiss(this)</p>
-<pre><code>/**
-    * Gets value for given ThreadLocal after not finding it in the first
-    * slot.
-    */
-Object getAfterMiss(ThreadLocal&lt;?&gt; key) {
-    Object[] table = this.table;
-    int index = key.hash &amp; mask;
-
-    // If the first slot is empty, the search is over.
-    if (table[index] == null) {
-        Object value = key.initialValue();
-
-        // If the table is still the same and the slot is still empty...
-        if (this.table == table &amp;&amp; table[index] == null) {
-            table[index] = key.reference;
-            table[index + 1] = value;
-            size++;
-
-            cleanUp();
-            return value;
-        }
-
-        // The table changed during initialValue().
-        put(key, value);
-        return value;
-    }
-    ...
-}
-</code></pre><p>因为是第一次初始化，满足条件 table[index] == null，会return key.initialValue()，而</p>
-<pre><code>protected T initialValue() {
-    return null;
-}
-</code></pre><p>什么鬼，看了这么久return一个null…好吧，那就null吧。<br>我们回过头来看Handler的初始化，会发现由于mLooper为null会抛出一个RuntimeException</p>
-<pre><code>Can&apos;t create handler inside thread that has not called Looper.prepare()
-</code></pre><p>所以，我们不得不先调用 Looper.prepare()</p>
-<pre><code>/**
-* quitAllowed will be true
-**/
-private static void prepare(boolean quitAllowed) {
-    if (sThreadLocal.get() != null) {
-        throw new RuntimeException(&quot;Only one Looper may be created per thread&quot;);
-    }
-    sThreadLocal.set(new Looper(quitAllowed));
-}
-</code></pre><p>可以看到，在这里给Looper里的ThreadLocal初始化了一个Looper，这样当我们调用 Looper.myLooper()的时候，其实就是从ThreadLocal里取出在这里初始化的Looper。<br>好，接着我们看Looper的初始化</p>
-<pre><code>private Looper(boolean quitAllowed) {
-    mQueue = new MessageQueue(quitAllowed);
-    mThread = Thread.currentThread();
-}
-</code></pre><p>Looper里创建了一个MessageQueue,并保存当前的线程，也就是我们之前一直提到的 Handler会关联到一个线程。而Handler里的成员变量mQueue也就是Lopper里的mQueue。 到这里初始化就告一段落了</p>
-<h4 id="发送消息"><a href="#发送消息" class="headerlink" title="发送消息"></a>发送消息</h4><p>初始化完成后，我们就可以通过Handler的postxxx, sendxxx方法来发送消息<br>我们看sendEmptyMessage方法就可以发现，层层嵌套最终调用的是 sendMessageAtTime 方法</p>
-<p>sendEmptyMessage</p>
-<pre><code>public final boolean sendEmptyMessage(int what) {
-    return sendEmptyMessageDelayed(what, 0);
-}
-</code></pre><p>sendMessageDelayed</p>
-<pre><code>public final boolean sendEmptyMessageDelayed(int what, long delayMillis) {
-    Message msg = Message.obtain();
-    msg.what = what;
-    return sendMessageDelayed(msg, delayMillis);
-}
-</code></pre><p>如果是post一个Runnable，它还会调用下面这个方法，将Runnable复制给Message里的callback成员变量，所以说Handler发送和处理的都是Message对象</p>
-<pre><code>private static Message getPostMessage(Runnable r) {
-    Message m = Message.obtain();
-    m.callback = r;
-    return m;
-}
-</code></pre><p>sendMessageDelayed</p>
-<pre><code>public final boolean sendMessageDelayed(Message msg, long delayMillis) {
-    if (delayMillis &lt; 0) {
-        delayMillis = 0;
-    }
-    return sendMessageAtTime(msg, SystemClock.uptimeMillis() + delayMillis);
-}
-</code></pre><p>sendMessageAtTime</p>
-<pre><code>public boolean sendMessageAtTime(Message msg, long uptimeMillis) {
-    MessageQueue queue = mQueue;
-    if (queue == null) {
-        RuntimeException e = new RuntimeException(
-                this + &quot; sendMessageAtTime() called with no mQueue&quot;);
-        Log.w(&quot;Looper&quot;, e.getMessage(), e);
-        return false;
-    }
-    return enqueueMessage(queue, msg, uptimeMillis);
-}
-</code></pre><p>最终呢，就会调用enqueueMessage方法，将Message入栈到Looper里的MessageQueue</p>
-<pre><code>private boolean enqueueMessage(MessageQueue queue, Message msg, long uptimeMillis) {
-    msg.target = this;
-    if (mAsynchronous) {
-        msg.setAsynchronous(true);
-    }
-    return queue.enqueueMessage(msg, uptimeMillis);
-}
-</code></pre><p>MessageQueue 队列的实现，原理是使用Message链表，有兴趣的同学可以自己去研究一下，我们就不做过多的阐述。<br>这样发送消息的过程到这里也基本完结了</p>
-<h4 id="处理消息"><a href="#处理消息" class="headerlink" title="处理消息"></a>处理消息</h4><p>你还记得吗？当我们在子线程里创建Handler的时候，都会在run方法里调用Looper.loop()方法，异步处理Message对象。如果是在主线程创建的Handler就不是异步了，因为它关联的线程是主线程，Handler的handlerMessage回调是在主线程里执行的。  </p>
-<p>最后，我们来看看Handler最核心的实现，消息的处理 Looper.loop(),<br>忽略非消息处理的代码后如下</p>
-<pre><code>public static void loop() {
-    ...
-    // 获取消息队列
-    final MessageQueue queue = me.mQueue;
-
-    for (;;) {
-        Message msg = queue.next(); // might block
-        if (msg == null) {
-            // No message indicates that the message queue is quitting.
-            return;
-        }
-        ...
-
-        msg.target.dispatchMessage(msg);
-
-        ...
-
-        msg.recycleUnchecked();
-    }
-}
-</code></pre><p>看着是不是挺简单的呢？ 一个for死循环，通过MessageQueue的阻塞方法next 读取下一个Message。<br>取出来的Message会拿到target成员变量，即Handler,调用dispatchMessage，分发消息。Handler里的分发呢？</p>
-<pre><code>public void dispatchMessage(Message msg) {
-    if (msg.callback != null) {
-        handleCallback(msg);
-    } else {
-        if (mCallback != null) {
-            if (mCallback.handleMessage(msg)) {
-                return;
-            }
-        }
-        handleMessage(msg);
-    }
-}
-</code></pre><p>分发给callback回调，或者Message对象的callback，又或者Handler子类里的handlerMessage。<br>我们可以调用Looper的quit()方法，让队列安全的关闭，避免不必要的消耗。<br>或者等待Handler被销毁，让系统自动回收</p>
-<pre><code>public void quit() {
-    mQueue.quit(false);
-}
-</code></pre><p>这样Handler的整体的工作原理就是这些了，再见Handler。</p>
-
-          
+Handler,MessageQueue,与Looper三者关系分
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2019/01/02/android/Handler-Looper-MessageQueue三者的关系/#more" rel="contents">
+              Read more &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -1885,55 +1335,16 @@ private static void prepare(boolean quitAllowed) {
       
         
           
-            <h3 id="HandlerThread"><a href="#HandlerThread" class="headerlink" title="HandlerThread"></a>HandlerThread</h3><p>顾名思义，HandlerThread它是一个Thread，是Google为提高开发者效率封装的一个类。<br>与普通的Thread不同的是，它有一个成员属性 Looper，而Looper是用来干嘛的前一章节我们已经介绍过了。也就是说，我们的HandlerThread具有了Looper的功能。如果你有看过HandlerThread的源码，你会发现它非常短，一百多行代码。那，我们先来看线程最核心的run方法</p>
-<pre><code>@Override
-public void run() {
-    mTid = Process.myTid();
-    Looper.prepare();
-    synchronized (this) {
-        mLooper = Looper.myLooper();
-        notifyAll();
-    }
-    Process.setThreadPriority(mPriority);
-    onLooperPrepared();
-    Looper.loop();
-    mTid = -1;
-}
-</code></pre><p>没错，这就是我们在子线程里使用Handler时的典型用法<br>Looper.prepare()， Looper.loop()的使用，不同的是这里使用了一个锁，<br>synchronized我们当前的这个类实例，并且调用notifyAll()。为什么要多写这个呢？看到这里我也不晓得。<br>当我们对消息队列的处理影响到性能的时候，比如页面上的卡顿或者比较耗时的任务，那我们就可以考虑使用HandlerThread了，来看看他的用法：</p>
-<pre><code>private Handler mHandler;
-private HandlerThread mHandlerThread;
-
-public void initHandler() {
-    mHandlerThread = new HandlerThread(Tag);
-    mHandlerThread.start();
-    mHandler = new Handler(mHandlerThread.getLooper());
-}
-</code></pre><p>我们知道，在主线程里使用Hander，我们不需要再调用Looper.prepare()和Looper.loop()，因为系统已经帮我们处理好了，主线程里的Handler使用的主线程的Looper。<br>使用HandlerThread,我们就可以在初始化Handler的时候，将HandlerThread里的Looper传递给Handler。这样，主线程里Handler消息处理就会被转移到子线程里，这样一定程度上减少了主线程的压力。<br>回头来看源码，</p>
-<pre><code>public Looper getLooper() {
-    if (!isAlive()) {
-        return null;
-    }
-
-    // If the thread has been started, wait until the looper has been created.
-    synchronized (this) {
-        while (isAlive() &amp;&amp; mLooper == null) {
-            try {
-                wait();
-            } catch (InterruptedException e) {
-            }
-        }
-    }
-    return mLooper;
-}
-</code></pre><p>初始化时getLooper(),我们发现，这里也有一个锁，也是锁住HandlerThread类实例。start HandlerThread时，会调用其run方法，run方法里会调用 Looper.prepare() 需要一定的时间, 所以在new Handler时，wait()方法等待Looper初始化完成，所以在run方法里才会有<br>notifyAll()的调用。</p>
-<p>以上就是对HandlerThread的分析，是不是挺简单的呢？<br>根据以上的分析我们可以总结出：</p>
-<ol>
-<li>HandlerThread将Looper转移到子线程中处理，降低主线程的压力，不会阻塞主线程，界面显示会更流畅</li>
-<li>子线程处理消息，因此可以处理一些比较耗时的单个任务。</li>
-<li>由于使用消息队列的处理方式，故并发的多任务并不适用HandlerThread，会造成严重的阻塞</li>
-</ol>
-
-          
+          HandlerThread顾名思义，HandlerThread它是一个Thread，是Google为提高开发者效率封装的一个类。与普通的Thread不同的是，它有一个成员属性 Looper，而Looper是用来干嘛的前一章节我们已经介绍过了。也就是说，我们的HandlerThread具有了Looper的功能。如果你有看过HandlerThread的源码，你会发现它非常短，一百多行代码。那，我们先来看线程最核心的run方法
+@Overri
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2019/01/02/android/HandlerThread源码分析/#more" rel="contents">
+              Read more &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -2051,415 +1462,22 @@ public void initHandler() {
       
         
           
-            <p>IntentService跟HandlerThread一样，也是Google为了方便开发者使用Service封装的一个类。</p>
-<h3 id="特点"><a href="#特点" class="headerlink" title="特点"></a>特点</h3><ol>
-<li>通过Context的startService(Intent)，创建一个工作线程处理异步请求  </li>
-<li>异步的，串行处理每个Intent请求，处理完后自行停止Service</li>
-</ol>
-<p>不瞎bb了，源码能解释一下</p>
-<h3 id="源码分析"><a href="#源码分析" class="headerlink" title="源码分析"></a>源码分析</h3><p>先看一下构造和成员属性，</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">public abstract class IntentService extends Service &#123;</span><br><span class="line">    private volatile Looper mServiceLooper;</span><br><span class="line">    private volatile ServiceHandler mServiceHandler;</span><br><span class="line">    private String mName;</span><br><span class="line">    private boolean mRedelivery;</span><br><span class="line"></span><br><span class="line">     /**</span><br><span class="line">     * Creates an IntentService.  Invoked by your subclass&apos;s constructor.</span><br><span class="line">     *</span><br><span class="line">     * @param name Used to name the worker thread, important only for debugging.</span><br><span class="line">     */</span><br><span class="line">    public IntentService(String name) &#123;</span><br><span class="line">        super();</span><br><span class="line">        mName = name;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
-<p>IntentService继承Service，被声明为 abstract class, 所以我们只能继承该类，不能直接使用。<br>有几个比较重要的成员属性Looper和ServiceHandler。Looper的作用我们就不啰嗦了，前面的文章已经介绍过了。<br>ServiceHandler是IntentService里的一个内部类，继承Handler，实际用来处理Intent请求的方式。子类重写onHandleIntent(Intent)处理Intent，之后调用stopSelf停止Service。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"> private final class ServiceHandler extends Handler &#123;</span><br><span class="line">    public ServiceHandler(Looper looper) &#123;</span><br><span class="line">        super(looper);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    @Override</span><br><span class="line">    public void handleMessage(Message msg) &#123;</span><br><span class="line">        onHandleIntent((Intent)msg.obj);</span><br><span class="line">        stopSelf(msg.arg1);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>没错，聪明的你看到这里也大致猜到了，IntentSeries内部其实就是使用Handler，Looper的机制，异步处理Intent请求的。不过，我们还得继续分析源码，因为还有内容值得我们学习。</p>
-<p>按Service的生命周期来看，会先调用onCreate</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">@Override</span><br><span class="line">public void onCreate() &#123;</span><br><span class="line">    // TODO: It would be nice to have an option to hold a partial wakelock</span><br><span class="line">    // during processing, and to have a static startService(Context, Intent)</span><br><span class="line">    // method that would launch the service &amp; hand off a wakelock.</span><br><span class="line"></span><br><span class="line">    super.onCreate();</span><br><span class="line">    HandlerThread thread = new HandlerThread(&quot;IntentService[&quot; + mName + &quot;]&quot;);</span><br><span class="line">    thread.start();</span><br><span class="line"></span><br><span class="line">    mServiceLooper = thread.getLooper();</span><br><span class="line">    mServiceHandler = new ServiceHandler(mServiceLooper);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>这里创建了一个HandlerThread和一个ServiceHandler，并将HandlerThread里的Looper传给ServiceHandler，是不是挺熟悉的？ 恩，就是我们上个章节对HandlerThread的介绍里面的内容，这里就不多废话了。</p>
-<p>接下来我们继续看 onStart，onStartCommand方法<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">@Override</span><br><span class="line">public void onStart(Intent intent, int startId) &#123;</span><br><span class="line">    Message msg = mServiceHandler.obtainMessage();</span><br><span class="line">    msg.arg1 = startId;</span><br><span class="line">    msg.obj = intent;</span><br><span class="line">    mServiceHandler.sendMessage(msg);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">@Override</span><br><span class="line">public int onStartCommand(Intent intent, int flags, int startId) &#123;</span><br><span class="line">    onStart(intent, startId);</span><br><span class="line">    return mRedelivery ? START_REDELIVER_INTENT : START_NOT_STICKY;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p>最终调用的是onStart方法， 从mServiceHandler里obtain一条Message， 将startId和Intent通过Handler传递给Looper，MessageQueue。 根据Handler的机制处理消息，在IntentService destroy的时候也将Looper停止。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">@Override</span><br><span class="line">public void onDestroy() &#123;</span><br><span class="line">    mServiceLooper.quit();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p>所以，我们在使用IntentService的时候，只需要继承IntentService，并重写onHandleIntent方法，在需要的使用通过Content startService发送一个异步请求就可以了。</p>
+          IntentService跟HandlerThread一样，也是Google为了方便开发者使用Service封装的一个类。
+特点
+通过Context的startService(Intent)，创建一个工作线程处理异步请求  
+异步的，串行处理每个Intent请求，处理完后自行停止Service
 
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/01/02/android/Handler常见应用场景和常见问题分析/">
-
-    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="pickerX">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Hello,world">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2019/01/02/android/Handler常见应用场景和常见问题分析/" itemprop="url">Handler常见应用场景和常见问题分析</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-01-02T19:57:03+08:00">
-                2019-01-02
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h3 id="Handler应用场景"><a href="#Handler应用场景" class="headerlink" title="Handler应用场景"></a>Handler应用场景</h3><p>根据前几篇的分析，根据实际的开发，我们可以总结出以下Handler的使用场景</p>
-<h4 id="最简单的消息发送"><a href="#最简单的消息发送" class="headerlink" title="最简单的消息发送"></a>最简单的消息发送</h4><p>主线程使用Handler， 主线程里或子线程里发送消息，或延迟发送消息的方式更新UI<br>如，<br>启动应用时Splash页面的延迟2，3秒后，跳转到主页面<br>加载完页面的各个控件后，再加载线程下载图片，最后更新图片等等</p>
-<pre><code>private static final int WHAT_UPDATE_ICON = 1;
-
-private Handler handler = new Handler() {
-    @Override
-    public void handleMessage(Message msg) {
-        switch (msg.what) {
-            case WHAT_UPDATE_ICON:
-                Log.e(Tag, &quot;receive message:&quot; + msg.obj);
-                break;
-        }
-    }
-};
-
-Message msg = handler.obtainMessage(WHAT_UPDATE_ICON);
-msg.obj = &quot;update the imageview&quot;;
-handler.sendMessage(msg);
-</code></pre><p>使用消息的时候，尽量使用 obtainMessage 的方式来获取Message，避免多次创建Message对象，消耗内存，效率低下。</p>
-<h4 id="结合HandlerThread处理耗时任务"><a href="#结合HandlerThread处理耗时任务" class="headerlink" title="结合HandlerThread处理耗时任务"></a>结合HandlerThread处理耗时任务</h4><p>结合HandlerThread，串行的处理单个耗时任务，如单任务下载</p>
-<pre><code>class DownloadOneByOne extends HandlerThread {
-    public DownloadOneByOne() {
-        super(DownloadOneByOne.class.getSimpleName());
-    }
-
-    @Override
-    protected void onLooperPrepared() {
-        super.onLooperPrepared();
-        // 初始化下载组件
-    }
-}
-
-private HandlerThread mHandlerThread;
-
-private Handler downloadHandler = new Handler(){
-    @Override
-    public void handleMessage(Message msg) {
-        super.handleMessage(msg);
-        String url = (String) msg.obj;
-        // 使用下载组件开始下载
-
-    }
-};
-
-public void initHandler() {
-    // 初始化Handler
-    mHandlerThread = new DownloadOneByOne();
-    mHandlerThread.start();
-
-    downloadHandler = new Handler(mHandlerThread.getLooper());
-}
-
-private void sendDownloadTask(String downloadUrl) {
-    // 发送下载任务
-    Message msg = downloadHandler.obtainMessage(WHAT_DOWNLOAD_TASK);
-    msg.obj = downloadUrl;
-    downloadHandler.sendMessage(msg);
-}
-</code></pre><h4 id="倒计时View的简易实现"><a href="#倒计时View的简易实现" class="headerlink" title="倒计时View的简易实现"></a>倒计时View的简易实现</h4><p>通过Handler我们还可以快速简易，并且不占用太多性能的实现一个简易的倒计时View。</p>
-<pre><code>public class CountDownView extends AppCompatTextView {
-    /**
-    * 总时间
-    */
-    private long seconds;
-    /**
-    * 当前分钟
-    */
-    private long minutes;
-    /**
-    * 当前秒数
-    */
-    private int second = 60;
-
-    private static final int SECONDS_PER_MINUTE = 60;
-    private static final int MILLS_PER_SECOND = 1000;
-    private static final int MILLS_PER_MINUTE = SECONDS_PER_MINUTE * 1000;
-
-    private static final int WHAT_DONE = 2;
-    private static final int WHAT_TICK = 1;
-
-    private int marginEnd;
-
-    private StringBuilder content = new StringBuilder();
-
-    public CountDownView(Context context, @Nullable AttributeSet attrs) {
-        super(context, attrs);
-    }
-
-    @Override
-    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-        DeviceProfile deviceProfile = Launcher.getLauncher(getContext()).getDeviceProfile();
-        int size = (int) (MeasureSpec.getSize(widthMeasureSpec) / deviceProfile.inv.numColumns);
-        marginEnd = marginEnd == 0 ? (size - deviceProfile.iconSizePx) / 2 : marginEnd;
-
-        setMarginEnd(marginEnd);
-        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-    }
-
-    private void setMarginEnd(int marginEnd) {
-        LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams) getLayoutParams();
-        layoutParams.setMarginEnd(marginEnd);
-        layoutParams.resolveLayoutDirection(layoutParams.getLayoutDirection());
-    }
-
-    @Override
-    protected void onDetachedFromWindow() {
-        super.onDetachedFromWindow();
-        if (handler.hasMessages(WHAT_TICK)) {
-            handler.removeMessages(WHAT_TICK);
-        }
-    }
-
-    private Handler handler = new Handler() {
-        @Override
-        public void handleMessage(Message msg) {
-            switch (msg.what) {
-                case WHAT_DONE:
-                    setVisibility(View.GONE);
-                    break;
-                default:
-                    setText(content.toString());
-                    handler.post(runnable);
-                    break;
-            }
-        }
-    };
-
-    /***
-    * 设置倒计时
-    * @param millis
-    */
-    public void setCountDownMills(long millis) {
-        seconds = (long) Math.floor(millis / MILLS_PER_SECOND);
-        minutes = (long) Math.floor(millis / MILLS_PER_MINUTE) - 1;
-        // start after one second
-        handler.postDelayed(runnable, MILLS_PER_SECOND);
-    }
-
-    private Runnable runnable = new Runnable() {
-        @Override
-        public void run() {
-            if (seconds &lt;= 0) {
-                handler.sendEmptyMessage(WHAT_DONE);
-                return;
-            }
-            seconds--;
-            if (second &lt;= 0) {
-                second = SECONDS_PER_MINUTE;
-                minutes = (long) Math.floor(seconds / SECONDS_PER_MINUTE);
-            }
-            second--;
-            content.delete(0, content.length());
-
-            appendZeroWhenLower10(minutes);
-            content.append(&quot;:&quot;);
-            appendZeroWhenLower10(second);
-
-            if (handler.hasMessages(WHAT_TICK)) {
-                handler.removeMessages(WHAT_TICK);
-            }
-            handler.sendEmptyMessageDelayed(WHAT_TICK, MILLS_PER_SECOND);
-        }
-    };
-
-    private StringBuilder appendZeroWhenLower10(long value) {
-        if (value &lt; 10) {
-            content.append(&quot;0&quot;).append(value);
-        } else {
-            content.append(value);
-        }
-        return content;
-    }
-}
-</code></pre><h4 id="结合IntentService的使用"><a href="#结合IntentService的使用" class="headerlink" title="结合IntentService的使用"></a>结合IntentService的使用</h4><p>使用IntentService处理耗时的任务相对比较简单，我们来个有难度的，结合AlarmManager的调度，息屏唤醒IntentService定时处理任务的案例来讲<br>当我们的应用进入后台activity栈的时候，注册并启动AlarmManager任务</p>
-<pre><code>private static final String ACTION_WAKE_UP = &quot;com.doze.cpu.wakeup&quot;;
-
-public static void registerAlarm(Context context, int wakeType) {
-    type = wakeType;
-    if (alarmManager == null)
-        alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
-
-    if (operation != null) alarmManager.cancel(operation);
-
-    schedule(context);
-}
-
-private static void schedule(Context context) {
-    Intent intent = new Intent();
-    intent.setAction(ACTION_WAKE_UP);
-    operation = PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
-    switch (type) {
-        case 0:
-            AlarmUtils.setRTCWakeup(alarmManager, AlarmUtils.DEFAULT_TRIGGER_AT_MILLIS, operation);
-            break;
-        case 1:
-            AlarmUtils.setElapsedWakeup(alarmManager, AlarmUtils.DEFAULT_TRIGGER_AT_MILLIS, operation);
-            break;
-    }
-}
-</code></pre><p>定时5分钟发送一个Action为com.doze.cpu.wakeup的广播，我们的广播需要继承 WakefulBroadcastReceiver， 在onReceive里，调用startWakefulService方法，会创建一个1分钟的WakeLock，唤醒cpu处理我们的任务，我们的任务在IntentService处理最好不过了，处理完就销毁，不会有多余的占用</p>
-<pre><code>public class WakeCPUReceiver extends WakefulBroadcastReceiver {
-    @Override
-    public void onReceive(Context context, Intent intent) {
-
-        Intent wakefulIntent = new Intent(context, WorkService.class);
-        startWakefulService(context, wakefulIntent);
-        schedule(context);
-    }
-}
-</code></pre><p>startWakefulService的源码</p>
-<pre><code>public static ComponentName startWakefulService(Context context, Intent intent) {
-    synchronized (mActiveWakeLocks) {
-        int id = mNextId;
-        mNextId++;
-        if (mNextId &lt;= 0) {
-            mNextId = 1;
-        }
-
-        intent.putExtra(EXTRA_WAKE_LOCK_ID, id);
-        ComponentName comp = context.startService(intent);
-        if (comp == null) {
-            return null;
-        }
-
-        PowerManager pm = (PowerManager)context.getSystemService(Context.POWER_SERVICE);
-        PowerManager.WakeLock wl = pm.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK,
-                &quot;wake:&quot; + comp.flattenToShortString());
-        wl.setReferenceCounted(false);
-        wl.acquire(60*1000);
-        mActiveWakeLocks.put(id, wl);
-        return comp;
-    }
-}
-</code></pre><p>在IntentService里，我们在onHandleIntent处理我们的任务后，再调用<br>WakefulBroadcastReceiver的静态方法completeWakefulIntent，释放WakeLock，减少电量的消耗</p>
-<pre><code>public class WorkService extends IntentService {
-    ...
-    @Override
-    protected void onHandleIntent(Intent intent) {
-        Log.e(WakeCPUReceiver.TAG, &quot;WorkService is working&quot;);
-        // TODO 处理我们的任务
-        WakeCPUReceiver.completeWakefulIntent(intent);
-    }
-}
-</code></pre><p>completeWakefulIntent源码</p>
-<pre><code>public static boolean completeWakefulIntent(Intent intent) {
-    final int id = intent.getIntExtra(EXTRA_WAKE_LOCK_ID, 0);
-    if (id == 0) {
-        return false;
-    }
-    synchronized (mActiveWakeLocks) {
-        PowerManager.WakeLock wl = mActiveWakeLocks.get(id);
-        if (wl != null) {
-            wl.release();
-            mActiveWakeLocks.remove(id);
-            return true;
-        }
-        // We return true whether or not we actually found the wake lock
-        // the return code is defined to indicate whether the Intent contained
-        // an identifier for a wake lock that it was supposed to match.
-        // We just log a warning here if there is no wake lock found, which could
-        // happen for example if this function is called twice on the same
-        // intent or the process is killed and restarted before processing the intent.
-        Log.w(&quot;WakefulBroadcastReceiver&quot;, &quot;No active wake lock id #&quot; + id);
-        return true;
-    }
-}
-</code></pre><h3 id="Handler的溢出问题"><a href="#Handler的溢出问题" class="headerlink" title="Handler的溢出问题"></a>Handler的溢出问题</h3><p>虽然Handler很好用，但由于它可以延迟发送消息，在我们延迟启动其他组件，或者使用Activity的引用调用一些方法时，如果在延迟的过程中，Activity finish掉了，这时候就会抛出溢出的异常了。<br>所以，我们在onDestroy的时候，记得 调用removeCallbacks，removeMessages等移除消息的方法来解决这个问题。  </p>
-<p>Handler机制如何保证消息不错乱？<br>handler机制中多个handler共有一个looper不会错乱是因为在handler 发送消息的时候，会将当前的handler对象绑定到message的target属性上，然后在Looper取到消息后通过msg.target拿到之前的handler对象，然后调用handler的handleMessage方法。  </p>
-<p>消息延迟的原理？<br>handler发送延迟消息，会将当前的延迟时间绑定到msg的when属性上，然后在循环MessageQueue获取msg时判断如果当前有延迟就进行阻塞，通过计时器计算时间，时间通过系统启动计算时间，然后等待阻塞时间结束之后将其唤醒，在阻塞过程中会将之后的消息放在消息队列的头部去处理。</p>
-<p>同一个线程中可以有多个Handler，只有一个Looper，而MessageQueue在looper中初始化的，所以也只有一个MessageQueue。因此对应关系是：Handler：Looper = 多对一，Looper：MeesageQueue = 一对一，Handler：MessageQueue = 多对一。</p>
-<p>Looper中的死循环为什么不会引器主线程ANR？<br>可以说整个应用的生命周期都是在looper.loop()控制之下的（在应用启动的入口main函数中初始化ActivityThread，Handler，Looper，然后通过handler和looper去控制初始化应用）。而looper.loop采用的是Linux的管道机制，在没有消息的时候会进入阻塞状态，释放CPU执行权，等待被唤醒。真正会卡死主线程的操作是在回调方法onCreate/onStart/onResume等操作时间过长，会导致掉帧，甚至发生ANR，looper.loop本身不会导致应用卡死。</p>
-
-          
+不瞎bb了，源码能解释一下
+源码分析先看一下构造和成员属性，
+123456789101112131415public abstract cla
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2019/01/02/android/IntentService源码分析/#more" rel="contents">
+              Read more &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -2543,7 +1561,7 @@ private static void schedule(Context context) {
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">37</span>
+                  <span class="site-state-item-count">38</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
@@ -2556,7 +1574,7 @@ private static void schedule(Context context) {
               
               <div class="site-state-item site-state-tags">
                 
-                  <span class="site-state-item-count">10</span>
+                  <span class="site-state-item-count">11</span>
                   <span class="site-state-item-name">tags</span>
                 
               </div>
@@ -2611,7 +1629,7 @@ private static void schedule(Context context) {
 
 
 
-  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a> v5.1.4</div>
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Gemini</a> v5.1.4</div>
 
 
 

@@ -5,7 +5,7 @@
   
 
 
-<html class="theme-next pisces use-motion" lang="">
+<html class="theme-next gemini use-motion" lang="">
 <head><meta name="generator" content="Hexo 3.8.0">
   <meta charset="UTF-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -93,7 +93,7 @@
   var NexT = window.NexT || {};
   var CONFIG = {
     root: '/',
-    scheme: 'Pisces',
+    scheme: 'Gemini',
     version: '5.1.4',
     sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
     fancybox: true,
@@ -229,6 +229,136 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/01/02/android/Handler常见应用场景和常见问题分析/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="pickerX">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hello,world">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/01/02/android/Handler常见应用场景和常见问题分析/" itemprop="url">Handler常见应用场景和常见问题分析</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-01-02T19:57:03+08:00">
+                2019-01-02
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+          Handler应用场景根据前几篇的分析，根据实际的开发，我们可以总结出以下Handler的使用场景
+最简单的消息发送主线程使用Handler， 主线程里或子线程里发送消息，或延迟发送消息的方式更新UI如，启动应用时Splash页面的延迟2，3秒后，跳转到主页面加载完页面的各个控件后，再加载线程下载图片，最后更新图片等等
+private static final int WHAT_UPDATE_ICON = 1;
+
+private Han
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2019/01/02/android/Handler常见应用场景和常见问题分析/#more" rel="contents">
+              Read more &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/10/14/android/Battery-historian电量优化/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
@@ -300,68 +430,18 @@
       
         
           
-            <h3 id="Battery-Historian"><a href="#Battery-Historian" class="headerlink" title="Battery Historian"></a>Battery Historian</h3><p>Battery Historian工具能监测一台设备在一段时间内的电量消耗。在整个系统级别，该工具能将系统的日志可视化为电量相关事件的网页展示<br>在一个特定的app级别里，这个工具提供大量的数据，来帮助开发者识别耗电应用的行为。</p>
-<h3 id="Install"><a href="#Install" class="headerlink" title="Install"></a>Install</h3><ol>
-<li>需要Docker环境支持，Install <a href="https://docs.docker.com/install/" target="_blank" rel="noopener">Docker</a> 并运行.</li>
-<li><p>运行 Battery Historian 镜像，这个镜像需要翻墙下载，没有翻墙的可以找找国内的镜像</p>
-<p> docker run -p port:9999 gcr.io/android-battery-historian/stable:3.0 –port 9999</p>
-</li>
-<li><p>使用浏览器打开 <a href="http://localhost:port" target="_blank" rel="noopener">http://localhost:port</a>, 选择步骤二生成的文件即可<br>其他系统的安装方式，详见<a href="https://github.com/google/battery-historian" target="_blank" rel="noopener">https://github.com/google/battery-historian</a></p>
-</li>
-</ol>
-<h3 id="Analyze-power-use"><a href="#Analyze-power-use" class="headerlink" title="Analyze power use"></a>Analyze power use</h3><p>完成上面的操作，可以看到如下类似的图，</p>
-<p><img src="https://note.youdao.com/yws/api/personal/file/WEBdbc98d71317d7951c6d6810b73bffb35?method=download&amp;shareKey=0c0c498e1eed053bf3ef61c4da34c869" alt="Figure1 Battery Historian’s display of system-wide events affecting power consumption."></p>
-<p>横坐标表示时间，纵坐标就有各种各样的参数了 CPU，Screen，GPS等等信息，配上五颜六色的方块，顿时有点懵逼，有没有。 不过，贯穿整张表格的是一条黑线，而这条黑线就是表示设备的电量变化！！</p>
-<p>图二，电量的一个特写</p>
-<p><img src="https://note.youdao.com/yws/api/personal/file/WEBdb356575e5d6bc12e8e6cffc1cf4fb60?method=download&amp;shareKey=008f240c970ff50a4c03acd274e70028" alt="Figure 2 provides a close-up of that part of the display.
-"></p>
-<p>在表示电量消耗折线前端，因为电量明显地下降，表明了三个事情，</p>
-<ol>
-<li>CPU正在运行，</li>
-<li>有应用 acquired 一个 wakelock， </li>
-<li>屏幕是亮的</li>
-</ol>
-<p>在这种情况下，Battery Historian 帮助开发者了解到耗电量高时设备发生了什么事件，然后就可以聚焦在事件行为中，研究是否有优化的空间。</p>
-<p>系统范围的可视化也可以提供其他的线索。比如，图中也展示了手机蜂窝数据被频繁的开关，这些都是可优化的地方，可以通过使用更智能的API来优化，如JobScheduler or Firebase Job Dispatcher.</p>
-<h3 id="View-app-specific-data"><a href="#View-app-specific-data" class="headerlink" title="View app-specific data"></a>View app-specific data</h3><p>除了宏观层(macro-level)的数据可视化外，Battery Historian也提供了一些分类和一些指定应用的可视化数据，数据包括，</p>
-<ul>
-<li>应用的耗电量估算值</li>
-<li>网络信息</li>
-<li>Wakelocks</li>
-<li>Services</li>
-<li>进程信息</li>
-</ul>
-<p>分类有两种标准衡量应用的数据。一个是，查看开发者的应用跟其他应用的耗电排行，选择 Device Power Estimates table 即可. 这个例子检验了一个测试应用Pug Power。</p>
-<p><img src="https://note.youdao.com/yws/api/personal/file/WEBbcd6db6a55c0e7e57ea1f4a4e52e9ebc?method=download&amp;shareKey=80f0f90ab5538a60d9934141df884d41" alt="Figure 3. Investigating which apps consume the most power."><br>图三中，Pug Power测试应用是耗电排行是第九位， 第三大的耗电应用并不是系统的一部分，这些数据表明开发者需要更进一步的查找原因。</p>
-<p>为了查看指定应用的数据，我们在App Selection里选择开发的测试应用即可.</p>
-<p><img src="https://note.youdao.com/yws/api/personal/file/WEBd165eaae5f9ee1eb7e7da807714ab870?method=download&amp;shareKey=170611df2452e1ad45e97b8633d1436a" alt="Figure 4. Entering a specific app whose data to view."></p>
-<p>当选择了特定应用后，系统层级的数据分类就会变成如下的应用数据分类，</p>
-<ul>
-<li>SyncManager.</li>
-<li>Foreground process.</li>
-<li>Userspace Wakelock.</li>
-<li>Top app.</li>
-<li>JobScheduler.</li>
-<li>Activity Manager Proc.</li>
-</ul>
-<p>如果应用执行 syncs 和 jobs 次数过多，SyncManager 和 JobScheduler 可视化数据就会很明显的变化。如果确实如此，应用就要优化 syncs 和jobs 操作来降低电量的使用.<br>开发者除了能查看上面信息外，还能查看额外的信息：Userspace Wakelock. 需要在终端中执行如下命令:</p>
-<pre><code>$ adb shell dumpsys batterystats --enable full-wake-history
-
-Note: From Android 6.0 (API level 23), the platform includes Doze functionality, which imposes certain optimizations on apps. For example, Doze batches jobs to take place during brief maintenance windows, regardless of how JobScheduler has scheduled them.
-</code></pre><p>图5，图6显示的是Pug Power的数据:</p>
-<p><img src="https://note.youdao.com/yws/api/personal/file/WEB889fd0d6f4c0018d67a32a3c33622fce?method=download&amp;shareKey=28ba15c596238eacc947e816286b0690" alt="Figure 5. Visualization of data for fictional app Pug Power."><br><img src="https://note.youdao.com/yws/api/personal/file/WEBe4ee4cf79c26b26a867197eee0e10397?method=download&amp;shareKey=55322adde50b9694772b8f5a77553374" alt="Figure 6. Tabular data for the fictional Pug Power app."></p>
-<p>粗略的看，可视化图表没有很明显的数据变化.JobScheduler 坐标表明没有 Job 需要执行. SyncManager 坐标表示没有任何的 sync 操作.</p>
-<p>然而，看图6，Wakelocks 部分显示了 Pug Power 应用在一个小时里 acquires wakelocks 次数. 对于应用高功耗，这是不正常，也是昂贵的代价. 这部分的信息对开发者定位优化的范围是有很大的帮助的。这这个例子中，开发者就要考虑为什么会有这么多次的 wakelock，要如何才能改善?</p>
-<h3 id="Other-cases-where-Battery-Historian-can-help"><a href="#Other-cases-where-Battery-Historian-can-help" class="headerlink" title="Other cases where Battery Historian can help"></a>Other cases where Battery Historian can help</h3><p>除了上面的内容外，Battery Historian 还能找到很多原因：</p>
-<ul>
-<li>多度频繁的启动 wakeup alarms (每10秒或更短).</li>
-<li>持续性的使用 GPS lock.</li>
-<li>调度 jobs（每30s或者更短）</li>
-<li>执行 syncs （每30s或者更短）</li>
-<li>超过预期，频繁的使用蜂窝数据</li>
-</ul>
-
-          
+          Battery HistorianBattery Historian工具能监测一台设备在一段时间内的电量消耗。在整个系统级别，该工具能将系统的日志可视化为电量相关事件的网页展示在一个特定的app级别里，这个工具提供大量的数据，来帮助开发者识别耗电应用的行为。
+Install
+需要Docker环境支持，Install Docker 并运行.
+运行 Battery Historian 镜像，这个镜像需要翻墙下载，没有翻墙的可以找找国内的镜像
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2018/10/14/android/Battery-historian电量优化/#more" rel="contents">
+              Read more &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -479,632 +559,19 @@ Note: From Android 6.0 (API level 23), the platform includes Doze functionality,
       
         
           
-            <p>上文<a href="http://www.jianshu.com/p/3e918982e5c6" target="_blank" rel="noopener">Launcher3 桌面加载流程分析(上)</a>，我们看到<br>LauncherModel 创建LoaderTask加载数据，我们继续往下看</p>
-<h3 id="LoaderTask"><a href="#LoaderTask" class="headerlink" title="LoaderTask"></a>LoaderTask</h3><p>创建LoaderTask，flags为 PagedView.INVALID_RESTORE_PAGE值-1001, 我们看它的run方法是如何执行的。</p>
-<pre><code>private class LoaderTask implements Runnable {
+          上文Launcher3 桌面加载流程分析(上)，我们看到LauncherModel 创建LoaderTask加载数据，我们继续往下看
+LoaderTask创建LoaderTask，flags为 PagedView.INVALID_RESTORE_PAGE值-1001, 我们看它的run方法是如何执行的。
+private class LoaderTask implements Runnable {
 
-    LoaderTask(Context context, int flags) {
-        mContext = context;
-        mFlags = flags;
-    }
-
-    public void run() {
-        ...
-
-        keep_running: {
-            if (DEBUG_LOADERS) Log.d(TAG, &quot;step 1: loading workspace&quot;);
-            loadAndBindWorkspace();
-
-            if (mStopped) {
-                break keep_running;
-            }
-
-            waitForIdle();
-
-            // second step
-            if (DEBUG_LOADERS) Log.d(TAG, &quot;step 2: loading all apps&quot;);
-            loadAndBindAllApps();
-        }
-        ...
-    }
-}
-</code></pre><p>根据mStopped的状态做一些预先的判断外，最先执行的是 loadAndBindWorkspace()方法,加载和绑定Workspace的数据，包括屏幕数，应用数据，widget组件信息等等，然后调用waitForIdle() 等待loadAndBindWorkspace()里创建的一些子线程执行完，修改mStopped和mLoadAndBindStepFinished的状态后执行loadAndBindAllApps()，加载所有应用，完成整个加载应用的流程。<br>整体流程就是上面的run方法，具体的细节我们一步步来看。</p>
-<h3 id="Workspace"><a href="#Workspace" class="headerlink" title="Workspace"></a>Workspace</h3><p>Workspace是什么呢？大家自己看下Launcher3的主布局文件launcher.xml布局就很明了，workspace是Launcher的工作台，承载应用数据，widget组件数据，文件夹数据以及其他的功能。  </p>
-<p>加载workspace的流程分两步，</p>
-<ol>
-<li>加载数据，loadWorkspace()</li>
-<li>绑定workspace， bindWorkspace()</li>
-</ol>
-<p>流程如下</p>
-<pre><code>private void loadAndBindWorkspace() {
-    mIsLoadingAndBindingWorkspace = true;        
-    // Load the workspace
-    if (DEBUG_LOADERS) {
-        Log.d(TAG, &quot;loadAndBindWorkspace mWorkspaceLoaded=&quot; + mWorkspaceLoaded);
-    }
-
-    if (!mWorkspaceLoaded) {
-        loadWorkspace();
-        synchronized (LoaderTask.this) {
-            if (mStopped) {
-                return;
-            }
-            mWorkspaceLoaded = true;
-        }
-    }
-
-    // Bind the workspace
-    bindWorkspace(-1);
-}
-</code></pre><h4 id="加载WorkSpace数据"><a href="#加载WorkSpace数据" class="headerlink" title="加载WorkSpace数据"></a>加载WorkSpace数据</h4><p>加载WorkSpace数据的方法都在loadWorkSpace()里, 这个步骤是整个流程最核心的，虽然只有loadWorkSpace()这个方法，但是我目前的这个版本该方法的源码就达到600多行，所以我们截取核心的代码来分析，很多细节还是要大家自己去琢磨。</p>
-<pre><code>final long t = DEBUG_LOADERS ? SystemClock.uptimeMillis() : 0;
-
-final Context context = mContext;
-final ContentResolver contentResolver = context.getContentResolver();
-final PackageManager manager = context.getPackageManager();
-final boolean isSafeMode = manager.isSafeMode();
-final LauncherAppsCompat launcherApps = LauncherAppsCompat.getInstance(context);
-final boolean isSdCardReady = context.registerReceiver(null,
-        new IntentFilter(StartupReceiver.SYSTEM_READY)) != null;
-
-LauncherAppState app = LauncherAppState.getInstance();
-InvariantDeviceProfile profile = app.getInvariantDeviceProfile();
-int countX = profile.numColumns;
-int countY = profile.numRows;
-
-if (GridSizeMigrationTask.ENABLED &amp;&amp;
-        !GridSizeMigrationTask.migrateGridIfNeeded(mContext)) {
-    // Migration failed. Clear workspace.
-    mFlags = mFlags | LOADER_FLAG_CLEAR_WORKSPACE;
-}
-
-if ((mFlags &amp; LOADER_FLAG_CLEAR_WORKSPACE) != 0) {
-    Launcher.addDumpLog(TAG, &quot;loadWorkspace: resetting launcher database&quot;, true);
-    LauncherAppState.getLauncherProvider().deleteDatabase();
-}
-
-if ((mFlags &amp; LOADER_FLAG_MIGRATE_SHORTCUTS) != 0) {
-    // append the user&apos;s Launcher2 shortcuts
-    Launcher.addDumpLog(TAG, &quot;loadWorkspace: migrating from launcher2&quot;, true);
-    LauncherAppState.getLauncherProvider().migrateLauncher2Shortcuts();
-} else {
-    // Make sure the default workspace is loaded
-    Launcher.addDumpLog(TAG, &quot;loadWorkspace: loading default favorites&quot;, false);
-    LauncherAppState.getLauncherProvider().loadDefaultFavoritesIfNecessary();
-}
-</code></pre><p>首先声明了一些核心对象，ContentResolver，LauncherAppsCompat, LauncherAppState,InvariantDeviceProfile这些上一篇已经有介绍过就不再赘述。<br>前几个if条件，是关于数据库移植的，比如Lacuncher2，升级到Launcher3，桌面图标大小发生变化的特殊场合处理，不是我们需要特别留意的。 </p>
-<h5 id="加载WorkSpace资源文件"><a href="#加载WorkSpace资源文件" class="headerlink" title="加载WorkSpace资源文件"></a>加载WorkSpace资源文件</h5><p>关键的代码是 LauncherAppState.getLauncherProvider().loadDefaultFavoritesIfNecessary(); 在首次打开Launcher时，会加载默认的数据，比如桌面首页显示什么内容，hotseat配置等等。看LauncherAppState代码发现调用的是 LauncherProvider的loadDefaultFavoritesIfNecessary方法</p>
-<pre><code>/**
-    * Loads the default workspace based on the following priority scheme:
-    *   1) From the app restrictions
-    *   2) From a package provided by play store
-    *   3) From a partner configuration APK, already in the system image
-    *   4) The default configuration for the particular device
-    */
-synchronized public void loadDefaultFavoritesIfNecessary() {
-    SharedPreferences sp = Utilities.getPrefs(getContext());
-
-    if (sp.getBoolean(EMPTY_DATABASE_CREATED, false)) {
-        Log.d(TAG, &quot;loading default workspace&quot;);
-
-        AutoInstallsLayout loader = createWorkspaceLoaderFromAppRestriction();
-        if (loader == null) {
-            loader = AutoInstallsLayout.get(getContext(),
-                    mOpenHelper.mAppWidgetHost, mOpenHelper);
-        }
-        if (loader == null) {
-            final Partner partner = Partner.get(getContext().getPackageManager());
-            if (partner != null &amp;&amp; partner.hasDefaultLayout()) {
-                final Resources partnerRes = partner.getResources();
-                int workspaceResId = partnerRes.getIdentifier(Partner.RES_DEFAULT_LAYOUT,
-                        &quot;xml&quot;, partner.getPackageName());
-                if (workspaceResId != 0) {
-                    loader = new DefaultLayoutParser(getContext(), mOpenHelper.mAppWidgetHost,
-                            mOpenHelper, partnerRes, workspaceResId);
-                }
-            }
-        }
-
-        final boolean usingExternallyProvidedLayout = loader != null;
-        if (loader == null) {
-            loader = getDefaultLayoutParser();
-        }
-
-        // There might be some partially restored DB items, due to buggy restore logic in
-        // previous versions of launcher.
-        createEmptyDB();
-        // Populate favorites table with initial favorites
-        if ((mOpenHelper.loadFavorites(mOpenHelper.getWritableDatabase(), loader) &lt;= 0)
-                &amp;&amp; usingExternallyProvidedLayout) {
-            // Unable to load external layout. Cleanup and load the internal layout.
-            createEmptyDB();
-            mOpenHelper.loadFavorites(mOpenHelper.getWritableDatabase(),
-                    getDefaultLayoutParser());
-        }
-        clearFlagEmptyDbCreated();
-    }
-}
-</code></pre><p>正常流程不会都执行，故简单介绍一下，该方法跟注释一样，会从以下几种方式中的一种加载默认布局</p>
-<ol>
-<li>应用约束，调用createWorkspaceLoaderFromAppRestriction，获取用户设置的一组用于限制应用功能的Bundle串，获取Bundle里workspace.configuration.package.name具体的应用包名，获取WorkSpace默认配置资源。</li>
-<li>从带有 android.autoinstalls.config.action.PLAY_AUTO_INSTALL Action的应用里获取workspace默认配置资源</li>
-<li>从系统内置的partner应用里获取workspace默认配置</li>
-<li>调用getDefaultLayoutParser() 获取我们Launcher里的默认资源</li>
-</ol>
-<p>默认流程，会执行第四步, 然后创建数据库，建表favorites和workspaceScreens，加载数据mOpenHelper.loadFavorites</p>
-<pre><code>private DefaultLayoutParser getDefaultLayoutParser() {
-    int defaultLayout = LauncherAppState.getInstance()
-            .getInvariantDeviceProfile().defaultLayoutId;
-    return new DefaultLayoutParser(getContext(), mOpenHelper.mAppWidgetHost,
-            mOpenHelper, getContext().getResources(), defaultLayout);
-}
-</code></pre><p>而默认的资源就是我们配置 InvariantDeviceProfile的资源如R.xml.default_workspace_5x6，详细见上一篇文章。故我们可以在res/xml/里修改我们的默认显示应用的配置。</p>
-<pre><code>@Thunk 
-int loadFavorites(SQLiteDatabase db, AutoInstallsLayout loader) {
-    ArrayList&lt;Long&gt; screenIds = new ArrayList&lt;Long&gt;();
-    // TODO: Use multiple loaders with fall-back and transaction.
-    int count = loader.loadLayout(db, screenIds);
-
-    // Add the screens specified by the items above
-    Collections.sort(screenIds);
-    int rank = 0;
-    ContentValues values = new ContentValues();
-    for (Long id : screenIds) {
-        values.clear();
-        values.put(LauncherSettings.WorkspaceScreens._ID, id);
-        values.put(LauncherSettings.WorkspaceScreens.SCREEN_RANK, rank);
-        if (dbInsertAndCheck(this, db, TABLE_WORKSPACE_SCREENS, 
-            null, values) &lt; 0) {
-            throw new RuntimeException(&quot;Failed initialize screen table&quot;
-                    + &quot;from default layout&quot;);
-        }
-        rank++;
-    }
-
-    // Ensure that the max ids are initialized
-    mMaxItemId = initializeMaxItemId(db);
-    mMaxScreenId = initializeMaxScreenId(db);
-
-    return count;
-}
-</code></pre><p>loadFavorites方法里调用DefaultLayoutParser.loadLayout(db, screenIds) 解析布局xml里的文件夹信息，应用信息，widget信息等等保存到数据库, 并获取到屏幕id集合，保存到workspaceScreens表中。至于怎么解析的，我们直接看关键的代码</p>
-<pre><code>AutoInstallsLayout.java
-
- /**
-    * Parses the layout and returns the number of elements added on the homescreen.
-    */
-protected int parseLayout(int layoutId, ArrayList&lt;Long&gt; screenIds)
-        throws XmlPullParserException, IOException {
-    XmlResourceParser parser = mSourceRes.getXml(layoutId);
-    beginDocument(parser, mRootTag);
-    final int depth = parser.getDepth();
-    int type;
-    HashMap&lt;String, TagParser&gt; tagParserMap = getLayoutElementsMap();
-    int count = 0;
-
-    while (((type = parser.next()) != XmlPullParser.END_TAG ||
-            parser.getDepth() &gt; depth) &amp;&amp; type != XmlPullParser.END_DOCUMENT) {
-        if (type != XmlPullParser.START_TAG) {
-            continue;
-        }
-        count += parseAndAddNode(parser, tagParserMap, screenIds);
-    }
-    return count;
-}
-</code></pre><p>通过XmlResourceParser 解析xml文件,获取我们需要的配置。不同的标签通过不同的解析对象处理，我们使用的是AutoInstallsLayout的子类DefaultLayoutParser，在getLayoutElementsMap()方法里，我们可以看到使用的处理对象，如应用解析器ResolveParser，文件夹解析器MyFolderParser等等，解析到信息后会保存到对应的数据库中。这就是加载默认workspace的原理，解析的细节就不一一介绍了，请大家自己找到需要的解析器琢磨代码了哦</p>
-<pre><code>DefaultLayoutParser.java
-
-@Override
-protected HashMap&lt;String, TagParser&gt; getLayoutElementsMap() {
-    HashMap&lt;String, TagParser&gt; parsers = new HashMap&lt;String, TagParser&gt;();
-    parsers.put(TAG_FAVORITE, new AppShortcutWithUriParser());
-    parsers.put(TAG_APPWIDGET, new AppWidgetParser());
-    parsers.put(TAG_SHORTCUT, new UriShortcutParser(mSourceRes));
-    parsers.put(TAG_RESOLVE, new ResolveParser());
-    parsers.put(TAG_FOLDER, new MyFolderParser());
-    parsers.put(TAG_PARTNER_FOLDER, new PartnerFolderParser());
-    return parsers;
-}
-</code></pre><p>我们简单的介绍一个默认配置，</p>
-<pre><code>default_workspace_4x4.xml
-
-&lt;favorites xmlns:launcher=&quot;http://schemas.android.com/apk/res-auto&quot;&gt;
-
-    &lt;!-- Hotseat --&gt;
-    &lt;include launcher:workspace=&quot;@xml/dw_phone_hotseat&quot; /&gt;
-
-    &lt;!-- Bottom row --&gt;
-    &lt;resolve
-        launcher:screen=&quot;0&quot;
-        launcher:x=&quot;0&quot;
-        launcher:y=&quot;-1&quot; &gt;
-        &lt;favorite launcher:uri=&quot;#Intent;action=android.intent.action.MAIN;category=android.intent.category.APP_EMAIL;end&quot; /&gt;
-        &lt;favorite launcher:uri=&quot;mailto:&quot; /&gt;
-    &lt;/resolve&gt;
-
-    &lt;resolve
-        launcher:screen=&quot;0&quot;
-        launcher:x=&quot;1&quot;
-        launcher:y=&quot;-1&quot; &gt;
-        &lt;favorite launcher:uri=&quot;#Intent;action=android.intent.action.MAIN;category=android.intent.category.APP_GALLERY;end&quot; /&gt;
-        &lt;favorite launcher:uri=&quot;#Intent;type=images/*;end&quot; /&gt;
-    &lt;/resolve&gt;
-
-    &lt;resolve
-        launcher:screen=&quot;0&quot;
-        launcher:x=&quot;3&quot;
-        launcher:y=&quot;-1&quot; &gt;
-        &lt;favorite launcher:uri=&quot;#Intent;action=android.intent.action.MAIN;category=android.intent.category.APP_MARKET;end&quot; /&gt;
-        &lt;favorite launcher:uri=&quot;market://details?id=com.android.launcher&quot; /&gt;
-    &lt;/resolve&gt;
-
-&lt;/favorites&gt;
-</code></pre><ol>
-<li>@xml/dw_phone_hotseat, hotseat配置文件，配置规则一样</li>
-<li>resolve标签， 通过ResolveParser解析，包含内嵌标签</li>
-<li>favorite, 一个app的信息，可以指定uri，或具体的包名，类名来识别app</li>
-<li>可以有自定义的标签，自己实现解析即可</li>
-</ol>
-<p>至此，loadDefaultFavoritesIfNecessary()就执行完成，我们回到LauncherModel继续看loadWorkspace()</p>
-<h4 id="读取数据"><a href="#读取数据" class="headerlink" title="读取数据"></a>读取数据</h4><p>接下来就是从数据库读取从配置文件读到的信息，根据itemType, 走switch的不同case</p>
-<pre><code>final Uri contentUri = LauncherSettings.Favorites.CONTENT_URI;
-if (DEBUG_LOADERS) Log.d(TAG, &quot;loading model from &quot; + contentUri);
-final Cursor c = contentResolver.query(contentUri, null, null, null, null);
-
-// +1 for the hotseat (it can be larger than the workspace)
-// Load workspace in reverse order to ensure that latest items are loaded first (and
-// before any earlier duplicates)
-final LongArrayMap&lt;ItemInfo[][]&gt; occupied = new LongArrayMap&lt;&gt;();
-HashMap&lt;ComponentKey, AppWidgetProviderInfo&gt; widgetProvidersMap = null;
-...
-while (!mStopped &amp;&amp; c.moveToNext()) {
-    try {
-        int itemType = c.getInt(itemTypeIndex);
-        boolean restored = 0 != c.getInt(restoredIndex);
-        boolean allowMissingTarget = false;
-        container = c.getInt(containerIndex);
-
-        switch (itemType) {
-        case LauncherSettings.Favorites.ITEM_TYPE_APPLICATION:
-        case LauncherSettings.Favorites.ITEM_TYPE_SHORTCUT:
-            ...
-
-            sBgItemsIdMap.put(info.id, info);
-            ...
-            break;
-
-        case LauncherSettings.Favorites.ITEM_TYPE_FOLDER:
-            ...
-            sBgItemsIdMap.put(folderInfo.id, folderInfo);
-            sBgFolders.put(folderInfo.id, folderInfo);
-            ...
-            break;
-        case LauncherSettings.Favorites.ITEM_TYPE_APPWIDGET:
-        case LauncherSettings.Favorites.ITEM_TYPE_CUSTOM_APPWIDGET:
-    ...
-</code></pre><p>比如 ITEM_TYPE_APPLICATION和ITEM_TYPE_SHORTCUT，执行到最后会保存到LongArrayMap sBgItemsIdMap里。而ITEM_TYPE_FOLDER，保存到LongArrayMap sBgFolders，同时也保存到sBgItemsIdMap，因为FolderInfo和应用的AppInfo，ShortcutInfo都是继承ItemInfo，后续可以转型处理。ITEM_TYPE_APPWIDGET,ITEM_TYPE_CUSTOM_APPWIDGET同理。</p>
-<p>这里的细节比较多，通常我们也不用特地修正这里的查询逻辑，故不做详细阐述。</p>
-<h4 id="绑定WorkSpace数据"><a href="#绑定WorkSpace数据" class="headerlink" title="绑定WorkSpace数据"></a>绑定WorkSpace数据</h4><p>加载完workspace数据后，往下就是讲数据绑定到workspace，调用bindWorkspace(-1)方法。上一步我， 知道数据都保存在集合sBgWorkspaceItems，sBgAppWidgets，sBgWorkspaceScreens里，这里Google不是直接遍历里面的数据，绑定到View上。而是做了一个copy的操作，避免后续的某个线程修改全局变量影响到其他的工作线程。</p>
-<pre><code>private void bindWorkspace(int synchronizeBindPage) {
-    // Save a copy of all the bg-thread collections
-    ArrayList&lt;ItemInfo&gt; workspaceItems = new ArrayList&lt;ItemInfo&gt;();
-    ArrayList&lt;LauncherAppWidgetInfo&gt; appWidgets =
-            new ArrayList&lt;LauncherAppWidgetInfo&gt;();
-    ArrayList&lt;Long&gt; orderedScreenIds = new ArrayList&lt;Long&gt;();
-
-    final LongArrayMap&lt;FolderInfo&gt; folders;
-    final LongArrayMap&lt;ItemInfo&gt; itemsIdMap;
-
-    synchronized (sBgLock) {
-        workspaceItems.addAll(sBgWorkspaceItems);
-        appWidgets.addAll(sBgAppWidgets);
-        orderedScreenIds.addAll(sBgWorkspaceScreens);
-
-        folders = sBgFolders.clone();
-        itemsIdMap = sBgItemsIdMap.clone();
-    }
-
-    final boolean isLoadingSynchronously =
-            synchronizeBindPage != PagedView.INVALID_RESTORE_PAGE;
-    int currScreen = isLoadingSynchronously ? synchronizeBindPage :
-        oldCallbacks.getCurrentWorkspaceScreen();
-    if (currScreen &gt;= orderedScreenIds.size()) {
-        // There may be no workspace screens (just hotseat items and an empty page).
-        currScreen = PagedView.INVALID_RESTORE_PAGE;
-    }
-    final int currentScreen = currScreen;
-    final long currentScreenId = currentScreen &lt; 0
-            ? INVALID_SCREEN_ID : orderedScreenIds.get(currentScreen);
-
-    // Load all the items that are on the current page first (and in the process, unbind
-    // all the existing workspace items before we call startBinding() below.
-    unbindWorkspaceItemsOnMainThread();
-
-    // Separate the items that are on the current screen, and all the other remaining items
-    ArrayList&lt;ItemInfo&gt; currentWorkspaceItems = new ArrayList&lt;ItemInfo&gt;();
-    ArrayList&lt;ItemInfo&gt; otherWorkspaceItems = new ArrayList&lt;ItemInfo&gt;();
-    ArrayList&lt;LauncherAppWidgetInfo&gt; currentAppWidgets =
-            new ArrayList&lt;LauncherAppWidgetInfo&gt;();
-    ArrayList&lt;LauncherAppWidgetInfo&gt; otherAppWidgets =
-            new ArrayList&lt;LauncherAppWidgetInfo&gt;();
-    LongArrayMap&lt;FolderInfo&gt; currentFolders = new LongArrayMap&lt;&gt;();
-    LongArrayMap&lt;FolderInfo&gt; otherFolders = new LongArrayMap&lt;&gt;();
-
-    filterCurrentWorkspaceItems(currentScreenId, workspaceItems, currentWorkspaceItems,
-            otherWorkspaceItems);
-    filterCurrentAppWidgets(currentScreenId, appWidgets, currentAppWidgets,
-            otherAppWidgets);
-    filterCurrentFolders(currentScreenId, itemsIdMap, folders, currentFolders,
-            otherFolders);
-    sortWorkspaceItemsSpatially(currentWorkspaceItems);
-    sortWorkspaceItemsSpatially(otherWorkspaceItems);
-    // Tell the workspace that we&apos;re about to start binding items
-    r = new Runnable() {
-        public void run() {
-            Callbacks callbacks = tryGetCallbacks(oldCallbacks);
-            if (callbacks != null) {
-                callbacks.startBinding();
-            }
-        }
-    };
-    runOnMainThread(r);
-    Log.e(TAG, &quot;orderedScreenIds:&quot; + orderedScreenIds);
-}
-</code></pre><p>之后一系列filter和sort方法，将当前需要加载页的数据，按screenId排序，并填充到新的集合里. 准备工作也就完成了，然后通过 tryGetCallbacks 获取到一个Callbacks, 这个Callbacks也就是LauncherModel的mCallback，初始化是在Launcher onCreate里调用LauncherAppState.setLauncher，在LauncherModel的initialize()里完成赋值。 故，Callbacks就是我们的Launcher。  </p>
-<p>调用Launcher里实现的 startBinding(), 改变workspace的状态，移除一些旧的View和数据</p>
-<pre><code>/**
- * Refreshes the shortcuts shown on the workspace.
- * &lt;p&gt;
- * Implementation of the method from LauncherModel.Callbacks.
- */
-public void startBinding() {
-    setWorkspaceLoading(true);
-
-    // If we&apos;re starting binding all over again, clear any bind calls we&apos;d postponed in
-    // the past (see waitUntilResume) -- we don&apos;t need them since we&apos;re starting binding
-    // from scratch again
-    mBindOnResumeCallbacks.clear();
-
-    // Clear the workspace because it&apos;s going to be rebound
-    mWorkspace.clearDropTargets();
-    mWorkspace.removeAllWorkspaceScreens();
-
-    mWidgetsToAdvance.clear();
-    if (mHotseat != null) {
-        mHotseat.resetLayout();
-    }
-}
-</code></pre><p>之后就依次开始绑定</p>
-<ol>
-<li>绑定WorkSpace的Screen，bindWorkspaceScreens</li>
-<li>绑定Workspace当前页的Items，包括应用信息，组件信息，bindWorkspaceItems</li>
-<li>绑定Workspace其他页的Items</li>
-</ol>
-<p>bindWorkspace(int synchronizeBindPage)方法片段：</p>
-<pre><code>bindWorkspaceScreens(oldCallbacks, orderedScreenIds);
-
-// Load items on the current page
-bindWorkspaceItems(oldCallbacks, currentWorkspaceItems, currentAppWidgets,
-        currentFolders, null);
-if (isLoadingSynchronously) {
-    r = new Runnable() {
-        public void run() {
-            Callbacks callbacks = tryGetCallbacks(oldCallbacks);
-            if (callbacks != null &amp;&amp; currentScreen != PagedView.INVALID_RESTORE_PAGE) {
-                callbacks.onPageBoundSynchronously(currentScreen);
-            }
-        }
-    };
-    runOnMainThread(r);
-}
-
-// Load all the remaining pages (if we are loading synchronously, we want to defer this
-// work until after the first render)
-synchronized (mDeferredBindRunnables) {
-    mDeferredBindRunnables.clear();
-}
-bindWorkspaceItems(oldCallbacks, otherWorkspaceItems, otherAppWidgets, otherFolders,
-        (isLoadingSynchronously ? mDeferredBindRunnables : null));
-</code></pre><p>我们看到bindWorkspaceScreens，bindWorkspaceItems里最终调用的是<br>Launcher里的回调方法，bindScreens，bindItems，bindFolders等等.<br>以 绑定Screen为例</p>
-<pre><code>@Override
-public void bindScreens(ArrayList&lt;Long&gt; orderedScreenIds) {
-    bindAddScreens(orderedScreenIds);
-
-    // If there are no screens, we need to have an empty screen
-    if (orderedScreenIds.size() == 0) {
-        mWorkspace.addExtraEmptyScreen();
-    }
-
-    // Create the custom content page (this call updates mDefaultScreen which calls
-    // setCurrentPage() so ensure that all pages are added before calling this).
-    if (hasCustomContentToLeft()) {
-        mWorkspace.createCustomContentContainer();
-        populateCustomContentContainer();
-    }
-}
-
-@Override
-public void bindAddScreens(ArrayList&lt;Long&gt; orderedScreenIds) {
-    int count = orderedScreenIds.size();
-    for (int i = 0; i &lt; count; i++) {
- mWorkspace.insertNewWorkspaceScreenBeforeEmptyScreen(orderedScreenIds.get(i));
-    }
-}
-</code></pre><p>根据获取到Screen Id集合，调用Workspace的insertNewWorkspaceScreenBeforeEmptyScreen，<br>创建相对应的CellLayout，并添加到我们的Workspace这个容器里</p>
-<pre><code>public long insertNewWorkspaceScreenBeforeEmptyScreen(long screenId) {
-    // Find the index to insert this view into.  If the empty screen exists, then
-    // insert it before that.
-    int insertIndex = mScreenOrder.indexOf(EXTRA_EMPTY_SCREEN_ID);
-    if (insertIndex &lt; 0) {
-        insertIndex = mScreenOrder.size();
-    }
-    return insertNewWorkspaceScreen(screenId, insertIndex);
-}
-
-
-public long insertNewWorkspaceScreen(long screenId, int insertIndex) {
-    if (mWorkspaceScreens.containsKey(screenId)) {
-        throw new RuntimeException(&quot;Screen id &quot; + screenId + &quot; already exists!&quot;);
-    }
-
-    // Inflate the cell layout, but do not add it automatically so that we can get the newly
-    // created CellLayout.
-    CellLayout newScreen = (CellLayout) mLauncher.getLayoutInflater().inflate(
-                    R.layout.workspace_screen, this, false /* attachToRoot */);
-
-    newScreen.setOnLongClickListener(mLongClickListener);
-    newScreen.setOnClickListener(mLauncher);
-    newScreen.setSoundEffectsEnabled(false);
-    mWorkspaceScreens.put(screenId, newScreen);
-    mScreenOrder.add(insertIndex, screenId);
-    addView(newScreen, insertIndex);
-
-    LauncherAccessibilityDelegate delegate =
-            LauncherAppState.getInstance().getAccessibilityDelegate();
-    if (delegate != null &amp;&amp; delegate.isInAccessibleDrag()) {
-        newScreen.enableAccessibleDrag(true, CellLayout.WORKSPACE_ACCESSIBILITY_DRAG);
-    }
-    return screenId;
-}
-</code></pre><p>图标，文件夹，组件的创建流程都是类似的，类似的东西就不重复，具体细节得各位慢慢琢磨。</p>
-<h3 id="加载所有应用"><a href="#加载所有应用" class="headerlink" title="加载所有应用"></a>加载所有应用</h3><p>加载完workspace后，会加载所有应用，更新应用图标。</p>
-<pre><code>private void loadAndBindAllApps() {
-    if (DEBUG_LOADERS) {
-        Log.d(TAG, &quot;loadAndBindAllApps mAllAppsLoaded=&quot; + mAllAppsLoaded);
-    }
-    if (!mAllAppsLoaded) {
-        loadAllApps();
-        synchronized (LoaderTask.this) {
-            if (mStopped) {
-                return;
-            }
-        }
-        updateIconCache();
-        synchronized (LoaderTask.this) {
-            if (mStopped) {
-                return;
-            }
-            mAllAppsLoaded = true;
-        }
-    } else {
-        onlyBindAllApps();
-    }
-}
-</code></pre><p>加载所有应用，保存到mBgAllAppsList AllAppsList对象里。</p>
-<pre><code>private void loadAllApps() {
-    final long loadTime = DEBUG_LOADERS ? SystemClock.uptimeMillis() : 0;
-
-    final Callbacks oldCallbacks = mCallbacks.get();
-    if (oldCallbacks == null) {
-        // This launcher has exited and nobody bothered to tell us.  Just bail.
-        Log.w(TAG, &quot;LoaderTask running with no launcher (loadAllApps)&quot;);
-        return;
-    }
-
-    final List&lt;UserHandleCompat&gt; profiles = mUserManager.getUserProfiles();
-
-    // Clear the list of apps
-    mBgAllAppsList.clear();
-    for (UserHandleCompat user : profiles) {
-        // Query for the set of apps
-        final long qiaTime = DEBUG_LOADERS ? SystemClock.uptimeMillis() : 0;
-        final List&lt;LauncherActivityInfoCompat&gt; apps = mLauncherApps.getActivityList(null, user);
-        if (DEBUG_LOADERS) {
-            Log.d(TAG, &quot;getActivityList took &quot;
-                    + (SystemClock.uptimeMillis()-qiaTime) + &quot;ms for user &quot; + user);
-            Log.d(TAG, &quot;getActivityList got &quot; + apps.size() + &quot; apps for user &quot; + user);
-        }
-        // Fail if we don&apos;t have any apps
-        // TODO: Fix this. Only fail for the current user.
-        if (apps == null || apps.isEmpty()) {
-            return;
-        }
-        boolean quietMode = mUserManager.isQuietModeEnabled(user);
-        // Create the ApplicationInfos
-        for (int i = 0; i &lt; apps.size(); i++) {
-            LauncherActivityInfoCompat app = apps.get(i);
-            // This builds the icon bitmaps.
-            mBgAllAppsList.add(new AppInfo(mContext, app, user, mIconCache, quietMode));
-        }
-
-        final ManagedProfileHeuristic heuristic = ManagedProfileHeuristic.get(mContext, user);
-        if (heuristic != null) {
-            final Runnable r = new Runnable() {
-
-                @Override
-                public void run() {
-                    heuristic.processUserApps(apps);
-                }
-            };
-            runOnMainThread(new Runnable() {
-
-                @Override
-                public void run() {
-                    // Check isLoadingWorkspace on the UI thread, as it is updated on
-                    // the UI thread.
-                    if (mIsLoadingAndBindingWorkspace) {
-                        synchronized (mBindCompleteRunnables) {
-                            mBindCompleteRunnables.add(r);
-                        }
-                    } else {
-                        runOnWorkerThread(r);
-                    }
-                }
-            });
-        }
-    }
-    // Huh? Shouldn&apos;t this be inside the Runnable below?
-    final ArrayList&lt;AppInfo&gt; added = mBgAllAppsList.added;
-    mBgAllAppsList.added = new ArrayList&lt;AppInfo&gt;();
-
-    // Post callback on main thread
-    mHandler.post(new Runnable() {
-        public void run() {
-
-            final long bindTime = SystemClock.uptimeMillis();
-            final Callbacks callbacks = tryGetCallbacks(oldCallbacks);
-            if (callbacks != null) {
-                callbacks.bindAllApplications(added);
-                if (DEBUG_LOADERS) {
-                    Log.d(TAG, &quot;bound &quot; + added.size() + &quot; apps in &quot;
-                            + (SystemClock.uptimeMillis() - bindTime) + &quot;ms&quot;);
-                }
-            } else {
-                Log.i(TAG, &quot;not binding apps: no Launcher activity&quot;);
-            }
-        }
-    });
-    // Cleanup any data stored for a deleted user.
-    ManagedProfileHeuristic.processAllUsers(profiles, mContext);
-    if (DEBUG_LOADERS) {
-        Log.d(TAG, &quot;Icons processed in &quot;
-                + (SystemClock.uptimeMillis() - loadTime) + &quot;ms&quot;);
-    }
-}
-</code></pre><p>通过LauncherAppsCompat的对象，拿到所有安装的应用，遍历添加到AllAppsList里。</p>
-<pre><code>mBgAllAppsList.add(new AppInfo(mContext, app, user, mIconCache, quietMode));
-</code></pre><p>同绑定workspace数据一样，会调用Launcher里实现的回调方法 bindAllApplications，将数据填充到抽屉View容器里。</p>
-<pre><code>/**
- * Add the icons for all apps.
- * &lt;p&gt;
- * Implementation of the method from LauncherModel.Callbacks.
- */
-public void bindAllApplications(final ArrayList&lt;AppInfo&gt; apps) {
-    if (waitUntilResume(mBindAllApplicationsRunnable, true)) {
-        mTmpAppsList = apps;
-        return;
-    }
-
-    if (mAppsView != null) {
-        mAppsView.setApps(apps);
-    }
-    if (mLauncherCallbacks != null) {
-        mLauncherCallbacks.bindAllApplications(apps);
-    }
-}
-</code></pre><p>这样加载流程基本就结束了。<br>给大家梳理一个大致的流程，很多细节都没有介绍，不懂的地方可以留言，谢谢。</p>
-
-          
+    LoaderTask(Cont
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2018/10/03/android/Launcher3桌面加载流程分析-2/#more" rel="contents">
+              Read more &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -1222,278 +689,19 @@ public void bindAllApplications(final ArrayList&lt;AppInfo&gt; apps) {
       
         
           
-            <p>省略一万字前奏<br>如果大家没有源码，<br>不介意的话，可以参考<a href="https://github.com/Tic-pf/Launcher3-N-Folder" target="_blank" rel="noopener">Launcher3-N-Folder</a> 开发中</p>
-<h3 id="主入口Launcher"><a href="#主入口Launcher" class="headerlink" title="主入口Launcher"></a>主入口Launcher</h3><h4 id="LauncherAppState"><a href="#LauncherAppState" class="headerlink" title="LauncherAppState"></a>LauncherAppState</h4><p>Launcher的onCreate里比较长，我们依次取代码片段来分析，看oncrate方法的这一段,初始化LauncherAppState</p>
-<pre><code>public void onCreate() {
+          省略一万字前奏如果大家没有源码，不介意的话，可以参考Launcher3-N-Folder 开发中
+主入口LauncherLauncherAppStateLauncher的onCreate里比较长，我们依次取代码片段来分析，看oncrate方法的这一段,初始化LauncherAppState
+public void onCreate() {
     ...
-    LauncherAppState app = LauncherAppState.getInstance();
-    ...
-}
-</code></pre><p>LauncherAppState是保存一些全局的，核心的对象。主要有整个Launcher的工作台workspace，Launcher的控制器LauncherModel，应用图标的缓存机制IconCache，设备的配置信息InvariantDeviceProfile等。  </p>
-<p>构造方法，首先初始化内存的追踪器TestingUtils，记录我们app的内存信息，这个工具在我们开发其他app分析内存信息时也是很有用的。</p>
-<pre><code>private LauncherAppState() {
-    ...
-
-    if (TestingUtils.MEMORY_DUMP_ENABLED) {
-        TestingUtils.startTrackingMemory(sContext);
-    }
-
-    mInvariantDeviceProfile = new InvariantDeviceProfile(sContext);
-    mIconCache = new IconCache(sContext, mInvariantDeviceProfile);
-    mWidgetCache = new WidgetPreviewLoader(sContext, mIconCache);
-
-    mAppFilter = AppFilter.loadByName(sContext.getString(R.string.app_filter_class));
-    mModel = new LauncherModel(this, mIconCache, mAppFilter);
-
-    LauncherAppsCompat.getInstance(sContext).addOnAppsChangedCallback(mModel);
-
-    // Register intent receivers
-    IntentFilter filter = new IntentFilter();
-    filter.addAction(Intent.ACTION_LOCALE_CHANGED);
-    filter.addAction(SearchManager.INTENT_GLOBAL_SEARCH_ACTIVITY_CHANGED);
-    // For handling managed profiles
-    filter.addAction(LauncherAppsCompat.ACTION_MANAGED_PROFILE_ADDED);
-    filter.addAction(LauncherAppsCompat.ACTION_MANAGED_PROFILE_REMOVED);
-    filter.addAction(LauncherAppsCompat.ACTION_MANAGED_PROFILE_AVAILABLE);
-    filter.addAction(LauncherAppsCompat.ACTION_MANAGED_PROFILE_UNAVAILABLE);
-
-    sContext.registerReceiver(mModel, filter);
-    ...
-}         
-</code></pre><p>LauncherAppsCompat里添加了一个应用变化的回调，由LauncherModel实现接口，及时的响应数据变化。LauncherAppsCompat是获取所有应用，监听应用变化的一个抽象，Android 5.0前后的版本获取方式不一样了，这就是Launcher良好适配性的体现了。</p>
-<pre><code>LauncherAppsCompat.getInstance(sContext).addOnAppsChangedCallback(mModel);
-</code></pre><p>Android 5.0以前的监听</p>
-<pre><code>private void registerForPackageIntents() {
-    IntentFilter filter = new IntentFilter(Intent.ACTION_PACKAGE_ADDED);
-    filter.addAction(Intent.ACTION_PACKAGE_REMOVED);
-    filter.addAction(Intent.ACTION_PACKAGE_CHANGED);
-    filter.addDataScheme(&quot;package&quot;);
-    mContext.registerReceiver(mPackageMonitor, filter);
-    filter = new IntentFilter();
-    filter.addAction(Intent.ACTION_EXTERNAL_APPLICATIONS_AVAILABLE);
-    filter.addAction(Intent.ACTION_EXTERNAL_APPLICATIONS_UNAVAILABLE);
-    mContext.registerReceiver(mPackageMonitor, filter);
-}
-</code></pre><p>Android5.0后的监听</p>
-<pre><code>import android.content.pm.LauncherApps;
-
-protected LauncherApps mLauncherApps;
-
-public void addOnAppsChangedCallback(LauncherAppsCompat.OnAppsChangedCallbackCompat callback) {
-    WrappedCallback wrappedCallback = new WrappedCallback(callback);
-    synchronized (mCallbacks) {
-        mCallbacks.put(callback, wrappedCallback);
-    }
-    mLauncherApps.registerCallback(wrappedCallback);
-}
-</code></pre><p>除了TestingUtils，应用变化监听外，初始化两个核心对象IconCache，LauncherModel。LauncherModel添加了设备变更，用户信息变更的广播，这是因为当用户修改设备信息如语言，区域，用户信息等，LauncherModel会刷新数据，改变图标，标题等信息。<br>LauncherAppState的初始化到这里基本上就完成了。</p>
-<h4 id="DeviceProfile，InvariantDeviceProfile，Launcher的配置"><a href="#DeviceProfile，InvariantDeviceProfile，Launcher的配置" class="headerlink" title="DeviceProfile，InvariantDeviceProfile，Launcher的配置"></a>DeviceProfile，InvariantDeviceProfile，Launcher的配置</h4><p>我们继续看，下一步</p>
-<pre><code>LauncherAppState app = LauncherAppState.getInstance();
-
-// Load configuration-specific DeviceProfile
-mDeviceProfile = getResources().getConfiguration().orientation
-        == Configuration.ORIENTATION_LANDSCAPE ?
-        app.getInvariantDeviceProfile().landscapeProfile
-        : app.getInvariantDeviceProfile().portraitProfile;
-</code></pre><p>通过Configuration获取横屏配置landscapeProfile 或者portraitProfile竖屏配置</p>
-<h5 id="DeviceProfile"><a href="#DeviceProfile" class="headerlink" title="DeviceProfile"></a>DeviceProfile</h5><p>DeviceProfile的数据都是来自InvariantDeviceProfile，封装一些工具方法，我们直接看重点InvariantDeviceProfile</p>
-<h5 id="InvariantDeviceProfile"><a href="#InvariantDeviceProfile" class="headerlink" title="InvariantDeviceProfile"></a>InvariantDeviceProfile</h5><p>InvariantDeviceProfile的初始化是在LauncherAppState构造里new出来的，调用的是</p>
-<pre><code>InvariantDeviceProfile(Context context) {
-    ...
-    numRows = closestProfile.numRows;
-    numColumns = closestProfile.numColumns;
-    numHotseatIcons = closestProfile.numHotseatIcons;
-    hotseatAllAppsRank = (int) (numHotseatIcons / 2);
-    defaultLayoutId = closestProfile.defaultLayoutId;
-    numFolderRows = closestProfile.numFolderRows;
-    numFolderColumns = closestProfile.numFolderColumns;
-    minAllAppsPredictionColumns = closestProfile.minAllAppsPredictionColumns;
-
-    iconSize = interpolatedDeviceProfileOut.iconSize;
-    iconBitmapSize = Utilities.pxFromDp(iconSize, dm);
-    iconTextSize = interpolatedDeviceProfileOut.iconTextSize;
-    hotseatIconSize = interpolatedDeviceProfileOut.hotseatIconSize;
-    fillResIconDpi = getLauncherIconDensity(iconBitmapSize);
-
-    // If the partner customization apk contains any grid overrides, apply them
-    // Supported overrides: numRows, numColumns, iconSize
-    applyPartnerDeviceProfileOverrides(context, dm);
-
-    Point realSize = new Point();
-    display.getRealSize(realSize);
-    // The real size never changes. smallSide and largeSide will remain the
-    // same in any orientation.
-    int smallSide = Math.min(realSize.x, realSize.y);
-    int largeSide = Math.max(realSize.x, realSize.y);
-
-    landscapeProfile = new DeviceProfile(context, this, smallestSize, largestSize,
-            largeSide, smallSide, true /* isLandscape */);
-    portraitProfile = new DeviceProfile(context, this, smallestSize, largestSize,
-            smallSide, largeSide, false /* isLandscape */);
-}
-</code></pre><p>可以看到，通过closestProfile和interpolatedDeviceProfileOut拿到了一系列配置项，如桌面的行，列，Hotseat(桌面底部固定的应用栏)的个数，Hotseat所有应用的位置，布局id，文件夹的行列，图标的大小等等。之后再将这些信息new出我们的DeviceProfile对象。<br>那问题来了，closestProfile和interpolatedDeviceProfileOut是什么？？怎么计算出来的？</p>
-<pre><code>...
-WindowManager wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
-Display display = wm.getDefaultDisplay();
-DisplayMetrics dm = new DisplayMetrics();
-display.getMetrics(dm);
-
-Point smallestSize = new Point();
-Point largestSize = new Point();
-display.getCurrentSizeRange(smallestSize, largestSize);
-
-// This guarantees that width &lt; height
-minWidthDps = Utilities.dpiFromPx(Math.min(smallestSize.x, smallestSize.y), dm);
-minHeightDps = Utilities.dpiFromPx(Math.min(largestSize.x, largestSize.y), dm);
-
-ArrayList&lt;InvariantDeviceProfile&gt; closestProfiles =
-        findClosestDeviceProfiles(minWidthDps, minHeightDps, getPredefinedDeviceProfiles());
-InvariantDeviceProfile interpolatedDeviceProfileOut =
-        invDistWeightedInterpolate(minWidthDps,  minHeightDps, closestProfiles);
-...
-</code></pre><p>可以发现，通过设备的宽高等信息，从各种分辨率的DeviceProfiles列表中找到最合适的配置信息，查找的方法如下，根据设备的宽高跟列表里的的最小宽高差值的平方根从小到大排序，第一个就是我们期望的配置</p>
-<pre><code>/**
-* Returns the closest device profiles ordered by closeness to the specified width and height
-*/
-// Package private visibility for testing.
-ArrayList&lt;InvariantDeviceProfile&gt; findClosestDeviceProfiles(
-        final float width, final float height, ArrayList&lt;InvariantDeviceProfile&gt; points) {
-
-    // Sort the profiles by their closeness to the dimensions
-    ArrayList&lt;InvariantDeviceProfile&gt; pointsByNearness = points;
-    Collections.sort(pointsByNearness, new Comparator&lt;InvariantDeviceProfile&gt;() {
-        public int compare(InvariantDeviceProfile a, InvariantDeviceProfile b) {
-            return Float.compare(dist(width, height, a.minWidthDps, a.minHeightDps),
-                    dist(width, height, b.minWidthDps, b.minHeightDps));
-        }
-    });
-
-    return pointsByNearness;
-}
-
-@Thunk float dist(float x0, float y0, float x1, float y1) {
-    return (float) Math.hypot(x1 - x0, y1 - y0);
-}
-</code></pre><p>配置好的InvariantDeviceProfile列表信息如下，构造参数依次是，<br>配置名称，宽高，行数，列数，文件夹行数列数，图标大小，图标文本大小<br>hotseat配置资源文件，hotseat图标大小，默认页的资源文件<br>故，当我们有新机型没有适配，就可以在这里修改或新增配置</p>
-<pre><code>ArrayList&lt;InvariantDeviceProfile&gt; getPredefinedDeviceProfiles() {
-    ArrayList&lt;InvariantDeviceProfile&gt; predefinedDeviceProfiles = new ArrayList&lt;&gt;();
-    // width, height, #rows, #columns, #folder rows, #folder columns,
-    // iconSize, iconTextSize, #hotseat, #hotseatIconSize, defaultLayoutId.
-    predefinedDeviceProfiles.add(new InvariantDeviceProfile(&quot;Super Short Stubby&quot;,
-            255, 300,     2, 3, 2, 3, 3, 48, 13, 3, 48, R.xml.default_workspace_3x3));
-    predefinedDeviceProfiles.add(new InvariantDeviceProfile(&quot;Shorter Stubby&quot;,
-            255, 400,     3, 3, 3, 3, 3, 48, 13, 3, 48, R.xml.default_workspace_3x3));
-    predefinedDeviceProfiles.add(new InvariantDeviceProfile(&quot;Short Stubby&quot;,
-            275, 420,     3, 4, 3, 4, 4, 48, 13, 5, 48, R.xml.default_workspace_4x4));
-    predefinedDeviceProfiles.add(new InvariantDeviceProfile(&quot;Stubby&quot;,
-            255, 450,     3, 4, 3, 4, 4, 48, 13, 5, 48, R.xml.default_workspace_4x4));
-    predefinedDeviceProfiles.add(new InvariantDeviceProfile(&quot;Nexus S&quot;,
-            296, 491.33f, 4, 4, 4, 4, 4, 48, 13, 5, 48, R.xml.default_workspace_4x4));
-    predefinedDeviceProfiles.add(new InvariantDeviceProfile(&quot;Nexus 4&quot;,
-            359, 567,     4, 4, 4, 4, 4, DEFAULT_ICON_SIZE_DP, 13, 5, 56, R.xml.default_workspace_4x4));
-    predefinedDeviceProfiles.add(new InvariantDeviceProfile(&quot;Nexus 5&quot;,
-            335, 567,     5, 4, 5, 4, 4, DEFAULT_ICON_SIZE_DP, 13, 5, 56, R.xml.default_workspace_5x4_no_all_apps));
-    predefinedDeviceProfiles.add(new InvariantDeviceProfile(&quot;Large Phone&quot;,
-            406, 694,     5, 5, 4, 4, 4, 64, 14.4f,  5, 56, R.xml.default_workspace_5x5));
-    // The tablet profile is odd in that the landscape orientation
-    // also includes the nav bar on the side
-    predefinedDeviceProfiles.add(new InvariantDeviceProfile(&quot;Nexus 7&quot;,
-            575, 904,     5, 6, 4, 5, 4, 72, 14.4f,  7, 60, R.xml.default_workspace_5x6));
-    // Larger tablet profiles always have system bars on the top &amp; bottom
-    predefinedDeviceProfiles.add(new InvariantDeviceProfile(&quot;Nexus 10&quot;,
-            727, 1207,    5, 6, 4, 5, 4, 76, 14.4f,  7, 76, R.xml.default_workspace_5x6));
-    predefinedDeviceProfiles.add(new InvariantDeviceProfile(&quot;20-inch Tablet&quot;,
-            1527, 2527,   7, 7, 6, 6, 4, 100, 20,  7, 72, R.xml.default_workspace_5x6));
-    return predefinedDeviceProfiles;
-}
-</code></pre><p>Launcher的配置初始化到这里基本上就完成了。</p>
-<p>还有一些其他的对象的初始化，包括workspace状态变化的动画加载控制LauncherStateTransitionAnimation, 应用组件的管理器AppWidgetManagerCompat, 处理组件长按事件的ViewLauncherAppWidgetHost，因为在Launcher的初始化流程里不是特别需要，故后文有机会再做介绍。</p>
-<h4 id="LauncherModel加载应用信息"><a href="#LauncherModel加载应用信息" class="headerlink" title="LauncherModel加载应用信息"></a>LauncherModel加载应用信息</h4><p>整个流程里比较复杂的就是LauncherModel加载应用了, 在onCreate里</p>
-<pre><code>mModel = app.setLauncher(this);
-</code></pre><p>LauncherAppState里调用了LauncherModel的初始化方法 initialize,参数是Launcher</p>
-<pre><code>LauncherModel setLauncher(Launcher launcher) {
-    getLauncherProvider().setLauncherProviderChangeListener(launcher);
-    mModel.initialize(launcher);
-    mAccessibilityDelegate = ((launcher != null) &amp;&amp; Utilities.ATLEAST_LOLLIPOP) ?
-        new LauncherAccessibilityDelegate(launcher) : null;
-    return mModel;
-}
-</code></pre><p>LauncherModel的initialize参数是LauncherModel.Callbacks，Launcher里实现了LauncherModel.Callbacks的一系列接口用于绑定获取到的应用信息，文件夹信息，屏幕信息等等</p>
-<pre><code>public void initialize(Callbacks callbacks) {
-    synchronized (mLock) {
-        // Disconnect any of the callbacks and drawables associated with ItemInfos on the
-        // workspace to prevent leaking Launcher activities on orientation change.
-        unbindItemInfosAndClearQueuedBindRunnables();
-        mCallbacks = new WeakReference&lt;Callbacks&gt;(callbacks);
-    }
-}
-</code></pre><p>在加载数据之前先清除正在运行的线程DeferredBindRunnables，清除DeferredHandler里等待执行的任务，并且将所有ItemInfo unbind</p>
-<pre><code>/** Unbinds all the sBgWorkspaceItems and sBgAppWidgets on the main thread */
-void unbindWorkspaceItemsOnMainThread() {
-    // Ensure that we don&apos;t use the same workspace items data structure on the main thread
-    // by making a copy of workspace items first.
-    final ArrayList&lt;ItemInfo&gt; tmpItems = new ArrayList&lt;ItemInfo&gt;();
-    synchronized (sBgLock) {
-        tmpItems.addAll(sBgWorkspaceItems);
-        tmpItems.addAll(sBgAppWidgets);
-    }
-    Runnable r = new Runnable() {
-            @Override
-            public void run() {
-                for (ItemInfo item : tmpItems) {
-                    item.unbind();
-                }
-            }
-        };
-    runOnMainThread(r);
-}
-</code></pre><p>接着我们才看到真正开始加载数据了，onCreate里的LauncherModel调用startLoader，创建线程加载数据</p>
-<pre><code>...        
-if (!mRestoring) {
-    if (DISABLE_SYNCHRONOUS_BINDING_CURRENT_PAGE) {
-        // If the user leaves launcher, then we should just load items asynchronously when
-        // they return.
-        mModel.startLoader(PagedView.INVALID_RESTORE_PAGE);
-    } else {
-        // We only load the page synchronously if the user rotates (or triggers a
-        // configuration change) while launcher is in the foreground
-        mModel.startLoader(mWorkspace.getRestorePage());
-    }
-}
-...
-</code></pre><p>当第一次打开时，会调用                mModel.startLoader(PagedView.INVALID_RESTORE_PAGE)，停止旧的Loader任务，stopLoaderLocked，然后new出一个LoaderTask(mApp.getContext(), loadFlags) Runnable，通过Handler sworker post出去，开始加载任务</p>
-<pre><code>public void startLoader(int synchronousBindPage) {
-    startLoader(synchronousBindPage, LOADER_FLAG_NONE);
-}
-
-public void startLoader(int synchronousBindPage, int loadFlags) {
-        // Enable queue before starting loader. It will get disabled in Launcher#finishBindingItems
-        InstallShortcutReceiver.enableInstallQueue();
-        synchronized (mLock) {
-            // Clear any deferred bind-runnables from the synchronized load process
-            // We must do this before any loading/binding is scheduled below.
-            synchronized (mDeferredBindRunnables) {
-                mDeferredBindRunnables.clear();
-            }
-
-            // Don&apos;t bother to start the thread if we know it&apos;s not going to do anything
-            if (mCallbacks != null &amp;&amp; mCallbacks.get() != null) {
-                // If there is already one running, tell it to stop.
-                stopLoaderLocked();
-                mLoaderTask = new LoaderTask(mApp.getContext(), loadFlags);
-                if (synchronousBindPage != PagedView.INVALID_RESTORE_PAGE
-                        &amp;&amp; mAllAppsLoaded &amp;&amp; mWorkspaceLoaded &amp;&amp; !mIsLoaderTaskRunning) {
-                    mLoaderTask.runBindSynchronousPage(synchronousBindPage);
-                } else {
-                    sWorkerThread.setPriority(Thread.NORM_PRIORITY);
-                    sWorker.post(mLoaderTask);
-                }
-            }
-        }
-    }
-</code></pre><p>开始加载应用信息的任务后，由于后续的篇幅比较长，请看下一篇文章的详细介绍。</p>
-
-          
+    LauncherAppState app = LauncherAppSta
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2018/10/02/android/Launcher3桌面加载流程分析-1/#more" rel="contents">
+              Read more &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -1611,168 +819,20 @@ public void startLoader(int synchronousBindPage, int loadFlags) {
       
         
           
-            <h3 id="线程池的简单使用"><a href="#线程池的简单使用" class="headerlink" title="线程池的简单使用"></a>线程池的简单使用</h3><h4 id="newCachedThreadPool"><a href="#newCachedThreadPool" class="headerlink" title="newCachedThreadPool"></a>newCachedThreadPool</h4><p>创建一个可缓存线程池，如果线程池长度超过处理需要，可灵活回收空闲线程，若无可回收，则新建线程。示例代码如下：</p>
-<pre><code>ExecutorService cachedThreadPool = Executors.newCachedThreadPool();
+          线程池的简单使用newCachedThreadPool创建一个可缓存线程池，如果线程池长度超过处理需要，可灵活回收空闲线程，若无可回收，则新建线程。示例代码如下：
+ExecutorService cachedThreadPool = Executors.newCachedThreadPool();
 for (int i = 0; i &lt; 10; i++) {
     final int index = i;
     try {
-        Thread.sleep(index * 1000);
-    } catch (InterruptedException e) {
-        e.printStackTrace();
-    }
-
-    cachedThreadPool.execute(new Runnable() {
-
-        @Override
-        public void run() {
-            System.out.println(index);
-        }
-    });
-}
-</code></pre><p>线程池为无限大，当执行第二个任务时第一个任务已经完成，会复用执行第一个任务的线程，而不用每次新建线程。</p>
-<h4 id="newFixedThreadPool"><a href="#newFixedThreadPool" class="headerlink" title="newFixedThreadPool"></a>newFixedThreadPool</h4><p>创建一个定长线程池，可控制线程最大并发数，超出的线程会在队列中等待。示例代码如下：</p>
-<pre><code>ExecutorService fixedThreadPool = Executors.newFixedThreadPool(3);
-for (int i = 0; i &lt; 10; i++) {
-    final int index = i;
-    fixedThreadPool.execute(new Runnable() {
-
-        @Override
-        public void run() {
-            try {
-                System.out.println(index);
-                Thread.sleep(2000);
-            } catch (InterruptedException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            }
-        }
-    });
-}
-</code></pre><p>因为线程池大小为3，每个任务输出index后sleep 2秒，所以每两秒打印3个数字。</p>
-<p>定长线程池的大小最好根据系统资源进行设置。如 Runtime.getRuntime().availableProcessors()。可参考 PreloadDataCache。</p>
-<h4 id="newScheduledThreadPool"><a href="#newScheduledThreadPool" class="headerlink" title="newScheduledThreadPool"></a>newScheduledThreadPool</h4><p>创建一个定长线程池，支持定时及周期性任务执行。延迟执行示例代码如下：</p>
-<pre><code>ScheduledExecutorService scheduledThreadPool = Executors.newScheduledThreadPool(5);
-scheduledThreadPool.schedule(new Runnable() {
-
-    @Override
-    public void run() {
-        System.out.println(&quot;delay 3 seconds&quot;);
-    }
-}, 3, TimeUnit.SECONDS);
-</code></pre><p>表示延迟3秒执行。</p>
-<p>定期执行示例代码如下：</p>
-<pre><code>scheduledThreadPool.scheduleAtFixedRate(new Runnable() {
-
-    @Override
-    public void run() {
-        System.out.println(&quot;delay 1 seconds, and excute every 3 seconds&quot;);
-    }
-}, 1, 3, TimeUnit.SECONDS);
-</code></pre><p>表示延迟1秒后每3秒执行一次。<br>ScheduledExecutorService比Timer更安全，功能更强大，后面会有一篇单独进行对比。</p>
-<h4 id="newSingleThreadExecutor"><a href="#newSingleThreadExecutor" class="headerlink" title="newSingleThreadExecutor"></a>newSingleThreadExecutor</h4><p>创建一个单线程化的线程池，它只会用唯一的工作线程来执行任务，保证所有任务按照指定顺序(FIFO, LIFO, 优先级)执行。示例代码如下：</p>
-<pre><code>ExecutorService singleThreadExecutor = Executors.newSingleThreadExecutor();
-for (int i = 0; i &lt; 10; i++) {
-    final int index = i;
-    singleThreadExecutor.execute(new Runnable() {
-
-        @Override
-        public void run() {
-            try {
-                System.out.println(index);
-                Thread.sleep(2000);
-            } catch (InterruptedException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            }
-        }
-    });
-}
-</code></pre><p>结果依次输出，相当于顺序执行各个任务。</p>
-<p>现行大多数GUI程序都是单线程的。Android中单线程可用于数据库操作，文件操作，应用批量安装，应用批量删除等不适合并发但可能IO阻塞性及影响UI线程响应的操作。</p>
-<h3 id="使用线程池的好处"><a href="#使用线程池的好处" class="headerlink" title="使用线程池的好处"></a>使用线程池的好处</h3><ul>
-<li>降低资源消耗: 可以重复利用已创建的线程降低线程创建和销毁造成的消耗。</li>
-<li>提高响应速度: 当任务到达时，任务可以不需要等到线程创建就能立即执行。</li>
-<li>提高线程的可管理性: 线程是稀缺资源，如果无限制地创建，不仅会消耗系统资源，还会降低系统的稳定性，使用线程池可以进行统一分配、调优和监控</li>
-</ul>
-<h3 id="线程池的工作原理"><a href="#线程池的工作原理" class="headerlink" title="线程池的工作原理"></a>线程池的工作原理</h3><p>当一个新的任务提交到线程池之后，线程池是如何处理的</p>
-<ol>
-<li><p>线程池判断 <strong>核心线程池</strong> 里的线程是否都在执行任务。如果不是，则创建一个新的工作线程来执行任务。如果核心线程池里的线程都在执行任务，则执行第二步。</p>
-</li>
-<li><p>线程池判断 <strong>工作队列</strong> 是否已经满。如果工作队列没有满，则将新提交的任务存储在这个工作队列里进行等待。如果工作队列满了，则执行第三步</p>
-</li>
-<li><p>线程池判断 <strong>线程池的线程</strong> 是否都处于工作状态。如果没有，则创建一个新的工作线程来执行任务。如果已经满了，则交给饱和策略来处理这个任务</p>
-</li>
-</ol>
-<h4 id="线程池饱和策略"><a href="#线程池饱和策略" class="headerlink" title="线程池饱和策略"></a>线程池饱和策略</h4><p>这里提到了线程池的饱和策略，那我们就简单介绍下有哪些饱和策略：</p>
-<ul>
-<li><p>AbortPolicy</p>
-<p>  Java 线程池默认的阻塞策略，不执行此任务，而且直接抛出一个运行时异常，切记 ThreadPoolExecutor.execute 需要 try catch，否则程序会直接退出。</p>
-</li>
-<li><p>DiscardPolicy  </p>
-<p>  直接抛弃，任务不执行，空方法</p>
-</li>
-<li><p>DiscardOldestPolicy</p>
-<p>  从队列里面抛弃 head 的一个任务，并再次 execute 此 task。</p>
-</li>
-<li><p>CallerRunsPolicy</p>
-<p>  在调用 execute 的线程里面执行此 command，会阻塞入口</p>
-</li>
-<li><p>用户自定义拒绝策略（最常用）</p>
-<p>  实现 RejectedExecutionHandler，并自己定义策略模式</p>
-</li>
-</ul>
-<p>我们以 ThreadPoolExecutor 为例展示下线程池的工作流程图</p>
-<p><img src="https://upload-images.jianshu.io/upload_images/2287474-1afec08303da53b6.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/700" alt="strategy"></p>
-<p><img src="https://upload-images.jianshu.io/upload_images/2287474-06cef3d5159f404e.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/700" alt="policy"></p>
-<ol>
-<li>如果当前运行的线程少于 corePoolSize，则创建新线程来执行任务（注意，执行这一步骤需要获取全局锁）。</li>
-<li>如果运行的线程等于或多于 corePoolSize，则将任务加入BlockingQueue。</li>
-<li>如果无法将任务加入 BlockingQueue（队列已满），则在非corePool中创建新的线程来处理任务（注意，执行这一步骤需要获取全局锁）。</li>
-<li>如果创建新线程将使当前运行的线程超出maximumPoolSize，任务将被拒绝，并调用 RejectedExecutionHandler.rejectedExecution() 方法。</li>
-</ol>
-<p>ThreadPoolExecutor 采取上述步骤的总体设计思路，是为了在执行execute()方法时，尽可能地避免获取全局锁（那将会是一个严重的可伸缩瓶颈）。在ThreadPoolExecutor 完成预热之后（当前运行的线程数大于等于corePoolSize），几乎所有的execute()方法调用都是执行步骤2，而步骤2不需要获取全局锁。</p>
-<h3 id="关闭线程池"><a href="#关闭线程池" class="headerlink" title="关闭线程池"></a>关闭线程池</h3><p>可以通过调用线程池的shutdown或shutdownNow方法来关闭线程池。它们的原理是遍历线程池中的工作线程，然后逐个调用线程的interrupt方法来中断线程，所以无法响应中断的任务可能永远无法终止。但是它们存在一定的区别，shutdownNow首先将线程池的状态设置成STOP，然后尝试停止所有的正在执行或暂停任务的线程，并返回等待执行任务的列表，而shutdown只是将线程池的状态设置成SHUTDOWN状态，然后中断所有没有正在执行任务的线程。  </p>
-<p>只要调用了这两个关闭方法中的任意一个，isShutdown方法就会返回true。当所有的任务都已关闭后，才表示线程池关闭成功，这时调用isTerminaed方法会返回true。至于应该调用哪一种方法来关闭线程池，应该由提交到线程池的任务特性决定，通常调用shutdown方法来关闭线程池，如果任务不一定要执行完，则可以调用shutdownNow方法。</p>
-<h3 id="合理的配置线程池"><a href="#合理的配置线程池" class="headerlink" title="合理的配置线程池"></a>合理的配置线程池</h3><p>要想合理地配置线程池，就必须首先分析任务特性，可以从以下几个角度来分析。</p>
-<ul>
-<li><p>任务的性质：CPU密集型任务、IO密集型任务和混合型任务。</p>
-</li>
-<li><p>任务的优先级：高、中和低。</p>
-</li>
-<li><p>任务的执行时间：长、中和短。</p>
-</li>
-<li><p>任务的依赖性：是否依赖其他系统资源，如数据库连接。</p>
-</li>
-</ul>
-<p>性质不同的任务可以用不同规模的线程池分开处理。  </p>
-<ul>
-<li><p>CPU密集型任务应配置尽可能小的线程，如配置 N * cpu + 1 个线程的线程池。</p>
-</li>
-<li><p>IO密集型任务线程并不是一直在执行任务，则应配置尽可能多的线程，如 2*Ncpu。</p>
-</li>
-<li><p>混合型的任务，如果可以拆分，将其拆分成一个CPU密集型任务和一个IO密集型任务，只要这两个任务执行的时间相差不是太大，那么分解后执行的吞吐量将高于串行执行的吞吐量。如果这两个任务执行时间相差太大，则没必要进行分解。可以通过Runtime.getRuntime().availableProcessors() 方法获得当前设备的CPU个数。</p>
-</li>
-<li><p>优先级不同的任务可以使用优先级队列PriorityBlockingQueue 来处理。它可以让优先级高的任务先执行</p>
-</li>
-<li><p>如果一直有优先级高的任务提交到队列里，那么优先级低的任务可能永远不能执行。执行时间不同的任务可以交给不同规模的线程池来处理，或者可以使用优先级队列，让执行时间短的任务先执行。</p>
-</li>
-<li><p>依赖数据库连接池的任务，因为线程提交SQL后需要等待数据库返回结果，等待的时间越长，则CPU空闲时间就越长，那么线程数应该设置得越大，这样才能更好地利用CPU。</p>
-</li>
-</ul>
-<p>建议使用有界队列。有界队列能增加系统的稳定性和预警能力，可以根据需要设大一点儿，比如几千。有时候我们系统里后台任务线程池的队列和线程池全满了，不断抛出抛弃任务的异常，通过排查发现是数据库出现了问题，导致执行SQL变得非常缓慢，因为后台任务线程池里的任务全是需要向数据库查询和插入数据的，所以导致线程池里的工作线程全部阻塞，任务积压在线程池里。如果当时我们设置成无界队列，那么线程池的队列就会越来越多，有可能会撑满内存，导致整个系统不可用，而不只是后台任务出现问题。当然，我们的系统所有的任务是用单独的服务器部署的，我们使用不同规模的线程池完成不同类型的任务，但是出现这样问题时也会影响到其他任务。</p>
-<h3 id="线程池的监控"><a href="#线程池的监控" class="headerlink" title="线程池的监控"></a>线程池的监控</h3><p>如果在系统中大量使用线程池，则有必要对线程池进行监控，方便在出现问题时，可以根据线程池的使用状况快速定位问题。可以通过线程池提供的参数进行监控，在监控线程池的时候可以使用以下属性  </p>
-<ul>
-<li>taskCount：线程池需要执行的任务数量。  </li>
-<li>completedTaskCount：线程池在运行过程中已完成的任务数量，小于或等于taskCount。  </li>
-<li>largestPoolSize：线程池里曾经创建过的最大线程数量。通过这个数据可以知道线程池是否曾经满过。如该数值等于线程池的最大大小，则表示线程池曾经满过。  </li>
-<li>getPoolSize：线程池的线程数量。如果线程池不销毁的话，线程池里的线程不会自动销毁，所以这个大小只增不减。  </li>
-<li>getActiveCount：获取活动的线程数。  </li>
-</ul>
-<p>通过扩展线程池进行监控。继承线程池来自定义线程池，重写线程池的beforeExecute、afterExecute 和  terminated方法，也可以在任务执行前、执行后和线程池关闭前执行一些代码来进行监控。例如，监控任务的平均执行时间、最大执行时间和最小执行时间等。  </p>
-<p>线程池只是并发编程中的一小部分，下图是史上最全面的Java的并发编程学习技术总汇</p>
-<p><img src="https://upload-images.jianshu.io/upload_images/2287474-19914d55a819c298.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/700" alt=""></p>
-
-          
+ 
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2018/04/13/java/线程池/#more" rel="contents">
+              Read more &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -1890,110 +950,17 @@ for (int i = 0; i &lt; 10; i++) {
       
         
           
-            <h3 id="java-util-concurrent-atomic-包"><a href="#java-util-concurrent-atomic-包" class="headerlink" title="java.util.concurrent.atomic 包"></a>java.util.concurrent.atomic 包</h3><p>类的小工具包，支持在单个变量上解除锁的线程安全编程。事实上，此包中的类可将 volatile 值、字段和数组元素的概念扩展到那些也提供原子条件更新操作的类，其形式如下：</p>
-<pre><code>boolean compareAndSet(expectedValue, updateValue);
-</code></pre><p>如果此方法（在不同的类间参数类型也不同）当前保持 expectedValue，则以原子方式将变量设置为 updateValue，并在成功时报告true。此包中的类还包含获取并无条件设置值的方法，以及以下描述的较弱条件的原子更新操作 weakCompareAndSet。</p>
-<p>这些方法的规范使实现能够使用当代处理器上提供的高效机器级别原子指令。但是在某些平台上，该支持可能需要某种形式的内部锁。因而，该方法不能严格保证不被阻塞 - 执行操作之前可能暂时阻塞线程。</p>
-<p>类 AtomicBoolean、AtomicInteger、AtomicLong 和 AtomicReference 的实例各自提供对相应类型单个变量的访问和更新。每个类也为该类型提供适当的实用工具方法。例如，类 AtomicLong 和 AtomicInteger 提供了原子增量方法。一个应用程序将按以下方式生成序列号：</p>
-<pre><code>class Sequencer {
-  private final AtomicLong sequenceNumber
-    = new AtomicLong(0);
-  public long next() {
-    return sequenceNumber.getAndIncrement();
-  }
-}
-</code></pre><p>原子访问和更新的内存效果一般遵循以下可变规则，正如 <a href="http://java.sun.com/docs/books/jls/" target="_blank" rel="noopener">The Java Language Specification, Third Edition (17.4 Memory Model)</a> 中的声明：</p>
-<ul>
-<li>get 具有读取 volatile 变量的内存效果。  </li>
-<li>set 具有写入（分配）volatile 变量的内存效果。  </li>
-<li>除了允许使用后续（但不是以前的）内存操作，其自身不施加带有普通的非 volatile 写入的重新排序约束，lazySet 具有写入（分配）volatile 变量的内存效果。在其他使用上下文中，当为 null 时（为了垃圾回收），lazySet 可以应用不会再次访问的引用。  </li>
-<li>weakCompareAndSet 以原子方式读取和有条件地写入变量但不创建任何 happen-before 排序，因此不提供与除 weakCompareAndSet 目标外任何变量以前或后续读取或写入操作有关的任何保证。  </li>
-<li>compareAndSet 和所有其他的读取和更新操作（如 getAndIncrement）都有读取和写入 volatile 变量的内存效果。  </li>
-</ul>
-<p>除了包含表示单个值的类之外，此包还包含 Updater 类，该类可用于获取任意选定类的任意选定 volatile 字段上<br>的 compareAndSet 操作。AtomicReferenceFieldUpdater、AtomicIntegerFieldUpdater 和 AtomicLongFieldUpdater 是基于反射的实用工具，可以提供对关联字段类型的访问。它们主要用于原子数据结构中，该结构中同一节点（例如，树节点的链接）的几个 volatile 字段都独立受原子更新控制。这些类在如何以及何时使用原子更新方面具有更大的灵活性，但相应的弊端是基于映射的设置较为拙笨、使用不太方便，而且在保证方面也较差。</p>
-<p>AtomicIntegerArray、AtomicLongArray 和 AtomicReferenceArray 类进一步扩展了原子操作，对这些类型的数组提供了支持。这些类在为其数组元素提供 volatile 访问语义方面也引人注目，这对于普通数组来说是不受支持的。</p>
-<p>原子类也支持 weakCompareAndSet 方法，该方法具有受限制的适用性。在某些平台上，弱版本在正常情况下可能比 compareAndSet 更有效，但不同的是 weakCompareAndSet 方法的任何给定调用可能意外 返回 false（即没有明确的原因）。返回 false 仅意味着可以在需要时重新尝试操作，具体取决于重复执行调用的保证，当该变量保持 expectedValue 并且没有其他线程也在尝试设置该变量时，最终将获得成功。（例如，这样的虚假失败可能是由于内存争用的结果，该争用与期望值和当前值是否相等无关）。 此外，weakCompareAndSet 不提供通常需要同步控制的排序保证。但是，在这样的更新与程序的其他 happen-before 排序不相关时，该方法可用于更新计数器和统计数据。当一个线程看到对 weakCompareAndSet 导致的原子变量的更新时，它不一定能看到在 weakCompareAndSet 之前发生的对任何其他 变量的更新。例如，在更新性能统计数据时，这也许可以接受，但其他情况几乎不可以。  </p>
-<p>AtomicMarkableReference 类将单个布尔值与引用关联起来。例如，可以在数据结构内部使用此位，这意味着引用的对象在逻辑上已被删除。AtomicStampedReference 类将整数值与引用关联起来。例如，这可用于表示与更新系列对应的版本号。  </p>
-<p>设计原子类主要用作各种构造块，用于实现非阻塞数据结构和相关的基础结构类。compareAndSet 方法不是锁的常规替换方法。仅当对象的重要更新限定于单个 变量时才应用它。  </p>
-<p>原子类不是 java.lang.Integer 和相关类的通用替换方法。它们不定义诸如 hashCode 和 compareTo 之类的方法。（因为原子变量是可变的，所以对于哈希表键来说，它们不是好的选择。）另外，仅为那些通常在预期应用程序中使用的类型提供类。例如，没有表示 byte 的原子类。这种情况不常见，如果要这样做，可以使用 AtomicInteger 来保持 byte 值，并进行适当的强制转换。也可以使用 Float.floatToIntBits 和 Float.intBitstoFloat 转换来保持 float 值，使用 Double.doubleToLongBits 和 Double.longBitsToDouble 转换来保持 double 值。</p>
-<h3 id="AtomicReference-和-volatile-的区别"><a href="#AtomicReference-和-volatile-的区别" class="headerlink" title="AtomicReference 和 volatile 的区别"></a>AtomicReference 和 volatile 的区别</h3><p>AtomicReference 提供了如下的方法：</p>
-<ul>
-<li>compareAndSet(V expect, V update)：如果当前保存的值等于 expect, 会自动设置新的值 update.</li>
-<li>getAndSet(V newValue)：自动设置给定的值 newValue, 并返回旧的数值.</li>
-<li>lazySet(V newValue)：最终设置为给定值 newValue.</li>
-<li>set(V newValue)： 设置为给定值.</li>
-<li>get()：获取当前值.</li>
-</ul>
-<p>AtomicReference 中的CAS操作就是compareAndSet()，其作用是每次从内存中根据内存偏移量（valueOffset）取出数据，将取出的值跟 expect 比较，如果数据一致就把内存中的值改为 update。 </p>
-<p><strong>Simple Usage</strong><br>如RxJava中, SingleScheduler 里executor的设置</p>
-<pre><code>public final class SingleScheduler extends Scheduler {
-    final AtomicReference&lt;ScheduledExecutorService&gt; executor = new AtomicReference&lt;ScheduledExecutorService&gt;();
-
-    public SingleScheduler(ThreadFactory threadFactory) {
-        this.threadFactory = threadFactory;
-        executor.lazySet(createExecutor(threadFactory));
-    }
-
-    @Override
-    public void start() {
-        ScheduledExecutorService next = null;
-        for (;;) {
-            ScheduledExecutorService current = executor.get();
-            if (current != SHUTDOWN) {
-                if (next != null) {
-                    next.shutdown();
-                }
-                return;
-            }
-            if (next == null) {
-                next = createExecutor(threadFactory);
-            }
-            if (executor.compareAndSet(current, next)) {
-                return;
-            }
-
-        }
-    }
-}
-</code></pre><p>这里还有两个概念需要理解, 独占锁和乐观锁</p>
-<ol>
-<li>独占锁就是线程获取锁后其他的线程都需要挂起，直到持有独占锁的线程释放锁, 如synchronized</li>
-<li>乐观锁是先假定没有冲突直接进行操作，如果因为有冲突而失败就重试，直到操作成功。其中乐观锁用到的机制就是CAS，Compare and Swap, 如atomic包下的 AtomicReference 等等。</li>
-</ol>
-<p>AtomicReference源码,</p>
-<pre><code>public class AtomicReference&lt;V&gt; implements java.io.Serializable {
-
-    private static final sun.misc.Unsafe U = sun.misc.Unsafe.getUnsafe();
-    private static final long VALUE;
-
-    static {
-        try {
-            VALUE = U.objectFieldOffset
-                (AtomicReference.class.getDeclaredField(&quot;value&quot;));
-        } catch (ReflectiveOperationException e) {
-            throw new Error(e);
-        }
-    }
-
-    private volatile V value;
-
-    ...
-}
-</code></pre><p>关键的成员属性 value 是使用 volatile 修饰来达到并发的效果, 使用独占锁 synchronized 的话, 会阻塞其他线程,导致并发效率大打折扣</p>
-<p>而volatile包含以下语义：</p>
-<ul>
-<li><p>Java 存储模型不会对valatile指令的操作进行重排序：这个保证对volatile变量的操作时按照指令的出现顺序执行的。<br>volatile变量不会被缓存在寄存器中（只有拥有线程可见）或者其他对CPU不可见的地方，每次总是从主存中读取</p>
-</li>
-<li><p>volatile变量的结果。也就是说对于volatile变量的修改，其它线程总是可见的，并且不是使用自己线程栈内部的变量。也就是在happens-before法则中，对一个valatile变量的写操作后，其后的任何读操作都是可见此写操作<br>  的结果。</p>
-</li>
-</ul>
-<p>区别:  </p>
-<ol>
-<li>volatile 修饰的变量, 并不是线程安全的, 而 AtomicReference 是线程安全的, 具有原子性</li>
-<li>对 volatile 变量的读取和写入操作导致变量直接在主存中读写, 比在 cpu 缓存中代价更高; volatile 修饰时阻止了JVM的性能优化技术对指令的重排序。</li>
-</ol>
-
-          
+          java.util.concurrent.atomic 包类的小工具包，支持在单个变量上解除锁的线程安全编程。事实上，此包中的类可将 volatile 值、字段和数组元素的概念扩展到那些也提供原子条件更新操作的类，其形式如下：
+boolean compareAndSet(expectedValue, updateValue);
+如果此方法（在不同的类间参数类型也不同）当前保持 expectedValue，则以原子方式将变量设置为 upd
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2018/03/20/java/atomic包/#more" rel="contents">
+              Read more &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -2111,398 +1078,19 @@ for (int i = 0; i &lt; 10; i++) {
       
         
           
-            <p>看过上文的 RxJava线程是如何控制的(上)， 对RxJava 是如何调度的有一定的了解了，本文主要解说 Scheduler 和 Scheduler.Worker 它们是如何协作，希望对你们有帮助.  </p>
-<p>通过上文，我们知道，</p>
-<ol>
-<li>SingleScheduler  一个共享的，单一线程 Scheduler</li>
-<li>ComputationScheduler 持有一个固定工作线程数量的线程池, 通过 round-robin 轮询的方式处理 Scheduler.Workder</li>
-<li>IoScheduler  创建并缓存线程，会尽可能的重复使用已存在的线程</li>
-<li>NewThreadScheduler 创建新线程的一个调度器</li>
-</ol>
-<h2 id="Scheduler-调度器"><a href="#Scheduler-调度器" class="headerlink" title="Scheduler 调度器"></a>Scheduler 调度器</h2><h3 id="NewThreadScheduler"><a href="#NewThreadScheduler" class="headerlink" title="NewThreadScheduler"></a>NewThreadScheduler</h3><p>我们从最简单的 NewThreadScheduler 调度器开始看起.<br>默认会使用 THREAD_FACTORY 来完成构造</p>
-<pre><code>public final class NewThreadScheduler extends Scheduler {
-    final ThreadFactory threadFactory;
-    private static final String THREAD_NAME_PREFIX = &quot;RxNewThreadScheduler&quot;;
-    private static final RxThreadFactory THREAD_FACTORY;
+          看过上文的 RxJava线程是如何控制的(上)， 对RxJava 是如何调度的有一定的了解了，本文主要解说 Scheduler 和 Scheduler.Worker 它们是如何协作，希望对你们有帮助.  
+通过上文，我们知道，
 
-    /** The name of the system property for setting the thread priority for this Scheduler. */
-    private static final String KEY_NEWTHREAD_PRIORITY = &quot;rx2.newthread-priority&quot;;
-
-    static {
-        int priority = Math.max(Thread.MIN_PRIORITY, Math.min(Thread.MAX_PRIORITY,
-                Integer.getInteger(KEY_NEWTHREAD_PRIORITY, Thread.NORM_PRIORITY)));
-
-        THREAD_FACTORY = new RxThreadFactory(THREAD_NAME_PREFIX, priority);
-    }
-
-    public NewThreadScheduler() {
-        this(THREAD_FACTORY);
-    }
-
-    public Worker createWorker() {
-        return new NewThreadWorker(threadFactory);
-    }
-}
-</code></pre><p>那，RxThreadFactory是什么呢？注释里是这么描述的</p>
-<p>A ThreadFactory that counts how many threads have been created and given a prefix, sets the created Thread’s name to {@code prefix-count}.</p>
-<p>功能很简单，就是用来创建线程的一个Factory类，额外的，添加的计算线程数量以及给线程命名的功能。 主要代码是</p>
-<pre><code>@Override
-public Thread newThread(Runnable r) {
-    StringBuilder nameBuilder = new StringBuilder(prefix).append(&apos;-&apos;).append(incrementAndGet());
-
-    String name = nameBuilder.toString();
-    Thread t = nonBlocking ? new RxCustomThread(r, name) : new Thread(r, name);
-    t.setPriority(priority);
-    t.setDaemon(true);
-    return t;
-}
-
-static final class RxCustomThread extends Thread implements NonBlockingThread {
-    RxCustomThread(Runnable run, String name) {
-        super(run, name);
-    }
-}
-</code></pre><h3 id="SingleScheduler"><a href="#SingleScheduler" class="headerlink" title="SingleScheduler"></a>SingleScheduler</h3><p>同 NewThreadScheduler 一样，在构造方法里使用 RxThreadFactory, 通过SchedulerPoolFactory 创建一个核心数为 1 的线程池并缓存了线程池，重复使用。</p>
-<pre><code>public final class SingleScheduler extends Scheduler {
-    final ThreadFactory threadFactory;
-    final AtomicReference&lt;ScheduledExecutorService&gt; executor = new AtomicReference&lt;ScheduledExecutorService&gt;();
-    ...
-    static final RxThreadFactory SINGLE_THREAD_FACTORY;
-
-    public SingleScheduler() {
-        this(SINGLE_THREAD_FACTORY);
-    }
-
-    /**
-    * Constructs a SingleScheduler with the given ThreadFactory and prepares the
-    * single scheduler thread.
-    * @param threadFactory thread factory to use for creating worker threads. Note that this takes precedence over any
-    *                      system properties for configuring new thread creation. Cannot be null.
-    */
-    public SingleScheduler(ThreadFactory threadFactory) {
-        this.threadFactory = threadFactory;
-        executor.lazySet(createExecutor(threadFactory));
-    }
-
-    static ScheduledExecutorService createExecutor(ThreadFactory threadFactory) {
-        return SchedulerPoolFactory.create(threadFactory);
-    }
-
-    public Worker createWorker() {
-        return new ScheduledWorker(executor.get());
-    }
-}
-</code></pre><p>可以看到，配合 SingleScheduler 使用的是 ScheduledWorker，跟 NewThreadScheduler 不一样。</p>
-<h3 id="ComputationScheduler"><a href="#ComputationScheduler" class="headerlink" title="ComputationScheduler"></a>ComputationScheduler</h3><p>ComputationScheduler 使用 EventLoopWorker, 还有一个关键的成员属性<br> pool ,是一个保存有 FixedSchedulerPool实例的 AtomicReference对象</p>
-<p>public final class ComputationScheduler extends Scheduler implements SchedulerMultiWorkerSupport {<br>    final AtomicReference<fixedschedulerpool> pool;<br>    …<br>    public ComputationScheduler() {<br>        this(THREAD_FACTORY);<br>    }</fixedschedulerpool></p>
-<pre><code>public ComputationScheduler(ThreadFactory threadFactory) {
-    this.threadFactory = threadFactory;
-    this.pool = new AtomicReference&lt;FixedSchedulerPool&gt;(NONE);
-    start();
-}
-
-@NonNull
-@Override
-public Worker createWorker() {
-    return new EventLoopWorker(pool.get().getEventLoop());
-}
-
-@Override
-public void createWorkers(int number, WorkerCallback callback) {
-    ObjectHelper.verifyPositive(number, &quot;number &gt; 0 required&quot;);
-    pool.get().createWorkers(number, callback);
-}
-
-@Override
-public void start() {
-    FixedSchedulerPool update = new FixedSchedulerPool(MAX_THREADS, threadFactory);
-    if (!pool.compareAndSet(NONE, update)) {
-        update.shutdown();
-    }
-}
-</code></pre><p>先来看看 FixedSchedulerPool 是什么？ 可以发现，PoolWorker 其实是继承 NewThreadWorker，并没有新增或者重写方法，因此，可以认为 FixedSchedulerPool 模拟了一个持有固定大小的工作单元(Shceduler.Worker)的线程池。</p>
-<pre><code>static final class FixedSchedulerPool implements SchedulerMultiWorkerSupport {
-    final int cores;
-    // 保存工作单元数组，固定大小
-    final PoolWorker[] eventLoops;
-    long n;
-
-    FixedSchedulerPool(int maxThreads, ThreadFactory threadFactory) {
-        // 初始化固定长度的 PoolWorker
-        this.cores = maxThreads;
-        this.eventLoops = new PoolWorker[maxThreads];
-        for (int i = 0; i &lt; maxThreads; i++) {
-            this.eventLoops[i] = new PoolWorker(threadFactory);
-        }
-    }
-
-    public PoolWorker getEventLoop() {
-        int c = cores;
-        if (c == 0) {
-            return SHUTDOWN_WORKER;
-        }
-        // simple round robin, improvements to come
-        return eventLoops[(int)(n++ % c)];
-    }
-}
-</code></pre><p>回过头看 ComputationScheduler 的createWorker，EventLoopWorker传递了一个参数 pool.get().getEventLoop()，即 FixedSchedulerPool getEventLoop 顺序遍历 eventLoops 里的所有对象。</p>
-<pre><code>static final class EventLoopWorker extends Scheduler.Worker {
-    public Disposable schedule(@NonNull Runnable action) {
-        if (disposed) {
-            return EmptyDisposable.INSTANCE;
-        }
-
-        return poolWorker.scheduleActual(action, 0, TimeUnit.MILLISECONDS, serial);
-    }
-
-    @NonNull
-    @Override
-    public Disposable schedule(@NonNull Runnable action, long delayTime, @NonNull TimeUnit unit) {
-        if (disposed) {
-            return EmptyDisposable.INSTANCE;
-        }
-
-        return poolWorker.scheduleActual(action, delayTime, unit, timed);
-    }
-}
-</code></pre><h3 id="IoScheduler"><a href="#IoScheduler" class="headerlink" title="IoScheduler"></a>IoScheduler</h3><p>IoScheduler 里跟 ComputationScheduler 类似，也有一个 AtomicReference成员属性，保存的是 CachedWorkerPool 对象，在构造函数里完成初始化。</p>
-<pre><code>public final class IoScheduler extends Scheduler {
-
-    final AtomicReference&lt;CachedWorkerPool&gt; pool;
-    ...
-
-    public IoScheduler(ThreadFactory threadFactory) {
-        this.threadFactory = threadFactory;
-        this.pool = new AtomicReference&lt;CachedWorkerPool&gt;(NONE);
-        start();
-    }
-
-    @Override
-    public void start() {
-        CachedWorkerPool update = new CachedWorkerPool(KEEP_ALIVE_TIME, KEEP_ALIVE_UNIT, threadFactory);
-        if (!pool.compareAndSet(NONE, update)) {
-            update.shutdown();
-        }
-    }
-
-    public Worker createWorker() {
-        return new EventLoopWorker(pool.get());
-    }
-}
-</code></pre><p>不难知道，CachedWorkerPool 里肯定也是维护了一个线程池，或者模拟了一个线程池的功能。 CachedWorkerPool 继承 Runnable， 内部维护了一个 ThreadWorker的并发链式队列 expiringWorkerQueue。</p>
-<pre><code>static final class CachedWorkerPool implements Runnable {
-    private final long keepAliveTime;
-    private final ConcurrentLinkedQueue&lt;ThreadWorker&gt; expiringWorkerQueue;
-    final CompositeDisposable allWorkers;
-    private final ScheduledExecutorService evictorService;
-    private final Future&lt;?&gt; evictorTask;
-    private final ThreadFactory threadFactory;
-
-    CachedWorkerPool(long keepAliveTime, TimeUnit unit, ThreadFactory threadFactory) {
-        this.keepAliveTime = unit != null ? unit.toNanos(keepAliveTime) : 0L;
-        this.expiringWorkerQueue = new ConcurrentLinkedQueue&lt;ThreadWorker&gt;();
-        this.allWorkers = new CompositeDisposable();
-        this.threadFactory = threadFactory;
-
-        ScheduledExecutorService evictor = null;
-        Future&lt;?&gt; task = null;
-        if (unit != null) {
-            evictor = Executors.newScheduledThreadPool(1, EVICTOR_THREAD_FACTORY);
-            task = evictor.scheduleWithFixedDelay(this, this.keepAliveTime, this.keepAliveTime, TimeUnit.NANOSECONDS);
-        }
-        evictorService = evictor;
-        evictorTask = task;
-    }
-
-    public void run() {
-        evictExpiredWorkers();
-    }
-
-     void evictExpiredWorkers() {
-        if (!expiringWorkerQueue.isEmpty()) {
-            long currentTimestamp = now();
-
-            for (ThreadWorker threadWorker : expiringWorkerQueue) {
-                if (threadWorker.getExpirationTime() &lt;= currentTimestamp) {
-                    if (expiringWorkerQueue.remove(threadWorker)) {
-                        allWorkers.remove(threadWorker);
-                    }
-                } else {
-                    // Queue is ordered with the worker that will expire first in the beginning, so when we
-                    // find a non-expired worker we can stop evicting.
-                    break;
-                }
-            }
-        }
-    }
-}
-</code></pre><p>不出所料，使用 Executors.newScheduledThreadPool 创建了一个核心数为 1的线程池，与其他不同的是，线程池 evictor 执行的方法是 scheduleWithFixedDelay，每间隔一个 keepAliveTime 时间会执行一次，以达到轮询 expiringWorkerQueue 里的工作单元Scheduler.Workder。  </p>
-<p>接着，配合 IoScheduler 调度的工作单元是 EventLoopWorker， 这里的 EventLoopWorker 和 ComputationScheduler 里的 EventLoopWorker是不一样的。</p>
-<pre><code>static final class EventLoopWorker extends Scheduler.Worker {
-    private final CompositeDisposable tasks;
-    private final CachedWorkerPool pool;
-    private final ThreadWorker threadWorker;
-
-    final AtomicBoolean once = new AtomicBoolean();
-
-    EventLoopWorker(CachedWorkerPool pool) {
-        this.pool = pool;
-        this.tasks = new CompositeDisposable();
-        this.threadWorker = pool.get();
-    }
-
-    public Disposable schedule(@NonNull Runnable action, long delayTime, @NonNull TimeUnit unit) {
-        if (tasks.isDisposed()) {
-            // don&apos;t schedule, we are unsubscribed
-            return EmptyDisposable.INSTANCE;
-        }
-
-        return threadWorker.scheduleActual(action, delayTime, unit, tasks);
-    }
-}
-</code></pre><p>EventLoopWorker 这里做的的东西其实不多，通过 CachedWorkerPool.get，持有 ThreadWorker 对象，在 schedule 回调里完成任务的调度。  </p>
-<p>看完这四种方式，我们能大致了解到，</p>
-<ul>
-<li>它们内部都有线程池或者模拟了线程池</li>
-<li>创建 Worker 的方式</li>
-</ul>
-<p>奇怪的是，我们还是不能找到异步执行的地方，不过也差不多了，因为我们只剩 Worker 的实现还没有看。 </p>
-<h3 id="NewThreadScheduler-amp-NewThreadWorker"><a href="#NewThreadScheduler-amp-NewThreadWorker" class="headerlink" title="NewThreadScheduler &amp; NewThreadWorker"></a>NewThreadScheduler &amp; NewThreadWorker</h3><p>先来看看 NewThreadWorker 的构造 </p>
-<pre><code>private final ScheduledExecutorService executor;
-
-public NewThreadWorker(ThreadFactory threadFactory) {
-    executor = SchedulerPoolFactory.create(threadFactory);
-}
-</code></pre><p>成员变量 SchedulerPoolFactory 是SchedulerPool的管理工厂， 创建核心数为 1 的线程池</p>
-<pre><code>public static ScheduledExecutorService create(ThreadFactory  factory) {
-    final ScheduledExecutorService exec = Executors.newScheduledThreadPool(1, factory);
-    tryPutIntoPool(PURGE_ENABLED, exec);
-    return exec;
-}
-</code></pre><p>来看最核心的方法 scheduleDirect，scheduleActual， 方法注释其实已经写得很清楚了，通过线程池执行 Runnable run参数, 达到异步的效果</p>
-<pre><code>/**
- * Schedules the given runnable on the underlying executor directly and
- * returns its future wrapped into a Disposable.
- * @param run the Runnable to execute in a delayed fashion
- * @param delayTime the delay amount
- * @param unit the delay time unit
- * @return the ScheduledRunnable instance
- */
-public Disposable scheduleDirect(final Runnable run, long delayTime, TimeUnit unit) {
-    ScheduledDirectTask task = new ScheduledDirectTask(RxJavaPlugins.onSchedule(run));
-    try {
-        Future&lt;?&gt; f;
-        if (delayTime &lt;= 0L) {
-            f = executor.submit(task);
-        } else {
-            f = executor.schedule(task, delayTime, unit);
-        }
-        task.setFuture(f);
-        return task;
-    } catch (RejectedExecutionException ex) {
-        RxJavaPlugins.onError(ex);
-        return EmptyDisposable.INSTANCE;
-    }
-}
-
-/**
- * Wraps the given runnable into a ScheduledRunnable and schedules it
- * on the underlying ScheduledExecutorService.
- * &lt;p&gt;If the schedule has been rejected, the ScheduledRunnable.wasScheduled will return
- * false.
- * @param run the runnable instance
- * @param delayTime the time to delay the execution
- * @param unit the time unit
- * @param parent the optional tracker parent to add the created ScheduledRunnable instance to before it gets scheduled
- * @return the ScheduledRunnable instance
- */
-@NonNull
-public ScheduledRunnable scheduleActual(final Runnable run, long delayTime, @NonNull TimeUnit unit, @Nullable DisposableContainer parent) {
-    Runnable decoratedRun = RxJavaPlugins.onSchedule(run);
-
-    ScheduledRunnable sr = new ScheduledRunnable(decoratedRun, parent);
-
-    if (parent != null) {
-        if (!parent.add(sr)) {
-            return sr;
-        }
-    }
-
-    Future&lt;?&gt; f;
-    try {
-        if (delayTime &lt;= 0) {
-            f = executor.submit((Callable&lt;Object&gt;)sr);
-        } else {
-            f = executor.schedule((Callable&lt;Object&gt;)sr, delayTime, unit);
-        }
-        sr.setFuture(f);
-    } catch (RejectedExecutionException ex) {
-        if (parent != null) {
-            parent.remove(sr);
-        }
-        RxJavaPlugins.onError(ex);
-    }
-
-    return sr;
-}
-</code></pre><h3 id="SingleScheduler-amp-ScheduledWorker"><a href="#SingleScheduler-amp-ScheduledWorker" class="headerlink" title="SingleScheduler &amp; ScheduledWorker"></a>SingleScheduler &amp; ScheduledWorker</h3><p>static final class ScheduledWorker extends Scheduler.Worker {</p>
-<pre><code>    final ScheduledExecutorService executor;
-
-    final CompositeDisposable tasks;
-
-    volatile boolean disposed;
-
-    ScheduledWorker(ScheduledExecutorService executor) {
-        this.executor = executor;
-        this.tasks = new CompositeDisposable();
-    }
-
-    @NonNull
-    @Override
-    public Disposable schedule(@NonNull Runnable run, long delay, @NonNull TimeUnit unit) {
-        if (disposed) {
-            return EmptyDisposable.INSTANCE;
-        }
-
-        Runnable decoratedRun = RxJavaPlugins.onSchedule(run);
-
-        ScheduledRunnable sr = new ScheduledRunnable(decoratedRun, tasks);
-        tasks.add(sr);
-
-        try {
-            Future&lt;?&gt; f;
-            if (delay &lt;= 0L) {
-                f = executor.submit((Callable&lt;Object&gt;)sr);
-            } else {
-                f = executor.schedule((Callable&lt;Object&gt;)sr, delay, unit);
-            }
-
-            sr.setFuture(f);
-        } catch (RejectedExecutionException ex) {
-            dispose();
-            RxJavaPlugins.onError(ex);
-            return EmptyDisposable.INSTANCE;
-        }
-
-        return sr;
-    }
-
-    @Override
-    public void dispose() {
-        if (!disposed) {
-            disposed = true;
-            tasks.dispose();
-        }
-    }
-
-    @Override
-    public boolean isDisposed() {
-        return disposed;
-    }
-}
-</code></pre><p>}    </p>
-<h3 id="ComputationScheduler-amp-EventLoopWorker"><a href="#ComputationScheduler-amp-EventLoopWorker" class="headerlink" title="ComputationScheduler &amp; EventLoopWorker"></a>ComputationScheduler &amp; EventLoopWorker</h3><h3 id="IoScheduler-amp-ThreadWorker"><a href="#IoScheduler-amp-ThreadWorker" class="headerlink" title="IoScheduler &amp; ThreadWorker"></a>IoScheduler &amp; ThreadWorker</h3>
-          
+SingleScheduler  一个共享的，单一线程 Scheduler
+ComputationScheduler 持有一个固定工作线程数量的线程池, 通过 round-robin 轮询的方式处理 Sc
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2018/03/16/android/RxJava线程是如何控制的-2/#more" rel="contents">
+              Read more &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -2620,303 +1208,23 @@ public ScheduledRunnable scheduleActual(final Runnable run, long delayTime, @Non
       
         
           
-            <h3 id="RxJava-amp-RxAndroid"><a href="#RxJava-amp-RxAndroid" class="headerlink" title="RxJava &amp; RxAndroid"></a>RxJava &amp; RxAndroid</h3><p>关于RxJava的使用和基本框架,网上有很多资源就不重复造轮子了, 汇总了如下干货:  </p>
-<ol>
-<li>扔物线大佬的 <a href="https://gank.io/post/560e15be2dca930e00da1083" target="_blank" rel="noopener">给Android开发者的RxJava详解</a></li>
-<li><a href="https://www.jianshu.com/p/f54f32b39b7c" target="_blank" rel="noopener">RxJava2操作符汇总</a></li>
-<li><a href="https://www.jianshu.com/p/f67e05d7cd30" target="_blank" rel="noopener">操作符flatMap 与 concatMap详解</a></li>
-</ol>
-<p>掌握上面的知识面试上基本没啥问题, 本文会着重解说RxJava里的线程操作, 学习线程的用法</p>
-<h3 id="RxJava线程"><a href="#RxJava线程" class="headerlink" title="RxJava线程"></a>RxJava线程</h3><p>以最简单的Rx操作符为例, </p>
-<pre><code>Observable.just(&quot;value&quot;)
-                .subscribeOn(Schedulers.newThread())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(e -&gt; {}, 
-                    e -&gt; { e.printStackTrace(); },
-                    ()-&gt;{}));
-</code></pre><p>不管多么复杂的操作符, 关于线程操作的始终只有两个地方, subscribeOn和observeOn. 分别来看看他们的实现()的实现，</p>
-<h3 id="subscribeOn-amp-observeOn流程分析"><a href="#subscribeOn-amp-observeOn流程分析" class="headerlink" title="subscribeOn &amp; observeOn流程分析"></a>subscribeOn &amp; observeOn流程分析</h3><p>subscribeOn源码</p>
-<pre><code>Observable.java
-/**
-    * Asynchronously subscribes Observers to this ObservableSource on the specified {@link Scheduler}.
-    * @param scheduler
-    *            the {@link Scheduler} to perform subscription actions on
-    * @return the source ObservableSource modified so that its subscriptions happen on the
-    *         specified {@link Scheduler}
-    */
-@CheckReturnValue
-@SchedulerSupport(SchedulerSupport.CUSTOM)
-public final Observable&lt;T&gt; subscribeOn(Scheduler scheduler) {
-    ObjectHelper.requireNonNull(scheduler, &quot;scheduler is null&quot;);
-    return RxJavaPlugins.onAssembly(new ObservableSubscribeOn&lt;T&gt;(this, scheduler));
-}
-</code></pre><p>通过注释可以知道，指定Scheduler，异步地将Observers subscribe到ObservableSource. RxJavaPlugins是一个工具类, 包含很多便利的静态方法.<br>先来看 RxJavaPlugins.onAssembly， 这里有个hook方法 f，onObservableAssembly默认是null，所以这里并不会做什么操作直接返回source. 如果 onObservableAssembly 不为null，则会调用该 hook 方法, 实现 T t –&gt; 泛型R的转换</p>
-<pre><code>RxJavaPlugins.java
-/**
- * Calls the associated hook function.
- * @param &lt;T&gt; the value type
- * @param source the hook&apos;s input value
- * @return the value returned by the hook
- */
-@SuppressWarnings({ &quot;rawtypes&quot;, &quot;unchecked&quot; })
-@NonNull
-public static &lt;T&gt; Observable&lt;T&gt; onAssembly(@NonNull Observable&lt;T&gt; source) {
-    Function&lt;? super Observable, ? extends Observable&gt; f = onObservableAssembly;
-    if (f != null) {
-        return apply(f, source);
-    }
-    return source;
-}
+          RxJava &amp; RxAndroid关于RxJava的使用和基本框架,网上有很多资源就不重复造轮子了, 汇总了如下干货:  
 
-@NonNull
-static &lt;T, R&gt; R apply(@NonNull Function&lt;T, R&gt; f, @NonNull T t) {
-    try {
-        return f.apply(t);
-    } catch (Throwable ex) {
-        throw ExceptionHelper.wrapOrThrow(ex);
-    }
-}
-</code></pre><p>所以在subscribeOn里, 创建并返回了一个新对象 ObservableSubscribeOn . ObservableSubscribeOn 类的代码不多, ObservableSubscribeOn的构造方法参数source 就是我们使用just操作符创建的对象ObservableJust. ObservableSubscribeOn 中只有一个可执行方法 subscribeActual. 作用如注释</p>
-<pre><code>public final class ObservableSubscribeOn&lt;T&gt; extends AbstractObservableWithUpstream&lt;T, T&gt; {
-    final Scheduler scheduler;
+扔物线大佬的 给Android开发者的RxJava详解
+RxJava2操作符汇总
+操作符flatMap 与 concatMap详解
 
-    public ObservableSubscribeOn(ObservableSource&lt;T&gt; source, Scheduler scheduler) {
-        super(source);
-        this.scheduler = scheduler;
-    }
-
-    @Override
-    public void subscribeActual(final Observer&lt;? super T&gt; s) {
-        // 1.创建了 SubscribeOnObserver 实例
-        final SubscribeOnObserver&lt;T&gt; parent = new SubscribeOnObserver&lt;T&gt;(s);
-        // 2.Observer执行onSubscribe, 传递parent参数,用于取消Disposable
-        s.onSubscribe(parent);
-        // 3.parent调用setDisposable, 
-        parent.setDisposable(scheduler.scheduleDirect(new SubscribeTask(parent)));
-    }
-}
-</code></pre><p>第三步中, scheduler.scheduleDirect 创建一个SubscribeTask并执行任务，返回一个Disposable. scheduleDirect 里面比较复杂, 我们先来看看 SubscribeOnObserver 这个类是干嘛用的. 源码如下:  </p>
-<pre><code>static final class SubscribeOnObserver&lt;T&gt; extends AtomicReference&lt;Disposable&gt; implements Observer&lt;T&gt;, Disposable {
-
-    private static final long serialVersionUID = 8094547886072529208L;
-    final Observer&lt;? super T&gt; actual;
-
-    final AtomicReference&lt;Disposable&gt; s;
-
-    SubscribeOnObserver(Observer&lt;? super T&gt; actual) {
-        this.actual = actual;
-        this.s = new AtomicReference&lt;Disposable&gt;();
-    }
-
-    @Override
-    public void onSubscribe(Disposable s) {
-        DisposableHelper.setOnce(this.s, s);
-    }
-
-    @Override
-    public void onNext(T t) {
-        actual.onNext(t);
-    }
-
-    @Override
-    public void onError(Throwable t) {
-        actual.onError(t);
-    }
-
-    @Override
-    public void onComplete() {
-        actual.onComplete();
-    }
-
-    @Override
-    public void dispose() {
-        DisposableHelper.dispose(s);
-        DisposableHelper.dispose(this);
-    }
-
-    @Override
-    public boolean isDisposed() {
-        return DisposableHelper.isDisposed(get());
-    }
-
-    void setDisposable(Disposable d) {
-        DisposableHelper.setOnce(this, d);
-    }
-}
-</code></pre><p>内容也不多, 继承 AtomicReference, 并实现 Observer<t>, Disposable 两个接口, 对Observer进行扩展，起到代理的作用。提供了disposable的能力， 使用 AtomicReference 保证了 SubscribeOnObserver 对象的线程安全。那SubscribeTask又是什么呢？？</t></p>
-<pre><code>final class SubscribeTask implements Runnable {
-    private final SubscribeOnObserver&lt;T&gt; parent;
-
-    SubscribeTask(SubscribeOnObserver&lt;T&gt; parent) {
-        this.parent = parent;
-    }
-
-    @Override
-    public void run() {
-        source.subscribe(parent);
-    }
-}
-</code></pre><p>可以发现，是一个简单的线程，用于执行source的subscribe方法， 这里的source即操作符just创建出来的对象 ObservableJust 。不同的操作符这个source不太一样, 但他们都是Observable的子类，故会执行Observable里的 subscribe方法或者它们重写的subscribe方法。因此在整个过程中 ObservableSubscribeOn 类里与线程相关的核心代码在。 </p>
-<pre><code>scheduler.scheduleDirect(new SubscribeTask(parent))
-</code></pre><p>我们先不看scheduler里的代码，这里发现一个问题 source.subscribe(parent)<br>这里跟RxJava的最后一个步骤主动调用操作符的 subscribe 方法最终会调用如下的函数，故实际会执行两次的subscribe方法。是不是重复执行了呢？为什么会这样呢？</p>
-<pre><code>public final void subscribe(Observer&lt;? super T&gt; observer) {
-    ObjectHelper.requireNonNull(observer, &quot;observer is null&quot;);
-    try {
-        observer = RxJavaPlugins.onSubscribe(this, observer);
-
-        ObjectHelper.requireNonNull(observer, &quot;Plugin returned null Observer&quot;);
-
-        subscribeActual(observer);
-    } catch (NullPointerException e) { // NOPMD
-        throw e;
-    } catch (Throwable e) {
-       ...
-    }
-}
-</code></pre><p>在使用RxJava的最后一步，我们会调用如下重载方法 subscribe，最终才调用 subscribe(ls). 而这里的 subscribeActual 并不是调用 ObservableJust 的重写方法，而是 ObservableSubscribeOn(subscribeOn操作创建) 或者 ObservableObserveOn(observeOn操作创建) 的 subscribeActual 方法. 而ObservableSubscribeOn里保存了操作符 ObservableJust source，在subscribeActual 完成了线程的先关操作，采用的是一种责任链的设计模式来达到这种效果.</p>
-<pre><code>public final Disposable subscribe(Consumer&lt;? super T&gt; onNext, Consumer&lt;? super Throwable&gt; onError,
-        Action onComplete, Consumer&lt;? super Disposable&gt; onSubscribe) {
-    ...
-    LambdaObserver&lt;T&gt; ls = new LambdaObserver&lt;T&gt;(onNext, onError, onComplete, onSubscribe);
-    subscribe(ls);
-    return ls;
-}
-
-@Override
-public void subscribeActual(final Observer&lt;? super T&gt; s) {
-    final SubscribeOnObserver&lt;T&gt; parent = new SubscribeOnObserver&lt;T&gt;(s);
-
-    s.onSubscribe(parent);
-
-    parent.setDisposable(scheduler.scheduleDirect(new SubscribeTask(parent)));
-}
-</code></pre><p>同理 observeOn 操作，也是在 subscribeActual 里完成线程的处理</p>
-<pre><code>protected void subscribeActual(Observer&lt;? super T&gt; observer){
-    if (scheduler instanceof TrampolineScheduler) {
-        source.subscribe(observer);
-    } else {
-        Scheduler.Worker w = scheduler.createWorker();
-
-        source.subscribe(new ObserveOnObserver&lt;T&gt;(observer, w, delayError, bufferSize));
-    }
-}
-</code></pre><h3 id="核心线程操作"><a href="#核心线程操作" class="headerlink" title="核心线程操作"></a>核心线程操作</h3><p>理清了代码的执行流程后，回过头来看 ObservableSubscribeOn 里的线程处理， </p>
-<p>scheduler.scheduleDirect(new SubscribeTask(parent)));</p>
-<p>通过指定的 Scheduler，本例中用的是 Schedulers.newThread()，然后调用 scheduleDirect 方法启动线程, 我们也不妨看看 Schedulers.io, Schedulers.computation, Schedulers.single 分别创建了什么 Scheduler</p>
-<pre><code>static final class SingleHolder {
-    static final Scheduler DEFAULT = new SingleScheduler();
-}
-
-static final class ComputationHolder {
-    static final Scheduler DEFAULT = new ComputationScheduler();
-}
-
-static final class IoHolder {
-    static final Scheduler DEFAULT = new IoScheduler();
-}
-
-static final class NewThreadHolder {
-    static final Scheduler DEFAULT = new NewThreadScheduler();
-}
-
-static {
-    SINGLE = RxJavaPlugins.initSingleScheduler(new SingleTask());
-
-    COMPUTATION = RxJavaPlugins.initComputationScheduler(new ComputationTask());
-
-    IO = RxJavaPlugins.initIoScheduler(new IOTask());
-
-    TRAMPOLINE = TrampolineScheduler.instance();
-
-    NEW_THREAD = RxJavaPlugins.initNewThreadScheduler(new NewThreadTask());
-}
-
-static final class NewThreadTask implements Callable&lt;Scheduler&gt; {
-    @Override
-    public Scheduler call() throws Exception {
-        return NewThreadHolder.DEFAULT;
-    }
-}
-</code></pre><p>分析可以发现，IO，NEW_THREAD 等静态变量的初始化方式一样，都是用单利模式创建的，因此 Schedulers.single, Schedulers.computation, Schedulers.io, Schedulers.newThread, 分别会创建如下的 Scheduler</p>
-<ol>
-<li>SingleScheduler  一个共享的，单一线程 Scheduler</li>
-<li>ComputationScheduler 持有一个固定工作线程数量的线程池, 通过 round-robin 轮询的方式处理 Scheduler.Workder</li>
-<li>IoScheduler  创建并缓存线程，会尽可能的重复使用已存在的线程</li>
-<li>NewThreadScheduler 创建新线程的一个调度器</li>
-</ol>
-<p>NewThreadScheduler 继承 Scheduler，用于调度工作单元。核心的方法是 createWorker， 创建一个 NewThreadWorker，是RxJava线程调度的工作单位。 </p>
-<pre><code>public final class NewThreadScheduler extends Scheduler {
-    private final ThreadFactory threadFactory;
-
-    public NewThreadScheduler() {
-        this(THREAD_FACTORY);
-    }
-
-    public NewThreadScheduler(ThreadFactory threadFactory) {
-        this.threadFactory = threadFactory;
-    }
-
-    @Override
-    public Worker createWorker() {
-        return new NewThreadWorker(threadFactory);
-    }
-}
-</code></pre><p>Scheduler的创建到这里基本就结束了，回到 ObservableSubscribeOn 执行 scheduleDirect.</p>
-<pre><code>@NonNull
-public Disposable scheduleDirect(@NonNull Runnable run, long delay, @NonNull TimeUnit unit) {
-    final Worker w = createWorker();
-    final Runnable decoratedRun = RxJavaPlugins.onSchedule(run);
-    DisposeTask task = new DisposeTask(decoratedRun, w);
-    w.schedule(task, delay, unit);
-    return task;
-}
-</code></pre><p>同时这里还</p>
-<ol>
-<li>调用 Scheduler(本例即 NewThreadScheduler ) 的 createWorkder 方法，创建工作单元 NewThreadWorker</li>
-<li>通过 RxJavaPlugins.onSchedule 封装了我们的Runable(即前文的SubscribeTask) decoratedRun，同之前的一些添加 hook 操作一样，方便扩展，默认不变还是传递的参数 SubscribeTask 实例    </li>
-<li>创建 DisposeTask，DisposeTask 也是一个 Runnable，实现了其他接口，扩展了能力</li>
-<li>Worker 执行调度 schedule，核心参数 DisposeTask task</li>
-</ol>
-<p>第4点，DisposeTask 是个 Runnable, 看关键的 run 方法，主要执行了 decoratedRun即 SubscribeTask 实例</p>
-<pre><code>static final class DisposeTask implements Disposable, Runnable, SchedulerRunnableIntrospection {
-
-        @NonNull
-        final Runnable decoratedRun;
-        @NonNull
-        final Worker w;
-        @Nullable
-        Thread runner;
-
-        DisposeTask(@NonNull Runnable decoratedRun, @NonNull Worker w) {
-            this.decoratedRun = decoratedRun;
-            this.w = w;
-        }
-
-        @Override
-        public void run() {
-            runner = Thread.currentThread();
-            try {
-                decoratedRun.run();
-            } finally {
-                dispose();
-                runner = null;
-            }
-        }
-}
-</code></pre><p>因此，我们的操作符工作最终还是会分配到 NewThreadWorker 上面。 不同的Scheduler，工作单元不太一样，比如 SingleScheduler 用的是 SingleScheduler.ScheduledWorker, 相同的是它们都是继承自 Scheduler.Worker<br>故，这里主要执行了这两个步骤，</p>
-<ul>
-<li>Scheduler的子类调用createWorker实现， 创建Worker实例，</li>
-<li>执行Worker实例</li>
-</ul>
-<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>由于篇幅长度限制本文就先到这里了。 通过分析，我们了解了 </p>
-<ol>
-<li>RxJava subscribeOn的执行流程(observerOn同理)</li>
-<li>Schedulers 创建 Scheduler 的类型</li>
-<li>RxJava的执行单元  Scheduler.Worker </li>
-</ol>
-<p>后续将着重介绍RxJava线程的内容，码字不易，纸上得来终觉浅，绝知此事要躬行。</p>
-
-          
+掌握上面的知识面试上基本没啥问题, 本文会着重解说RxJava里的线程操作, 学习线程的用法
+RxJava线程以最简单的Rx操作符为例, 
+Observable.just
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2018/03/14/android/RxJava线程是如何控制的-1/#more" rel="contents">
+              Read more &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -3034,21 +1342,19 @@ public Disposable scheduleDirect(@NonNull Runnable run, long delay, @NonNull Tim
       
         
           
-            <p><a href="https://yikun.github.io/2015/04/01/Java-HashMap%E5%B7%A5%E4%BD%9C%E5%8E%9F%E7%90%86%E5%8F%8A%E5%AE%9E%E7%8E%B0/" target="_blank" rel="noopener">Java HashMap工作原理及实现</a><br><a href="https://blog.csdn.net/justloveyou_/article/details/62893086" target="_blank" rel="noopener">Map 综述（一）：彻头彻尾理解 HashMap</a></p>
-<ol>
-<li><p>什么时候会使用HashMap？他有什么特点？<br>是基于Map接口的实现，存储键值对时，它可以接收null的键值，是非同步的，HashMap存储着Entry(hash, key, value, next)对象。</p>
-</li>
-<li><p>你知道HashMap的工作原理吗？<br>通过hash的方法，通过put和get存储和获取对象。存储对象时，我们将K/V传给put方法时，它调用hashCode计算hash从而得到bucket位置，进一步存储，HashMap会根据当前bucket的占用情况自动调整容量(超过Load Facotr则resize为原来的2倍)。获取对象时，我们将K传给get，它调用hashCode计算hash从而得到bucket位置，并进一步调用equals()方法确定键值对。如果发生碰撞的时候，Hashmap通过链表将产生碰撞冲突的元素组织起来，在Java 8中，如果一个bucket中碰撞冲突的元素超过某个限制(默认是8)，则使用红黑树来替换链表，从而提高速度。</p>
-</li>
-<li><p>你知道get和put的原理吗？equals()和hashCode()的都有什么作用？<br>通过对key的hashCode()进行hashing，并计算下标( n-1 &amp; hash)，从而获得buckets的位置。如果产生碰撞，则利用key.equals()方法去链表或树中去查找对应的节点</p>
-</li>
-<li><p>你知道hash的实现吗？为什么要这样实现？<br>在Java 1.8的实现中，是通过hashCode()的高16位异或低16位实现的：(h = k.hashCode()) ^ (h &gt;&gt;&gt; 16)，主要是从速度、功效、质量来考虑的，这么做可以在bucket的n比较小的时候，也能保证考虑到高低bit都参与到hash的计算中，同时不会有太大的开销。</p>
-</li>
-<li><p>如果HashMap的大小超过了负载因子(load factor)定义的容量，怎么办？<br>如果超过了负载因子(默认0.75)，则会重新resize一个原来长度两倍的HashMap，并且重新调用hash方法。</p>
-</li>
-</ol>
+          Java HashMap工作原理及实现Map 综述（一）：彻头彻尾理解 HashMap
 
-          
+什么时候会使用HashMap？他有什么特点？是基于Map接口的实现，存储键值对时，它可以接收null的键值，是非同步的，HashMap存储着Entry(hash, key, value, next)对象。
+
+你知道HashMap的工作原理吗？通过hash的方法，通过put和get存储和获取对象。存储对象时，我们将K/V传给put方法时，它调用has
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2018/03/13/java/HashMap实现原理/#more" rel="contents">
+              Read more &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -3166,212 +1472,19 @@ public Disposable scheduleDirect(@NonNull Runnable run, long delay, @NonNull Tim
       
         
           
-            <h3 id="线程-amp-线程池"><a href="#线程-amp-线程池" class="headerlink" title="线程&amp;线程池"></a>线程&amp;线程池</h3><h4 id="线程"><a href="#线程" class="headerlink" title="线程"></a>线程</h4><p><a href="https://blog.csdn.net/u011240877/article/details/57202704" target="_blank" rel="noopener">全面认识Java线程</a><br><a href="https://blog.csdn.net/u011240877/article/details/58756137" target="_blank" rel="noopener">多线程的利弊</a><br><a href="https://my.oschina.net/mingdongcheng/blog/139263" target="_blank" rel="noopener">一张图让你看懂JAVA线程间的状态转换</a>  </p>
-<h4 id="线程池"><a href="#线程池" class="headerlink" title="线程池"></a>线程池</h4><p><a href="https://blog.csdn.net/u011240877/article/details/73440993" target="_blank" rel="noopener">线程池的使用与执行流程</a><br><a href="https://itimetraveler.github.io/2018/02/13/%E3%80%90Java%E3%80%91%E7%BA%BF%E7%A8%8B%E6%B1%A0ThreadPoolExecutor%E5%AE%9E%E7%8E%B0%E5%8E%9F%E7%90%86/" target="_blank" rel="noopener">线程池ThreadPoolExecutor实现原理</a>  </p>
-<h3 id="并发编程"><a href="#并发编程" class="headerlink" title="并发编程"></a>并发编程</h3><h4 id="并发包"><a href="#并发包" class="headerlink" title="并发包"></a>并发包</h4><p><a href="http://www.blogjava.net/xylz/archive/2010/07/08/325587.html" target="_blank" rel="noopener">《深入浅出 Java Concurrency》目录</a>  </p>
-<h4 id="锁"><a href="#锁" class="headerlink" title="锁"></a>锁</h4><p><a href="http://blog.csdn.net/vking_wang/article/details/9952063" target="_blank" rel="noopener">锁机制：synchronized、Lock、Condition</a><br><a href="http://wiki.jikexueyuan.com/project/java-concurrent/locks-in-java.html" target="_blank" rel="noopener">Java 中的锁</a><br><a href="https://blog.csdn.net/javazejian/article/details/72828483" target="_blank" rel="noopener">深入理解Java并发之synchronized实现原理</a><br><a href="https://www.jianshu.com/p/12192b13990f" target="_blank" rel="noopener">CAS 和 AQS 原理</a>  </p>
-<h4 id="并发编程-1"><a href="#并发编程-1" class="headerlink" title="并发编程"></a>并发编程</h4><p><a href="http://www.cnblogs.com/dolphin0520/p/3920357.html" target="_blank" rel="noopener">Java并发编程：Thread类的使用</a><br><a href="http://lavasoft.blog.51cto.com/62575/27069" target="_blank" rel="noopener">Java多线程编程总结</a><br><a href="http://www.jianshu.com/p/053943a425c3#" target="_blank" rel="noopener">Java并发编程的总结与思考</a><br><a href="http://www.infoq.com/cn/articles/ConcurrentHashMap" target="_blank" rel="noopener">深入分析ConcurrentHashMap</a><br><a href="https://www.ibm.com/developerworks/cn/java/java-lo-concurrenthashmap/index.html" target="_blank" rel="noopener">探索 ConcurrentHashMap 高并发性的实现机制</a></p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/02/25/java/GC回收机制/">
-
-    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="pickerX">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Hello,world">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/02/25/java/GC回收机制/" itemprop="url">GC回收机制</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-02-25T19:32:31+08:00">
-                2018-02-25
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h3 id="Automatic-Garbage-Collection"><a href="#Automatic-Garbage-Collection" class="headerlink" title="Automatic Garbage Collection"></a>Automatic Garbage Collection</h3><h4 id="Simple-Describe"><a href="#Simple-Describe" class="headerlink" title="Simple Describe"></a>Simple Describe</h4><p>Java垃圾回收机制的原文定义:</p>
-<p>Automatic garbage collection is the process of looking at   heap memory, identifying which objects are in use and which are not, and deleting the unused objects. An in use object, or a referenced object, means that some part of your program still maintains a pointer to that object. An unused object, or unreferenced object, is no longer referenced by any part of your program. So the memory used by an unreferenced object can be reclaimed.</p>
-<p>垃圾自动回收主要是针对内存模型里的 Java堆, 回收有两个步骤，首先区分对象是否在被使用，然后再删除那些没有使用的对象。对象是否在使用，即程序里的其它地方是否有引用这个的对象来区分对象是否在使用或被引用</p>
-<h4 id="Step1-Marking"><a href="#Step1-Marking" class="headerlink" title="Step1 Marking"></a>Step1 Marking</h4><p>GC中识别对象是否在被使用的步骤，称之为 Marking。 这个过程如果所有对象都需要进行扫描，区分时，是个比较耗时的过程。</p>
-<p><img src="https://www.oracle.com/webfolder/technetwork/tutorials/obe/java/gc01/images/gcslides/Slide3.png" alt="Marking"></p>
-<h4 id="Step2-Normal-Deletion"><a href="#Step2-Normal-Deletion" class="headerlink" title="Step2 Normal Deletion"></a>Step2 Normal Deletion</h4><ol>
-<li><p>Normal Deletion<br>移除所有被步骤一Marking的对象，释放空间。同时，内存分配管理者持有释放后可用的空间块引用，会用于新内存的分配</p>
-<p> <img src="https://www.oracle.com/webfolder/technetwork/tutorials/obe/java/gc01/images/gcslides/Slide1b.png" alt="Deletion1"></p>
-</li>
-<li><p>Deletion with Compacting<br> 为了提升性能，除了Normal Deletion步骤外，还可以压缩，整理其他剩余的引用对象。把对象移动到一起，这样在给新对象分配内存时会更快。</p>
-<p> <img src="https://www.oracle.com/webfolder/technetwork/tutorials/obe/java/gc01/images/gcslides/Slide4.png" alt="Deletion2"></p>
-</li>
-</ol>
-<p><strong>Why Generational Garbage Collection?</strong><br>如上所述，Marking和Compat操作是能提升性能的。随着分配的对象越来越多，GC执行的时间也会越来越长。按以往的经验来看，应用里的大多数对象存活都是很短暂。如图:<br><img src="https://www.oracle.com/webfolder/technetwork/tutorials/obe/java/gc01/images/ObjectLifetime.gif" alt="example"></p>
-<p>可以发现，存活的对象越来越少。事实上呢，大多数的对象的生命周期都非常短暂，如图中最左边的Y数值</p>
-<h4 id="JVM-Generations-JVM世代"><a href="#JVM-Generations-JVM世代" class="headerlink" title="JVM Generations JVM世代"></a>JVM Generations JVM世代</h4><p>可以了解到，对象分配的行为会增加JVM的执行效率，因此Heap堆内存可以划分为更小的部分或generations(世代)。Heap堆内存里可以分为: 年轻世代, 老年世代以及永生代。 如图</p>
-<p><img src="https://www.oracle.com/webfolder/technetwork/tutorials/obe/java/gc01/images/gcslides/Slide5.png" alt="structure"><br>被创建的新对象会被归类为年轻代，当年轻代满了，就会触发一个minor GC。如果对象的生命周期非常短暂，minor GC 是能够有效提升JVM性能的。在年轻代里，没有引用的对象会被快速的回收掉， 一些存活下来的对象最终会被移到到老年代。</p>
-<p>Stop the World Event - 所有的minor GC是”Stop the World”事件，意味着应用里的所有线程会被stopped 直到minor GC完成。因此，如果非常频繁的执行minor GC有可能会造成线程的阻塞，卡顿等现象。  </p>
-<p>老年代用来存储生命周期比较长的对象，是年轻代的一个门槛。老年代里的对象，最终也是会回收，称之为 Major GC。 Major GC也是一个 “Stop the World”类型的事件，它检测了所有存活的对象，频繁的执行 Major GC会让JVM变慢。因此，对于快速响应的应用， Major GC应该要控制在最小次数。同时要注意到，在老年代里GC执行的时长是跟使用垃圾回收者的类型有关系的。  </p>
-<p>永生代里，JVM要求配置classes和methods的metadata信息。JVM在运行时基于应用里使用的classes生成永生代。此外，JavaSE library 里的类和方法也可能会存储在该世代里。  </p>
-<p>如果JVM找到未被加载的Classes，而其他classes需要空间的时候，它们就可能会被回收。<strong>一个Full类型的GC是包括永生代里的回收。</strong><br><a href="http://www.oracle.com/technetwork/java/gc-tuning-5-138395.html" target="_blank" rel="noopener">(2) Tuning GC with JVM 5 - Section 3 Generations</a></p>
-<h3 id="The-Generational-Garbage-Collection-Process"><a href="#The-Generational-Garbage-Collection-Process" class="headerlink" title="The Generational Garbage Collection Process"></a>The Generational Garbage Collection Process</h3><p>既然已经知道了为什么Heap分为不同的区域，那现在来看看不同区域是如何交互的。<br>如下图，描述在JVM里对象的分配和世代的划分过程：</p>
-<ol>
-<li><p>所有的新创建对象都是被分配到 eden Space(伊甸园区)。而 survivor spaces(幸存者区)刚开始则是空的.</p>
-<p> <img src="https://www.oracle.com/webfolder/technetwork/tutorials/obe/java/gc01/images/gcslides/Slide13.png" alt="Object Allocation"></p>
-</li>
-<li><p>当Eden区满了就会触发一次Minor GC</p>
-<p> <img src="https://www.oracle.com/webfolder/technetwork/tutorials/obe/java/gc01/images/gcslides/Slide14.png" alt="Eden Space"></p>
-</li>
-<li><p>GC时，有引用的对象会被移动到第一个Survior区即S0。当Eden清空时，未被引用的对象会从被删除。</p>
-<p> <img src="https://www.oracle.com/webfolder/technetwork/tutorials/obe/java/gc01/images/gcslides/Slide6.png" alt="copy Objects"></p>
-</li>
-<li><p>在下一次Minor GC，相同的操作会在Eden区再次发生，未引用的对象会被删除，有引用的对象会被移动到Survivor区。而在这种情况下, S0中的有引用对象会被移动到第二个Survivor区(S1)。另外，在S0区里, 最后的一次Minor GC会提升S0里面对象的age，移动到S1区。一旦所有的存活的对象被移动到S1去，同时S0以及Eden区会被清。这样，我们在Survivor区里就有不同的age对象。</p>
-<p><img src="https://www.oracle.com/webfolder/technetwork/tutorials/obe/java/gc01/images/gcslides/Slide8.png" alt="Object Aging"></p>
-</li>
-<li><p>在下一次的Minor GC，重复相同的过程。不同的是，Survivor区会做交换. 存活的对象会被 aged. Eden和S1区会被清理。</p>
-<p> <img src="https://www.oracle.com/webfolder/technetwork/tutorials/obe/java/gc01/images/gcslides/Slide9.png" alt="Slide9"></p>
-</li>
-<li><p>Promotion过程. 在Minor Gc后, aged(被划分世代)的对象达到一定的aged门槛时(本例为被aged了8次)它们会从年轻代被提升老年代(养老代)。</p>
-<p> <img src="https://www.oracle.com/webfolder/technetwork/tutorials/obe/java/gc01/images/gcslides/Slide7.png" alt="Slide7"></p>
-</li>
-<li><p>当Minor GC继续触发，对象会提升世代，成为老年代。</p>
-<p> <img src="https://www.oracle.com/webfolder/technetwork/tutorials/obe/java/gc01/images/gcslides/Slide10.png" alt="Slide10"></p>
-</li>
-<li><p>这样就涵盖了年轻代的整个GC过程。最后, 在老年代会触发一次Major GC清理并压缩空间</p>
-<p> <img src="https://www.oracle.com/webfolder/technetwork/tutorials/obe/java/gc01/images/gcslides/Slide11.png" alt="Slide11"></p>
-</li>
-</ol>
-<h3 id="Java-Garbage-Collectors"><a href="#Java-Garbage-Collectors" class="headerlink" title="Java Garbage Collectors"></a>Java Garbage Collectors</h3><h4 id="常用的Heap配置"><a href="#常用的Heap配置" class="headerlink" title="常用的Heap配置"></a>常用的Heap配置</h4><table>
-<thead>
-<tr>
-<th>Switch</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>-Xms</td>
-<td>JVM启动时，设置Heap的初始大小</td>
-</tr>
-<tr>
-<td>-Xmx</td>
-<td>设置Heap的最大值()</td>
-</tr>
-<tr>
-<td>-Xmn</td>
-<td>设置年轻世代的大小</td>
-</tr>
-<tr>
-<td>-XX:PermSize</td>
-<td>设置启动时永生代的大小</td>
-</tr>
-<tr>
-<td>-XX:MaxPermSize</td>
-<td>设置永生代的最大值</td>
-</tr>
-</tbody>
-</table>
-<p>面试题：<br>    哪些情况下的对象会被垃圾回收机制处理掉</p>
-<p>总结<br>Java 垃圾回收机制最基本的做法是分代回收。内存中的区域被划分成不同的世代，对象根据其存活的时间被保存在对应世代的区域中。<br>一般的实现是划分成3个世代：年轻、年老和永久。内存的分配是发生在年轻世代中的。当一个对象存活时间足够长的时候，它就会被复制到年老世代中。对于不同的世代可以使用不同的垃圾回收算法。进行世代划分的出发点是对应用中对象存活时间进行研究之后得出的统计规律。一般来说，一个应用中的大部分对象的存活时间都很短。比如局部变量的存活时间就只在方法的执行过程中。基于这一点，对于年轻世代的垃圾回收算法就可以很有针对性。</p>
-
-          
+          线程&amp;线程池线程全面认识Java线程多线程的利弊一张图让你看懂JAVA线程间的状态转换  
+线程池线程池的使用与执行流程线程池ThreadPoolExecutor实现原理  
+并发编程并发包《深入浅出 Java Concurrency》目录  
+锁锁机制：synchronized、Lock、ConditionJava 中的锁深入理解Java并发之synchronized实现原理CAS 和 AQS 原理  
+并发编程Java并发编
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2018/03/05/java/你所想了解Java线程/#more" rel="contents">
+              Read more &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -3455,7 +1568,7 @@ public Disposable scheduleDirect(@NonNull Runnable run, long delay, @NonNull Tim
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">37</span>
+                  <span class="site-state-item-count">38</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
@@ -3468,7 +1581,7 @@ public Disposable scheduleDirect(@NonNull Runnable run, long delay, @NonNull Tim
               
               <div class="site-state-item site-state-tags">
                 
-                  <span class="site-state-item-count">10</span>
+                  <span class="site-state-item-count">11</span>
                   <span class="site-state-item-name">tags</span>
                 
               </div>
@@ -3523,7 +1636,7 @@ public Disposable scheduleDirect(@NonNull Runnable run, long delay, @NonNull Tim
 
 
 
-  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a> v5.1.4</div>
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Gemini</a> v5.1.4</div>
 
 
 
