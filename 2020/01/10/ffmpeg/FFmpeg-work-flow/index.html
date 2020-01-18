@@ -1,0 +1,967 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="FFmpeg,">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="描述ffmpeg 是一个非常高效的音视频转换器, 也能从一个音视频流里抓取数据. 它还可以在任意采样率之间转换, 并使用高质量的多相滤波器动态调整视频大小.ffmpeg 通过指定 -i 参数, 可以从任意多的”文件”中读取(如常规文件, 管道, 网络流, 抓取设备等等). 通过指定一个文本输出 url, 也能写入任意数量的输出文件. 在命令行中找到的, 任何不能解释为选项的内容都被视为输出url.">
+<meta name="keywords" content="FFmpeg">
+<meta property="og:type" content="article">
+<meta property="og:title" content="FFmpeg介绍">
+<meta property="og:url" content="http://yoursite.com/2020/01/10/ffmpeg/FFmpeg-work-flow/index.html">
+<meta property="og:site_name" content="Hello,world">
+<meta property="og:description" content="描述ffmpeg 是一个非常高效的音视频转换器, 也能从一个音视频流里抓取数据. 它还可以在任意采样率之间转换, 并使用高质量的多相滤波器动态调整视频大小.ffmpeg 通过指定 -i 参数, 可以从任意多的”文件”中读取(如常规文件, 管道, 网络流, 抓取设备等等). 通过指定一个文本输出 url, 也能写入任意数量的输出文件. 在命令行中找到的, 任何不能解释为选项的内容都被视为输出url.">
+<meta property="og:locale" content="default">
+<meta property="og:image" content="https://trac.ffmpeg.org/ffmpeg-logo.png">
+<meta property="og:updated_time" content="2020-01-18T07:47:50.001Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="FFmpeg介绍">
+<meta name="twitter:description" content="描述ffmpeg 是一个非常高效的音视频转换器, 也能从一个音视频流里抓取数据. 它还可以在任意采样率之间转换, 并使用高质量的多相滤波器动态调整视频大小.ffmpeg 通过指定 -i 参数, 可以从任意多的”文件”中读取(如常规文件, 管道, 网络流, 抓取设备等等). 通过指定一个文本输出 url, 也能写入任意数量的输出文件. 在命令行中找到的, 任何不能解释为选项的内容都被视为输出url.">
+<meta name="twitter:image" content="https://trac.ffmpeg.org/ffmpeg-logo.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2020/01/10/ffmpeg/FFmpeg-work-flow/">
+
+
+
+
+
+  <title>FFmpeg介绍 | Hello,world</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="default">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Hello,world</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            Archives
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/01/10/ffmpeg/FFmpeg-work-flow/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="pickerX">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hello,world">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">FFmpeg介绍</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-01-10T10:14:15+08:00">
+                2020-01-10
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+        <div class="post-gallery" itemscope="" itemtype="http://schema.org/ImageGallery">
+          
+          
+            <div class="post-gallery-row">
+              <a class="post-gallery-img fancybox" href="https://trac.ffmpeg.org/ffmpeg-logo.png" rel="gallery_ck57j2kfn001cndxz9gyo7szv" itemscope="" itemtype="http://schema.org/ImageObject" itemprop="url">
+                <img src="https://trac.ffmpeg.org/ffmpeg-logo.png" itemprop="contentUrl">
+              </a>
+            
+          
+
+          
+          </div>
+        </div>
+      
+
+      
+        <h2 id="描述"><a href="#描述" class="headerlink" title="描述"></a>描述</h2><p>ffmpeg 是一个非常高效的音视频转换器, 也能从一个音视频流里抓取数据. 它还可以在任意采样率之间转换, 并使用高质量的多相滤波器动态调整视频大小.<br>ffmpeg 通过指定 -i 参数, 可以从任意多的”文件”中读取(如常规文件, 管道, 网络流, 抓取设备等等). 通过指定一个文本输出 url, 也能写入任意数量的输出文件. 在命令行中找到的, 任何不能解释为选项的内容都被视为输出url. </p>
+<p>每个输入或者输出 url 原则上可以包含任意多的不同类型(video/audio/subtitle字幕/attachment)的流. container format(封装格式) 能限制允许使用流的数量和类型. </p>
+<p>要在选项中引用输入文件, 必须使用它们的索引(从0开始计算). 如第一个输入文件是 0, 第二个是 1, 等等. 类似地, 文件中的流通过其索引来引用. 如 2:3 表示第三个输入文件中的第四个流. 更多详细另请参阅流说明符一章.<br>作为一般性规则, 参数选项会被应用到下一个指定的文件. 因此, 顺序是很重要的, 在同一个命令里, 你可以输入多次, 多个相同的参数选项. 每次出现的选项都将应用于下一个输入或输出文件.  除此之外, 还有全局的选项(如verbosity level), 则要在最开始时指定.<br>不要搞混输入和输出文件, 建议优先指定所有输入文件, 再指定所有的输出问题件. 也不要弄混属于不同文件的选项. 所有的选项都仅适用于下一个输入或输出文件, 在不同文件直接将会被重置. </p>
+<h2 id="ffmpeg语法"><a href="#ffmpeg语法" class="headerlink" title="ffmpeg语法"></a>ffmpeg语法</h2><p>ffmpeg的语法格式如下,</p>
+<pre><code>ffmpeg [global_options] {[input_file_options] -i input_url} ... {[output_file_options] output_url} ...
+</code></pre><p>简单的例子如，要设置输出视频文件的比特率为 64kbit/s:</p>
+<pre><code>ffmpeg -i input.avi -b:v 64k -bufsize 64k output.avi
+</code></pre><p>强制设置输出文件的帧率(frame rate)为24fps:</p>
+<pre><code>ffmpeg -i input.avi -r 24 output.avi
+</code></pre><p>强制设置输入文件的帧率(只限合法的raw format)为 1 fps，设置输出文件的帧率为 24fps:</p>
+<pre><code>ffmpeg -r 1 -i input.m2v -r 24 output.avi
+</code></pre><p>raw input files 则可能需要 format 选项.</p>
+<h2 id="原理描述"><a href="#原理描述" class="headerlink" title="原理描述"></a>原理描述</h2><h3 id="git-简介"><a href="#git-简介" class="headerlink" title="git 简介"></a>git 简介</h3><p>在我们 clone 完 ffmpeg 后, 我们会发现其内容大致如下</p>
+<table>
+<thead>
+<tr>
+<th>文件夹</th>
+<th>备注</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>libavcodec</td>
+<td>提供一系列编码器的实现</td>
+</tr>
+<tr>
+<td>libavformat</td>
+<td>实现在流协议, 容器格式及其IO访问</td>
+</tr>
+<tr>
+<td>libavutil</td>
+<td>hash器, 解码器和各种工具函数</td>
+</tr>
+<tr>
+<td>libavfilter</td>
+<td>提供各种音视频过滤器</td>
+</tr>
+<tr>
+<td>libavdevice</td>
+<td>提供访问捕获设备和回放设备的接口</td>
+</tr>
+<tr>
+<td>libswresample</td>
+<td>实现了混音和重采样</td>
+</tr>
+<tr>
+<td>libswscale</td>
+<td>实现了色彩转换和缩放功能</td>
+</tr>
+</tbody>
+</table>
+<h3 id="转码流程"><a href="#转码流程" class="headerlink" title="转码流程"></a>转码流程</h3><p>在 ffmpeg 里，转码的过程可以描述为如下的图表:</p>
+<pre><code> _______              ______________
+|       |            |              |
+| input |  demuxer   | encoded data |   decoder
+| file  | ---------&gt; | packets      | -----+
+|_______|            |______________|      |
+                                        v
+                                     _________
+                                    |         |
+                                    | decoded |
+                                    | frames  |
+                                    |_________|
+ ________             ______________       |
+|        |           |              |      |
+| output | &lt;-------- | encoded data | &lt;----+
+| file   |   muxer   | packets      |   encoder
+|________|           |______________|
+</code></pre><p>如图所描述的，<br>ffmpeg 调用 the libavformat 库 (包含分解复用器 demuxers) 去读取输入文件，获取 packet 数据，包含已编码的数据. 当有多个输入文件时，ffmpeg 会在任何 active 状态的输入流上，通过最低的时间戳，尝试去让它们保持同步。  </p>
+<p>之后，已编码的 packet 数据传递给 decoder。解码器 decoder 处理解压后的帧数据(raw video/PCM audio/…), 使用filter，帧数据可以进一步处理. 在过滤器过滤后, 帧数据会传递给 encoder 编码器，做编码处理输出编码后的 packet 数据. 最后，这些数据都会传递给 muxer(复用器), 将编码后的 packet 数据写入输出文件. </p>
+<h3 id="Filtering"><a href="#Filtering" class="headerlink" title="Filtering"></a>Filtering</h3><p>在编码之前，libavfilter库提供了各种各样的 filters 让 ffmpeg 可以处理 raw 音频帧和视频帧。几个链式过滤器可以构成 filter 图. ffmpeg<br> 区分两种不同类型的过滤器图: 简单图与复杂图.</p>
+<h4 id="Simple-filtergraphs"><a href="#Simple-filtergraphs" class="headerlink" title="Simple filtergraphs"></a>Simple filtergraphs</h4><p>简单过滤器图是那些有明确的一个同种类型的输入与输出. 在下面的图表，在解码和编码之间插入一个附加的步骤来表示:</p>
+<pre><code> _________                        ______________
+|         |                      |              |
+| decoded |                      | encoded data |
+| frames  |\                   _ | packets      |
+|_________| \                  /||______________|
+             \   __________   /
+simple       _\||          | /  encoder
+filtergraph     | filtered |/
+                | frames   |
+                |__________|
+</code></pre><p>简单  filtergraphs 通过 per-stream -filter 选项来配置(-vf 和 -af)<br>视频的一个简单 filtergraphs 可以看做如下图表，</p>
+<pre><code> _______        _____________        _______        ________
+|       |      |             |      |       |      |        |
+| input | ---&gt; | deinterlace | ---&gt; | scale | ---&gt; | output |
+|_______|      |_____________|      |_______|      |________|
+</code></pre><p>注意，一些过滤器改变帧属性而不是帧内容。如，fps 过滤器，在上面的例子中，改变了帧的数量，但没有改变帧的内容。 另外一个例子是，setpts 过滤器，只设置了时间戳，而不更改地传递帧。</p>
+<h4 id="Complex-filtergraphs"><a href="#Complex-filtergraphs" class="headerlink" title="Complex filtergraphs"></a>Complex filtergraphs</h4><p>复杂的filtergraph，不能简单地描述为应用于一个流的线性处理链. 举个例子, 当一个图里有超过一个的输入或者输出，或者输出的类型与输入是不同。它们可以用以下的图表来表示:</p>
+<pre><code> _________
+|         |
+| input 0 |\                    __________
+|_________| \                  |          |
+             \   _________    /| output 0 |
+              \ |         |  / |__________|
+ _________     \| complex | /
+|         |     |         |/
+| input 1 |----&gt;| filter  |\
+|_________|     |         | \   __________
+               /| graph   |  \ |          |
+              / |         |   \| output 1 |
+_________    /  |_________|    |__________|
+|         | /
+| input 2 |/
+|_________|
+</code></pre><p>复杂 filtergraphs 通过 -filter_complex 选项来配置. 注意， 这个选项是全局的, 因为一个复杂的 filtergraph, 本质上, 不能明确的跟一个流或文件相关联.</p>
+<p>-lavfi 选项等同于 -filter_complex.<br>复杂filtergraph，一个不是很重要的例子，overlay 过滤器，有两个视频输入和一个视频输出，在另一个视频的顶部包含一个视频 overlaid。 它的音频对应的是 amix 过滤器</p>
+<h3 id="Stream-copy"><a href="#Stream-copy" class="headerlink" title="Stream copy"></a>Stream copy</h3><p>Stream 拷贝通过提供拷贝参数给 -codec选项 来实现. 它使得在指定的流上，ffmpeg 省略解码和编码的步骤。 所以，它只有分解和复用. 在改变封装格式(container format) 或修改 container-level metadata数据时是很有用的. 在这个例子里，可以简化成如下的图表:</p>
+<pre><code> _______              ______________            ________
+|       |            |              |          |        |
+| input |  demuxer   | encoded data |  muxer   | output |
+| file  | ---------&gt; | packets      | -------&gt; | file   |
+|_______|            |______________|          |________|
+</code></pre><p>由于没有解码和编码步骤，它是非常高速的，并且不会有质量的损失。 然而，stream copy在一些场景下，出于各种因素，可能不会起作用。 显然的，在这个过程中是无法使用过滤器的，因为过滤器是在解压后的数据上工作的。</p>
+<h2 id="ffmpeg-命令分类"><a href="#ffmpeg-命令分类" class="headerlink" title="ffmpeg 命令分类"></a>ffmpeg 命令分类</h2><p>了解了上面的基础知识后，我们来看看 ffmpeg 的命令，可以将命令大概分为八大类，</p>
+<ul>
+<li>基本信息查询命令</li>
+<li>录制命令</li>
+<li>分解/复用命令</li>
+<li>处理原始数据命令</li>
+<li>剪裁与合并命令</li>
+<li>图片/视频互转命令</li>
+<li>直播相关命令</li>
+<li>各种滤镜命令</li>
+</ul>
+<h3 id="FFmpeg基本信息查询命令"><a href="#FFmpeg基本信息查询命令" class="headerlink" title="FFmpeg基本信息查询命令"></a>FFmpeg基本信息查询命令</h3><table>
+<thead>
+<tr>
+<th>指令</th>
+<th>描述</th>
+<th>指令</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>-version</td>
+<td>显示版本信息</td>
+<td>-formats</td>
+<td>显示可用的格式</td>
+</tr>
+<tr>
+<td>-demuxers</td>
+<td>显示可用的 demuxers</td>
+<td>-protocols</td>
+<td>显示可用的协议</td>
+</tr>
+<tr>
+<td>-muxers</td>
+<td>显示可用的 muxers</td>
+<td>-filters</td>
+<td>显示可用的过滤器</td>
+</tr>
+<tr>
+<td>-devices</td>
+<td>显示可用的设备</td>
+<td>-pix_fmts</td>
+<td>显示可用的像素格式</td>
+</tr>
+<tr>
+<td>-codecs</td>
+<td>显示所有编解码器</td>
+<td>-sample_fmts</td>
+<td>显示可用的采样格式</td>
+</tr>
+<tr>
+<td>-decoders</td>
+<td>显示可用的解码器</td>
+<td>-layouts</td>
+<td>显示 channel名称</td>
+</tr>
+<tr>
+<td>-encoders</td>
+<td>显示所有的编码器</td>
+<td>-colors</td>
+<td>显示识别的颜色名称</td>
+</tr>
+<tr>
+<td>-bsfs</td>
+<td>显示比特流 filter</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h4 id="example"><a href="#example" class="headerlink" title="example"></a>example</h4><p>如，</p>
+<pre><code>➜  FFmpeg git:(master) ffmpeg -version
+ffmpeg version N-96315-g94cdf82d53 Copyright (c) 2000-2020 the FFmpeg developers
+built with Apple clang version 11.0.0 (clang-1100.0.33.16)
+configuration: --prefix=/usr/local/ffmpeg --enable-gpl --enable-nonfree --enable-libfdk-aac --enable-libx264 --enable-libx265 --enable-filter=delogo --enable-debug --disable-optimizations --enable-libspeex --enable-videotoolbox --enable-shared --enable-pthreads --enable-version3 --enable-hardcoded-tables --cc=clang --host-cflags= --host-ldflags=
+libavutil      56. 38.100 / 56. 38.100
+libavcodec     58. 65.102 / 58. 65.102
+libavformat    58. 35.101 / 58. 35.101
+libavdevice    58.  9.103 / 58.  9.103
+libavfilter     7. 70.101 /  7. 70.101
+libswscale      5.  6.100 /  5.  6.100
+libswresample   3.  6.100 /  3.  6.100
+libpostproc    55.  6.100 / 55.  6.100
+</code></pre><h3 id="录制命令"><a href="#录制命令" class="headerlink" title="录制命令"></a>录制命令</h3><pre><code>ffmpeg -f avfoundation -i 1:0 -r 30 out.yuv
+</code></pre><p>-f: 指定使用mac 上 avfoundation 采集数据<br>-i: 指定从哪里采集数据，它是一个文件索引号，”:” 前面指定视频的采集方式，如 1 表示屏幕，0 表示摄像头，”:” 后面指定音频的采集方式<br>-r: 指定帧率<br>out.yuv:输出文件路径，文件名  </p>
+<p>-i 的索引参数可通过如下命令查询，  </p>
+<pre><code>➜  FFmpeg git:(master) ffmpeg -f avfoundation -list_devices true -i &quot;&quot;
+[AVFoundation indev @ 0x7fbacf7002c0] AVFoundation video devices:
+[AVFoundation indev @ 0x7fbacf7002c0] [0] FaceTime HD Camera
+[AVFoundation indev @ 0x7fbacf7002c0] [1] Capture screen 0
+[AVFoundation indev @ 0x7fbacf7002c0] AVFoundation audio devices:
+[AVFoundation indev @ 0x7fbacf7002c0] [0] Built-in Microphone
+[AVFoundation indev @ 0x7fbacf7002c0] [1] xxx 的 BeatsX
+</code></pre><p>使用 ffplay 播放，  </p>
+<pre><code>ffplay -video_size 2560x1600 -pixel_format uyvy422 out.yuv
+或者直接 ffplay out.mp4
+</code></pre><p>-s: 指定播放的分辨率<br>-pix_fmt: 指定播放的像素格式</p>
+<p>直接播放时，需要注意封装格式，如果是 YUV 数据的必须要指定分辨率大小，像素格式。其中 out.h264 格式中，已包含 SPS(Sequence Parameter Sets ) 和PPS(Picture Parameter Set), 宽高已有可直接播放</p>
+<pre><code>ffmpeg -f avfoundation -list_devices true -i &quot;&quot;
+</code></pre><h3 id="分解-复用命令"><a href="#分解-复用命令" class="headerlink" title="分解/复用命令"></a>分解/复用命令</h3><h4 id="封装格式转换"><a href="#封装格式转换" class="headerlink" title="封装格式转换"></a>封装格式转换</h4><p>分解复用也就是我们常见的格式转换，MP4 -&gt; flv 等等，这个格式在音视频开发中是指 音视频数据的封装格式，不是数据的采集后的格式。</p>
+<pre><code>ffmpeg -i out.mp4 -vcodec copy -acodec copy out.flv
+</code></pre><p>-i: 输入文件<br>-vcodec copy: 视频编码处理方式<br>-acodec copy: 音频编码处理方式</p>
+<h4 id="音视频抽取"><a href="#音视频抽取" class="headerlink" title="音视频抽取"></a>音视频抽取</h4><pre><code>ffmpeg -i test.mp4 -an -vcodec copy out.h264
+</code></pre><p>-an: 不抽取音频</p>
+<pre><code>ffmpeg -i test.mp4 -acodec copy -vn out.aac
+</code></pre><p>-vn: 不抽取视频    </p>
+<h3 id="原始数据处理命令"><a href="#原始数据处理命令" class="headerlink" title="原始数据处理命令"></a>原始数据处理命令</h3><h4 id="提取YUV数据"><a href="#提取YUV数据" class="headerlink" title="提取YUV数据"></a>提取YUV数据</h4><p>提取视频里的 YUV 数据 </p>
+<pre><code>ffmpeg -i input.mp4 -an -c:v rawvideo -pix_fmt yuv420p out.yuv
+</code></pre><p>-c:v : 对视频进行编码，编码方式 rawvideo<br>-pix_fmt: 像素编码格式，常用格式 YUV420</p>
+<p>播放 YUV 数据，参考前面的 ffplay</p>
+<h4 id="PCM-数据提取"><a href="#PCM-数据提取" class="headerlink" title="PCM 数据提取"></a>PCM 数据提取</h4><p>提取视频原始里的 PCM 音频数据</p>
+<pre><code>ffmpeg -i input.mp4 -vn -ar 44100 -ac 2 -f s16le out.pcm
+</code></pre><p>-ar: 音频采样率， 常用 44.1k, 48k, 32k等<br>-ac: audio channel, 2 表示双声道<br>-f: pcm数据存储格式，<br>s16le: s即有符号，16指16位， le(little end)<br>out.pcm: 输出文件名</p>
+<p>播放 pcm 音频文件时，也是使用 ffplay， 不同的是我们需要指定音频的一些参数才能播放，</p>
+<pre><code>ffplay -ar 441000 -ac 2 -f s16le out.pcm
+</code></pre><h3 id="滤镜"><a href="#滤镜" class="headerlink" title="滤镜"></a>滤镜</h3><h4 id="crop滤镜"><a href="#crop滤镜" class="headerlink" title="crop滤镜"></a>crop滤镜</h4><pre><code>ffmpeg -i input.mp4 -vf crop=in_w-200:in_h-200 -c:v libx264 -c:a copy out.mp4
+</code></pre><p>-i:输入文件<br>-vf: 视频滤镜<br>crop: 剪裁滤镜，in_w-200 视频宽度减200, in_h-200，视频宽度减200<br>-c:v: 视频编码器, libx264，使用x264进行编码<br>-c:a: 音频编码器，copy，这里不做处理</p>
+<h3 id="裁剪-合并"><a href="#裁剪-合并" class="headerlink" title="裁剪/合并"></a>裁剪/合并</h3><pre><code>ffmpeg -i input.mp4 -ss 00:00:00 -t 10 out.ts
+</code></pre><p>-ss: 裁剪的起始时间<br>-t: 裁剪的时长<br>out.ts: 输出文件</p>
+<pre><code>ffmpeg -f concat -i input.txt out.flv
+</code></pre><p>input.txt: 合并文件的路径内容，每一行格式为: file $fileName</p>
+<h3 id="图片视频互转"><a href="#图片视频互转" class="headerlink" title="图片视频互转"></a>图片视频互转</h3><h4 id="视频截取图片"><a href="#视频截取图片" class="headerlink" title="视频截取图片"></a>视频截取图片</h4><pre><code>ffmpeg -i input.flv -r 1 -f image2 image-%3d.jpeg
+</code></pre><p>-r: 频率，每秒 1 张<br>image-%3d.jpeg: 输出文件名</p>
+<h4 id="图片合成视频"><a href="#图片合成视频" class="headerlink" title="图片合成视频"></a>图片合成视频</h4><pre><code>ffmpeg -i image-%3d.jpeg out.mp4
+</code></pre><h3 id="直播推-拉流"><a href="#直播推-拉流" class="headerlink" title="直播推/拉流"></a>直播推/拉流</h3><p>推流</p>
+<pre><code>ffmpeg -re -i out.mp4 -c copy -f flv rtmp://server/live/streamName
+</code></pre><p>-re: 同步帧率<br>-c: 编解码器 copy<br>-f: 推流的文件格式<br>rtmp://server/live/streamName: 服务器地址</p>
+<p>拉流</p>
+<pre><code>ffmpeg -i rtmp://server/live/streamName -c copy dump.flv
+</code></pre><p>参数同上</p>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><p><a href="http://ffmpeg.org/ffmpeg.html" target="_blank" rel="noopener">http://ffmpeg.org/ffmpeg.html</a></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div></div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>Donate</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/wechatpay.jpg" alt="pickerX WeChat Pay">
+        <p>WeChat Pay</p>
+      </div>
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/images/alipay.jpg" alt="pickerX Alipay">
+        <p>Alipay</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/FFmpeg/" rel="tag"># FFmpeg</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/12/02/data_struct/数据结构分类/" rel="next" title="数据结构分类">
+                <i class="fa fa-chevron-left"></i> 数据结构分类
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">pickerX</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">40</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                
+                  <span class="site-state-item-count">12</span>
+                  <span class="site-state-item-name">tags</span>
+                
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#描述"><span class="nav-number">1.</span> <span class="nav-text">描述</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ffmpeg语法"><span class="nav-number">2.</span> <span class="nav-text">ffmpeg语法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#原理描述"><span class="nav-number">3.</span> <span class="nav-text">原理描述</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#git-简介"><span class="nav-number">3.1.</span> <span class="nav-text">git 简介</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#转码流程"><span class="nav-number">3.2.</span> <span class="nav-text">转码流程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Filtering"><span class="nav-number">3.3.</span> <span class="nav-text">Filtering</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Simple-filtergraphs"><span class="nav-number">3.3.1.</span> <span class="nav-text">Simple filtergraphs</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Complex-filtergraphs"><span class="nav-number">3.3.2.</span> <span class="nav-text">Complex filtergraphs</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Stream-copy"><span class="nav-number">3.4.</span> <span class="nav-text">Stream copy</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ffmpeg-命令分类"><span class="nav-number">4.</span> <span class="nav-text">ffmpeg 命令分类</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#FFmpeg基本信息查询命令"><span class="nav-number">4.1.</span> <span class="nav-text">FFmpeg基本信息查询命令</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#example"><span class="nav-number">4.1.1.</span> <span class="nav-text">example</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#录制命令"><span class="nav-number">4.2.</span> <span class="nav-text">录制命令</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#分解-复用命令"><span class="nav-number">4.3.</span> <span class="nav-text">分解/复用命令</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#封装格式转换"><span class="nav-number">4.3.1.</span> <span class="nav-text">封装格式转换</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#音视频抽取"><span class="nav-number">4.3.2.</span> <span class="nav-text">音视频抽取</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#原始数据处理命令"><span class="nav-number">4.4.</span> <span class="nav-text">原始数据处理命令</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#提取YUV数据"><span class="nav-number">4.4.1.</span> <span class="nav-text">提取YUV数据</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#PCM-数据提取"><span class="nav-number">4.4.2.</span> <span class="nav-text">PCM 数据提取</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#滤镜"><span class="nav-number">4.5.</span> <span class="nav-text">滤镜</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#crop滤镜"><span class="nav-number">4.5.1.</span> <span class="nav-text">crop滤镜</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#裁剪-合并"><span class="nav-number">4.6.</span> <span class="nav-text">裁剪/合并</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#图片视频互转"><span class="nav-number">4.7.</span> <span class="nav-text">图片视频互转</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#视频截取图片"><span class="nav-number">4.7.1.</span> <span class="nav-text">视频截取图片</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#图片合成视频"><span class="nav-number">4.7.2.</span> <span class="nav-text">图片合成视频</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#直播推-拉流"><span class="nav-number">4.8.</span> <span class="nav-text">直播推/拉流</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考"><span class="nav-number">5.</span> <span class="nav-text">参考</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">pickerX</span>
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Gemini</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
