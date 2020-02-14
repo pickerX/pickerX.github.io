@@ -1,0 +1,932 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="ffmpeg,">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="本系列根据ffmpeg api文档进行介绍，ffmpeg 文档描述大概可以分为以下几个不同的库:    库 描述     libavcodec 音视频各种格式的编解码。各种格式的编解码代码(如aacenc.c、aacdec.c等)   libavformat 用于各种音视频封装格式的生成和解析，包括获取解码所需信息、读取音视频数据等功能。各种流媒体协议代码(如rtmpproto.c等)以及音视频格">
+<meta name="keywords" content="ffmpeg">
+<meta property="og:type" content="article">
+<meta property="og:title" content="ffmpeg-API划分">
+<meta property="og:url" content="http://yoursite.com/2020/01/19/ffmpeg/ffmpeg-api/index.html">
+<meta property="og:site_name" content="Hello,world">
+<meta property="og:description" content="本系列根据ffmpeg api文档进行介绍，ffmpeg 文档描述大概可以分为以下几个不同的库:    库 描述     libavcodec 音视频各种格式的编解码。各种格式的编解码代码(如aacenc.c、aacdec.c等)   libavformat 用于各种音视频封装格式的生成和解析，包括获取解码所需信息、读取音视频数据等功能。各种流媒体协议代码(如rtmpproto.c等)以及音视频格">
+<meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2020-02-14T02:37:27.317Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="ffmpeg-API划分">
+<meta name="twitter:description" content="本系列根据ffmpeg api文档进行介绍，ffmpeg 文档描述大概可以分为以下几个不同的库:    库 描述     libavcodec 音视频各种格式的编解码。各种格式的编解码代码(如aacenc.c、aacdec.c等)   libavformat 用于各种音视频封装格式的生成和解析，包括获取解码所需信息、读取音视频数据等功能。各种流媒体协议代码(如rtmpproto.c等)以及音视频格">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2020/01/19/ffmpeg/ffmpeg-api/">
+
+
+
+
+
+  <title>ffmpeg-API划分 | Hello,world</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="default">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Hello,world</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            Archives
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/01/19/ffmpeg/ffmpeg-api/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="pickerX">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hello,world">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">ffmpeg-API划分</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-01-19T13:44:33+08:00">
+                2020-01-19
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>本系列根据ffmpeg api文档进行介绍，<br>ffmpeg 文档描述大概可以分为以下几个不同的库:</p>
+<table>
+<thead>
+<tr>
+<th>库</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>libavcodec</td>
+<td>音视频各种格式的编解码。各种格式的编解码代码(如aacenc.c、aacdec.c等)</td>
+</tr>
+<tr>
+<td>libavformat</td>
+<td>用于各种音视频封装格式的生成和解析，包括获取解码所需信息、读取音视频数据等功能。各种流媒体协议代码(如rtmpproto.c等)以及音视频格式的(解)复用代码(如flvdec.c、flvenc.c等)</td>
+</tr>
+<tr>
+<td>libavutil</td>
+<td>包含一些公共的工具函数的使用库，包括算数运算，字符操作等</td>
+</tr>
+<tr>
+<td>libavfilter</td>
+<td>各种音视频过滤器</td>
+</tr>
+<tr>
+<td>libavdevice</td>
+<td>用于硬件的音视频采集、加速和显示</td>
+</tr>
+<tr>
+<td>libswresample</td>
+<td>提供音频重采样，采样格式转换和混合等功能</td>
+</tr>
+<tr>
+<td>libswscale</td>
+<td>提供原始视频的比例缩放、色彩映射转换、图像颜色空间或格式转换的功能</td>
+</tr>
+</tbody>
+</table>
+<h2 id="模块划分"><a href="#模块划分" class="headerlink" title="模块划分"></a>模块划分</h2><p>按官方的文档，ffmpeg 库按模块划分为，</p>
+<ul>
+<li>ASS styles    </li>
+<li>ASS functions    </li>
+<li>end of Dialogue Event    </li>
+<li>libpostproc    Video 后处理库</li>
+<li>libswresample    Audio 重采样, 采样格式转换以及混合库</li>
+<li>libswscale    颜色转换和缩放库</li>
+<li>VDPAU_Decoding    </li>
+</ul>
+<p>其他比较大的模块主要在，libavcodec, libavformat, libavutil</p>
+<h3 id="libavcodec-模块"><a href="#libavcodec-模块" class="headerlink" title="libavcodec 模块"></a>libavcodec 模块</h3><ul>
+<li><p>libavcodec: 编码解码库</p>
+<ul>
+<li>Decoding    <ul>
+<li>Frame 解析    </li>
+</ul>
+</li>
+<li>Encoding    </li>
+<li>Codecs    <ul>
+<li>Native Codecs</li>
+<li>External library wrappers    </li>
+<li>Hardware Accelerators bridge    <ul>
+<li>oDirect3D11</li>
+<li>oDXVA2    </li>
+<li>oVA API Decoding    </li>
+<li>oVDPAU Decoder and Renderer: VDPAU硬件加速有两个模块</li>
+<li>XvMC    </li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Internal    </li>
+<li><p>send/receive encoding and decoding API overview:  avcodec_send_packet()/avcodec_receive_frame()/avcodec_send_frame()/ avcodec_receive_packet() 函数提供一个 编解码 API, 将输入和输出分离开</p>
+</li>
+<li><p>Core functions/structures:基本定义、查询 libavcodec 功能、关键结构体内崔分配，等等</p>
+<ul>
+<li>AVPacket: 编码的数据单元</li>
+<li>AVHWAccel:    </li>
+<li>AVPicture: Picture 数据结构体</li>
+</ul>
+</li>
+<li>Utility functions:与编码和解码（或两者都不是）相关的其他实用函数<ul>
+<li>Pixel formats: Pixel 格式相关的函数</li>
+<li>FFT functions    <h3 id="libavdevice"><a href="#libavdevice" class="headerlink" title="libavdevice"></a>libavdevice</h3></li>
+</ul>
+</li>
+</ul>
+</li>
+<li>libavdevice: 指定设备的 muxing/demuxing 库</li>
+</ul>
+<h3 id="libavfilter"><a href="#libavfilter" class="headerlink" title="libavfilter"></a>libavfilter</h3><ul>
+<li>libavfilter: Graph-based 帧编辑库<ul>
+<li>Buffer sink API<ul>
+<li>Buffer sink accessors: 获取 stream 的属性</li>
+</ul>
+</li>
+<li>Buffer source API    </li>
+</ul>
+</li>
+</ul>
+<h3 id="libavformat"><a href="#libavformat" class="headerlink" title="libavformat"></a>libavformat</h3><ul>
+<li>libavformat: I/O 和 分解/复用库<ul>
+<li>Demuxing:    Demuxers 读取一个媒体文件，分离到 packets</li>
+<li>Muxing: muxer 以 AVPackets 的形式获取编码数据，并将其写入文件或指定容器格式的其他 bytestreams 输出流.</li>
+<li>I/O Read/Write    </li>
+<li>Demuxers    <ul>
+<li>Native Demuxers</li>
+<li>External library wrappers</li>
+</ul>
+</li>
+<li>I/O Protocols    </li>
+<li>Internal    </li>
+<li>Public Metadata API: 分解时，该 API 允许 libavformat 导出 metadata tags 给 application客户端 </li>
+<li>Core functions: 查询 libavformat capabilities 函数, 核心结构体内存分配</li>
+<li>Utility functions: 与复用和解复用相关的杂项效用函数（或两者都不）<ul>
+<li>RIFF FourCCs: 获取将 RIFF FourCCs 映射到 libavcodec AVCodecIDs 的表</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="libavresample"><a href="#libavresample" class="headerlink" title="libavresample"></a>libavresample</h3><ul>
+<li>libavresample    Libavresample (lavr) is a library that handles audio resampling, sample format conversion and mixing</li>
+</ul>
+<h3 id="libavutil"><a href="#libavutil" class="headerlink" title="libavutil"></a>libavutil</h3><ul>
+<li>libavutil    Common code shared across all FFmpeg libraries<ul>
+<li>Crypto and Hashing    <ul>
+<li>AES    </li>
+<li>Base64    </li>
+<li>Blowfish    </li>
+<li>CAMELLIA    </li>
+<li>CAST5    </li>
+<li>DES    </li>
+<li>Hash Functions: Hash functions useful in multimedia<ul>
+<li>Adler-32：Adler-32 hash function implementation</li>
+<li>CRC：CRC (Cyclic Redundancy Check) hash function implementation</li>
+<li>Generic Hashing API：An abstraction layer for all hash functions supported by libavutil</li>
+<li>MD5：MD5 hash function implementation</li>
+<li>Murmur3：MurmurHash3 hash function implementation</li>
+<li>RIPEMD：RIPEMD hash function implementation</li>
+<li>SHA：SHA-1 and SHA-256 (Secure Hash Algorithm) hash function implementations</li>
+<li>SHA-512：SHA-512 (Secure Hash Algorithm) hash function implementations</li>
+</ul>
+</li>
+<li>HMAC    </li>
+<li>LZO    </li>
+<li>RC4    </li>
+<li>TEA    </li>
+<li>TWOFISH    </li>
+<li>XTEA    </li>
+</ul>
+</li>
+<li>Mathematics：时间和时间戳的数据工具集<ul>
+<li>AVRational：Rational number calculation</li>
+</ul>
+</li>
+<li>String Manipulation：字符操作</li>
+<li>Memory Management：操作内存的工具集<ul>
+<li>Alignment Macros：宏指令工具函数</li>
+<li>Function Attributes：    Function attributes applicable to memory handling functions</li>
+<li>Heap Management    Functions responsible for allocating, freeing, and copying memory</li>
+<li>Dynamic Array    Utilities to make an array grow when needed</li>
+<li>Miscellaneous Functions    Other functions related to memory allocation</li>
+</ul>
+</li>
+<li>Data Structures    <ul>
+<li>AVBuffer    AVBuffer is an API for reference-counted data buffers</li>
+<li>AVBufferPool    AVBufferPool is an API for a lock-free thread-safe pool of AVBuffers</li>
+<li>AVFrame    AVFrame is an abstraction for reference-counted raw multimedia data<ul>
+<li>AV_FRAME_FLAGS    Flags describing additional frame properties</li>
+</ul>
+</li>
+<li>AVOptions    AVOptions provide a generic system to declare options on arbitrary structs (“objects”)<ul>
+<li>Evaluating option strings    This group of functions can be used to evaluate option strings and get numbers out of them</li>
+<li>Option setting functions    Those functions set the field of obj with the given name to value</li>
+<li>Option getting functions    Those functions get a value of the option with the given name from an object</li>
+</ul>
+</li>
+<li>AVDictionary    Simple key:value store</li>
+<li>AVTree    Low-complexity tree container</li>
+</ul>
+</li>
+<li>Video related    <ul>
+<li>Display transformation matrix functions    The display transformation matrix specifies an affine transformation that should be applied to video frames for correct presentation</li>
+<li>Spherical video mapping    A spherical video file contains surfaces that need to be mapped onto a sphere</li>
+<li>Stereo3D types and functions    A stereoscopic video file consists in multiple views embedded in a single frame, usually describing two views of a scene</li>
+</ul>
+</li>
+<li>Audio related    <ul>
+<li>Audio FIFO Buffer    </li>
+<li>Audio channel masks    A channel layout is a 64-bits integer with a bit set for every channel</li>
+<li>Audio channel layouts    </li>
+<li>Audio downmix metadata    </li>
+<li>Audio sample formats    Audio sample format enumeration and related convenience functions</li>
+<li>Samples manipulation    Functions that manipulate audio samples</li>
+</ul>
+</li>
+<li>Error Codes    </li>
+<li>Logging Facility    <ul>
+<li>Logging Constants    </li>
+</ul>
+</li>
+<li>Other    <ul>
+<li>Preprocessor String Macros    String manipulation macros</li>
+<li>Library Version Macros    Useful to check and match library version in order to maintain backward compatibility</li>
+<li>Constants    <ul>
+<li>Encoding specific    </li>
+<li>Timestamp specific    FFmpeg internal timebase and timestamp definitions</li>
+</ul>
+</li>
+<li>Image related    AVPicture types, pixel formats and basic image planes manipulation</li>
+<li>Version and Build diagnostics    Macros and function useful to check at compiletime and at runtime which version of libavutil is in use<ul>
+<li>Deprecation Guards    FF_API_* defines may be placed below to indicate public API that will be dropped at a future version bump</li>
+</ul>
+</li>
+<li>Media Type    Media Type</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p>参考:<br><a href="http://ffmpeg.org/doxygen/4.1/modules.html" target="_blank" rel="noopener">http://ffmpeg.org/doxygen/4.1/modules.html</a></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div></div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>Donate</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/wechatpay.jpg" alt="pickerX WeChat Pay">
+        <p>WeChat Pay</p>
+      </div>
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/images/alipay.jpg" alt="pickerX Alipay">
+        <p>Alipay</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/ffmpeg/" rel="tag"># ffmpeg</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2020/01/17/ffmpeg/ffmpeg-AVFormatContext/" rel="next" title="ffmpeg-AVFormatContext">
+                <i class="fa fa-chevron-left"></i> ffmpeg-AVFormatContext
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2020/02/14/ffmpeg/ffmpeg-结构体汇总/" rel="prev" title="ffmpeg-结构体汇总">
+                ffmpeg-结构体汇总 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">pickerX</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">46</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                
+                  <span class="site-state-item-count">12</span>
+                  <span class="site-state-item-name">tags</span>
+                
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#模块划分"><span class="nav-number">1.</span> <span class="nav-text">模块划分</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#libavcodec-模块"><span class="nav-number">1.1.</span> <span class="nav-text">libavcodec 模块</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#libavdevice"><span class="nav-number">1.2.</span> <span class="nav-text">libavdevice</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#libavfilter"><span class="nav-number">1.3.</span> <span class="nav-text">libavfilter</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#libavformat"><span class="nav-number">1.4.</span> <span class="nav-text">libavformat</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#libavresample"><span class="nav-number">1.5.</span> <span class="nav-text">libavresample</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#libavutil"><span class="nav-number">1.6.</span> <span class="nav-text">libavutil</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">pickerX</span>
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Gemini</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

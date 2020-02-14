@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="FFmpeg,">
+  <meta name="keywords" content="ffmpeg,">
 
 
 
@@ -80,17 +80,17 @@
 
 
 <meta name="description" content="描述ffmpeg 是一个非常高效的音视频转换器, 也能从一个音视频流里抓取数据. 它还可以在任意采样率之间转换, 并使用高质量的多相滤波器动态调整视频大小.ffmpeg 通过指定 -i 参数, 可以从任意多的”文件”中读取(如常规文件, 管道, 网络流, 抓取设备等等). 通过指定一个文本输出 url, 也能写入任意数量的输出文件. 在命令行中找到的, 任何不能解释为选项的内容都被视为输出url.">
-<meta name="keywords" content="FFmpeg">
+<meta name="keywords" content="ffmpeg">
 <meta property="og:type" content="article">
-<meta property="og:title" content="FFmpeg介绍">
-<meta property="og:url" content="http://yoursite.com/2020/01/10/ffmpeg/FFmpeg-work-flow/index.html">
+<meta property="og:title" content="ffmpeg介绍">
+<meta property="og:url" content="http://yoursite.com/2019/10/14/ffmpeg/ffmpeg-work-flow/index.html">
 <meta property="og:site_name" content="Hello,world">
 <meta property="og:description" content="描述ffmpeg 是一个非常高效的音视频转换器, 也能从一个音视频流里抓取数据. 它还可以在任意采样率之间转换, 并使用高质量的多相滤波器动态调整视频大小.ffmpeg 通过指定 -i 参数, 可以从任意多的”文件”中读取(如常规文件, 管道, 网络流, 抓取设备等等). 通过指定一个文本输出 url, 也能写入任意数量的输出文件. 在命令行中找到的, 任何不能解释为选项的内容都被视为输出url.">
 <meta property="og:locale" content="default">
 <meta property="og:image" content="https://trac.ffmpeg.org/ffmpeg-logo.png">
-<meta property="og:updated_time" content="2020-01-18T07:47:50.001Z">
+<meta property="og:updated_time" content="2020-02-13T13:01:58.263Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="FFmpeg介绍">
+<meta name="twitter:title" content="ffmpeg介绍">
 <meta name="twitter:description" content="描述ffmpeg 是一个非常高效的音视频转换器, 也能从一个音视频流里抓取数据. 它还可以在任意采样率之间转换, 并使用高质量的多相滤波器动态调整视频大小.ffmpeg 通过指定 -i 参数, 可以从任意多的”文件”中读取(如常规文件, 管道, 网络流, 抓取设备等等). 通过指定一个文本输出 url, 也能写入任意数量的输出文件. 在命令行中找到的, 任何不能解释为选项的内容都被视为输出url.">
 <meta name="twitter:image" content="https://trac.ffmpeg.org/ffmpeg-logo.png">
 
@@ -122,13 +122,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2020/01/10/ffmpeg/FFmpeg-work-flow/">
+  <link rel="canonical" href="http://yoursite.com/2019/10/14/ffmpeg/ffmpeg-work-flow/">
 
 
 
 
 
-  <title>FFmpeg介绍 | Hello,world</title>
+  <title>ffmpeg介绍 | Hello,world</title>
   
 
 
@@ -235,7 +235,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/01/10/ffmpeg/FFmpeg-work-flow/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/10/14/ffmpeg/ffmpeg-work-flow/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
       <meta itemprop="name" content="pickerX">
@@ -252,7 +252,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">FFmpeg介绍</h1>
+          <h1 class="post-title" itemprop="name headline">ffmpeg介绍</h1>
         
 
         <div class="post-meta">
@@ -264,8 +264,8 @@
               
                 <span class="post-meta-item-text">Posted on</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-01-10T10:14:15+08:00">
-                2020-01-10
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-10-14T10:14:15+08:00">
+                2019-10-14
               </time>
             
 
@@ -304,7 +304,7 @@
           
           
             <div class="post-gallery-row">
-              <a class="post-gallery-img fancybox" href="https://trac.ffmpeg.org/ffmpeg-logo.png" rel="gallery_ck5jcj0ch000ijmxzo4lheagw" itemscope="" itemtype="http://schema.org/ImageObject" itemprop="url">
+              <a class="post-gallery-img fancybox" href="https://trac.ffmpeg.org/ffmpeg-logo.png" rel="gallery_ck6m56ogk001rlhxzmr85j8xg" itemscope="" itemtype="http://schema.org/ImageObject" itemprop="url">
                 <img src="https://trac.ffmpeg.org/ffmpeg-logo.png" itemprop="contentUrl">
               </a>
             
@@ -328,52 +328,13 @@
 </code></pre><p>强制设置输入文件的帧率(只限合法的raw format)为 1 fps，设置输出文件的帧率为 24fps:</p>
 <pre><code>ffmpeg -r 1 -i input.m2v -r 24 output.avi
 </code></pre><p>raw input files 则可能需要 format 选项.</p>
-<h2 id="原理描述"><a href="#原理描述" class="headerlink" title="原理描述"></a>原理描述</h2><h3 id="git-简介"><a href="#git-简介" class="headerlink" title="git 简介"></a>git 简介</h3><p>在我们 clone 完 ffmpeg 后, 我们会发现其内容大致如下</p>
-<table>
-<thead>
-<tr>
-<th>文件夹</th>
-<th>备注</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>libavcodec</td>
-<td>提供一系列编码器的实现</td>
-</tr>
-<tr>
-<td>libavformat</td>
-<td>实现在流协议, 容器格式及其IO访问</td>
-</tr>
-<tr>
-<td>libavutil</td>
-<td>hash器, 解码器和各种工具函数</td>
-</tr>
-<tr>
-<td>libavfilter</td>
-<td>提供各种音视频过滤器</td>
-</tr>
-<tr>
-<td>libavdevice</td>
-<td>提供访问捕获设备和回放设备的接口</td>
-</tr>
-<tr>
-<td>libswresample</td>
-<td>实现了混音和重采样</td>
-</tr>
-<tr>
-<td>libswscale</td>
-<td>实现了色彩转换和缩放功能</td>
-</tr>
-</tbody>
-</table>
-<h3 id="转码流程"><a href="#转码流程" class="headerlink" title="转码流程"></a>转码流程</h3><p>在 ffmpeg 里，转码的过程可以描述为如下的图表:</p>
+<h2 id="原理描述"><a href="#原理描述" class="headerlink" title="原理描述"></a>原理描述</h2><h3 id="FFMpeg-的工作流程"><a href="#FFMpeg-的工作流程" class="headerlink" title="FFMpeg 的工作流程"></a>FFMpeg 的工作流程</h3><p>在 ffmpeg 里，转码的工作流程可以描述为如下的图表:</p>
 <pre><code> _______              ______________
 |       |            |              |
 | input |  demuxer   | encoded data |   decoder
 | file  | ---------&gt; | packets      | -----+
 |_______|            |______________|      |
-                                        v
+                                           v
                                      _________
                                     |         |
                                     | decoded |
@@ -385,7 +346,8 @@
 | file   |   muxer   | packets      |   encoder
 |________|           |______________|
 </code></pre><p>如图所描述的，<br>ffmpeg 调用 the libavformat 库 (包含分解复用器 demuxers) 去读取输入文件，获取 packet 数据，包含已编码的数据. 当有多个输入文件时，ffmpeg 会在任何 active 状态的输入流上，通过最低的时间戳，尝试去让它们保持同步。  </p>
-<p>之后，已编码的 packet 数据传递给 decoder。解码器 decoder 处理解压后的帧数据(raw video/PCM audio/…), 使用filter，帧数据可以进一步处理. 在过滤器过滤后, 帧数据会传递给 encoder 编码器，做编码处理输出编码后的 packet 数据. 最后，这些数据都会传递给 muxer(复用器), 将编码后的 packet 数据写入输出文件. </p>
+<p>之后，已编码的 packet 数据传递给 decoder。解码器 decoder 处理解压后的帧数据(raw video/PCM audio/…), 使用filter，帧数据可以进一步处理.   </p>
+<p>在过滤器过滤后, 帧数据会传递给 encoder 编码器，做编码处理输出编码后的 packet 数据. 最后，这些数据都会传递给 muxer(复用器), 将编码后的 packet 数据写入输出文件. </p>
 <h3 id="Filtering"><a href="#Filtering" class="headerlink" title="Filtering"></a>Filtering</h3><p>在编码之前，libavfilter库提供了各种各样的 filters 让 ffmpeg 可以处理 raw 音频帧和视频帧。几个链式过滤器可以构成 filter 图. ffmpeg<br> 区分两种不同类型的过滤器图: 简单图与复杂图.</p>
 <h4 id="Simple-filtergraphs"><a href="#Simple-filtergraphs" class="headerlink" title="Simple filtergraphs"></a>Simple filtergraphs</h4><p>简单过滤器图是那些有明确的一个同种类型的输入与输出. 在下面的图表，在解码和编码之间插入一个附加的步骤来表示:</p>
 <pre><code> _________                        ______________
@@ -430,7 +392,7 @@ _________    /  |_________|    |__________|
 | file  | ---------&gt; | packets      | -------&gt; | file   |
 |_______|            |______________|          |________|
 </code></pre><p>由于没有解码和编码步骤，它是非常高速的，并且不会有质量的损失。 然而，stream copy在一些场景下，出于各种因素，可能不会起作用。 显然的，在这个过程中是无法使用过滤器的，因为过滤器是在解压后的数据上工作的。</p>
-<h2 id="ffmpeg-命令分类"><a href="#ffmpeg-命令分类" class="headerlink" title="ffmpeg 命令分类"></a>ffmpeg 命令分类</h2><p>了解了上面的基础知识后，我们来看看 ffmpeg 的命令，可以将命令大概分为八大类，</p>
+<h2 id="ffmpeg-命令分类"><a href="#ffmpeg-命令分类" class="headerlink" title="ffmpeg 命令分类"></a>ffmpeg 命令分类</h2><p>了解了上面的基础知识后，我们先来看看 ffmpeg 的命令，可以将命令大概分为八大类，</p>
 <ul>
 <li>基本信息查询命令</li>
 <li>录制命令</li>
@@ -441,6 +403,7 @@ _________    /  |_________|    |__________|
 <li>直播相关命令</li>
 <li>各种滤镜命令</li>
 </ul>
+<p>命令对应的代码实现方式将在后续的文章中做介绍，待我先准备准备，感谢各位大佬继续关注。</p>
 <h3 id="FFmpeg基本信息查询命令"><a href="#FFmpeg基本信息查询命令" class="headerlink" title="FFmpeg基本信息查询命令"></a>FFmpeg基本信息查询命令</h3><table>
 <thead>
 <tr>
@@ -607,7 +570,7 @@ libpostproc    55.  6.100 / 55.  6.100
       
         <div class="post-tags">
           
-            <a href="/tags/FFmpeg/" rel="tag"># FFmpeg</a>
+            <a href="/tags/ffmpeg/" rel="tag"># ffmpeg</a>
           
         </div>
       
@@ -620,8 +583,8 @@ libpostproc    55.  6.100 / 55.  6.100
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2019/12/02/data_struct/数据结构分类/" rel="next" title="数据结构分类">
-                <i class="fa fa-chevron-left"></i> 数据结构分类
+              <a href="/2019/09/26/android/Android应用启动/" rel="next" title="Android应用启动">
+                <i class="fa fa-chevron-left"></i> Android应用启动
               </a>
             
           </div>
@@ -629,6 +592,10 @@ libpostproc    55.  6.100 / 55.  6.100
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/11/18/ffmpeg/ffmpeg-compile/" rel="prev" title="ffmpeg-Android so库编译">
+                ffmpeg-Android so库编译 <i class="fa fa-chevron-right"></i>
+              </a>
             
           </div>
         </div>
@@ -705,7 +672,7 @@ libpostproc    55.  6.100 / 55.  6.100
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">40</span>
+                  <span class="site-state-item-count">46</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
@@ -751,7 +718,7 @@ libpostproc    55.  6.100 / 55.  6.100
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#描述"><span class="nav-number">1.</span> <span class="nav-text">描述</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ffmpeg语法"><span class="nav-number">2.</span> <span class="nav-text">ffmpeg语法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#原理描述"><span class="nav-number">3.</span> <span class="nav-text">原理描述</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#git-简介"><span class="nav-number">3.1.</span> <span class="nav-text">git 简介</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#转码流程"><span class="nav-number">3.2.</span> <span class="nav-text">转码流程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Filtering"><span class="nav-number">3.3.</span> <span class="nav-text">Filtering</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Simple-filtergraphs"><span class="nav-number">3.3.1.</span> <span class="nav-text">Simple filtergraphs</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Complex-filtergraphs"><span class="nav-number">3.3.2.</span> <span class="nav-text">Complex filtergraphs</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Stream-copy"><span class="nav-number">3.4.</span> <span class="nav-text">Stream copy</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ffmpeg-命令分类"><span class="nav-number">4.</span> <span class="nav-text">ffmpeg 命令分类</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#FFmpeg基本信息查询命令"><span class="nav-number">4.1.</span> <span class="nav-text">FFmpeg基本信息查询命令</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#example"><span class="nav-number">4.1.1.</span> <span class="nav-text">example</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#录制命令"><span class="nav-number">4.2.</span> <span class="nav-text">录制命令</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#分解-复用命令"><span class="nav-number">4.3.</span> <span class="nav-text">分解/复用命令</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#封装格式转换"><span class="nav-number">4.3.1.</span> <span class="nav-text">封装格式转换</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#音视频抽取"><span class="nav-number">4.3.2.</span> <span class="nav-text">音视频抽取</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#原始数据处理命令"><span class="nav-number">4.4.</span> <span class="nav-text">原始数据处理命令</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#提取YUV数据"><span class="nav-number">4.4.1.</span> <span class="nav-text">提取YUV数据</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#PCM-数据提取"><span class="nav-number">4.4.2.</span> <span class="nav-text">PCM 数据提取</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#滤镜"><span class="nav-number">4.5.</span> <span class="nav-text">滤镜</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#crop滤镜"><span class="nav-number">4.5.1.</span> <span class="nav-text">crop滤镜</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#裁剪-合并"><span class="nav-number">4.6.</span> <span class="nav-text">裁剪/合并</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#图片视频互转"><span class="nav-number">4.7.</span> <span class="nav-text">图片视频互转</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#视频截取图片"><span class="nav-number">4.7.1.</span> <span class="nav-text">视频截取图片</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#图片合成视频"><span class="nav-number">4.7.2.</span> <span class="nav-text">图片合成视频</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#直播推-拉流"><span class="nav-number">4.8.</span> <span class="nav-text">直播推/拉流</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考"><span class="nav-number">5.</span> <span class="nav-text">参考</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#描述"><span class="nav-number">1.</span> <span class="nav-text">描述</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ffmpeg语法"><span class="nav-number">2.</span> <span class="nav-text">ffmpeg语法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#原理描述"><span class="nav-number">3.</span> <span class="nav-text">原理描述</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#FFMpeg-的工作流程"><span class="nav-number">3.1.</span> <span class="nav-text">FFMpeg 的工作流程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Filtering"><span class="nav-number">3.2.</span> <span class="nav-text">Filtering</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Simple-filtergraphs"><span class="nav-number">3.2.1.</span> <span class="nav-text">Simple filtergraphs</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Complex-filtergraphs"><span class="nav-number">3.2.2.</span> <span class="nav-text">Complex filtergraphs</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Stream-copy"><span class="nav-number">3.3.</span> <span class="nav-text">Stream copy</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ffmpeg-命令分类"><span class="nav-number">4.</span> <span class="nav-text">ffmpeg 命令分类</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#FFmpeg基本信息查询命令"><span class="nav-number">4.1.</span> <span class="nav-text">FFmpeg基本信息查询命令</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#example"><span class="nav-number">4.1.1.</span> <span class="nav-text">example</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#录制命令"><span class="nav-number">4.2.</span> <span class="nav-text">录制命令</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#分解-复用命令"><span class="nav-number">4.3.</span> <span class="nav-text">分解/复用命令</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#封装格式转换"><span class="nav-number">4.3.1.</span> <span class="nav-text">封装格式转换</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#音视频抽取"><span class="nav-number">4.3.2.</span> <span class="nav-text">音视频抽取</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#原始数据处理命令"><span class="nav-number">4.4.</span> <span class="nav-text">原始数据处理命令</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#提取YUV数据"><span class="nav-number">4.4.1.</span> <span class="nav-text">提取YUV数据</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#PCM-数据提取"><span class="nav-number">4.4.2.</span> <span class="nav-text">PCM 数据提取</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#滤镜"><span class="nav-number">4.5.</span> <span class="nav-text">滤镜</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#crop滤镜"><span class="nav-number">4.5.1.</span> <span class="nav-text">crop滤镜</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#裁剪-合并"><span class="nav-number">4.6.</span> <span class="nav-text">裁剪/合并</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#图片视频互转"><span class="nav-number">4.7.</span> <span class="nav-text">图片视频互转</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#视频截取图片"><span class="nav-number">4.7.1.</span> <span class="nav-text">视频截取图片</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#图片合成视频"><span class="nav-number">4.7.2.</span> <span class="nav-text">图片合成视频</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#直播推-拉流"><span class="nav-number">4.8.</span> <span class="nav-text">直播推/拉流</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考"><span class="nav-number">5.</span> <span class="nav-text">参考</span></a></li></ol></div>
             
 
           </div>

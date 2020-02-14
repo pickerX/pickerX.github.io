@@ -1,0 +1,1004 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="ffmpeg,">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="本文要介绍的结构体是 AVIOContext.AVIOContext 是 字节流 IO Context，管理输入输出数据   注意：AVIOContext 里的函数指针不能直接调用，它们应该让客户端程序在自定义 I/O 时设置。  在读取和写入时，buffer,buf_ptr,buf_ptr_max, buf_end, buf_size, pos 之间的关系如图, ****************">
+<meta name="keywords" content="ffmpeg">
+<meta property="og:type" content="article">
+<meta property="og:title" content="ffmpeg-AVIOContext">
+<meta property="og:url" content="http://yoursite.com/2020/01/16/ffmpeg/ffmpeg-AVIOContext/index.html">
+<meta property="og:site_name" content="Hello,world">
+<meta property="og:description" content="本文要介绍的结构体是 AVIOContext.AVIOContext 是 字节流 IO Context，管理输入输出数据   注意：AVIOContext 里的函数指针不能直接调用，它们应该让客户端程序在自定义 I/O 时设置。  在读取和写入时，buffer,buf_ptr,buf_ptr_max, buf_end, buf_size, pos 之间的关系如图, ****************">
+<meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2020-02-14T09:09:23.318Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="ffmpeg-AVIOContext">
+<meta name="twitter:description" content="本文要介绍的结构体是 AVIOContext.AVIOContext 是 字节流 IO Context，管理输入输出数据   注意：AVIOContext 里的函数指针不能直接调用，它们应该让客户端程序在自定义 I/O 时设置。  在读取和写入时，buffer,buf_ptr,buf_ptr_max, buf_end, buf_size, pos 之间的关系如图, ****************">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2020/01/16/ffmpeg/ffmpeg-AVIOContext/">
+
+
+
+
+
+  <title>ffmpeg-AVIOContext | Hello,world</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="default">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Hello,world</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            Archives
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/01/16/ffmpeg/ffmpeg-AVIOContext/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="pickerX">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hello,world">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">ffmpeg-AVIOContext</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-01-16T12:34:28+08:00">
+                2020-01-16
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>本文要介绍的结构体是 AVIOContext.<br>AVIOContext 是 字节流 IO Context，管理输入输出数据  </p>
+<p><strong>注意：AVIOContext 里的函数指针不能直接调用，它们应该让客户端程序在自定义 I/O 时设置。</strong> </p>
+<p>在读取和写入时，buffer,buf_ptr,buf_ptr_max, buf_end, buf_size, pos 之间的关系如图,</p>
+<pre><code>**********************************************************************************
+*                                   READING
+**********************************************************************************
+*
+*                            |              buffer_size              |
+*                            |---------------------------------------|
+*                            |                                       |
+*
+*                         buffer          buf_ptr       buf_end
+*                            +---------------+-----------------------+
+*                            |/ / / / / / / /|/ / / / / / /|         |
+*  read buffer:              |/ / consumed / | to be read /|         |
+*                            |/ / / / / / / /|/ / / / / / /|         |
+*                            +---------------+-----------------------+
+*
+*                                                         pos
+*              +-------------------------------------------+-----------------+
+*  input file: |                                           |                 |
+*              +-------------------------------------------+-----------------+
+*
+*
+**********************************************************************************
+*                                   WRITING
+**********************************************************************************
+*
+*                             |          buffer_size                 |
+*                             |--------------------------------------|
+*                             |                                      |
+*
+*                                                buf_ptr_max
+*                          buffer                 (buf_ptr)       buf_end
+*                             +-----------------------+--------------+
+*                             |/ / / / / / / / / / / /|              |
+*  write buffer:              | / / to be flushed / / |              |
+*                             |/ / / / / / / / / / / /|              |
+*                             +-----------------------+--------------+
+*                               buf_ptr can be in this
+*                               due to a backward seek
+*
+*                            pos
+*               +-------------+----------------------------------------------+
+*  output file: |             |                                              |
+*               +-------------+----------------------------------------------+
+*
+</code></pre><p>AVIOContext 结构在 libformat/avio.h 文件中,</p>
+<pre><code>typedef struct AVIOContext {
+    /**
+    * 私有选项 class
+    *
+    * 通过 avio_open2() 创建 AVIOContext 时, av_class会被设置* 同时传递 options 给 protocols
+    *
+    * 如果 AVIOContext 是手动分配的, 那么 av_class 则可以被调用* 者设置
+    *
+    * 警告 --这个变量可能为 NULL, 要保证不传递 AVIOContext 给
+    * 任何 av_opt_* 函数.
+    */
+    const AVClass *av_class;
+
+    unsigned char *buffer;  /**&lt; 缓存. */
+    int buffer_size;        /**&lt; 最大缓存大小 */
+    unsigned char *buf_ptr; /**&lt; 当前的缓存位置 */
+    unsigned char *buf_end; /**&lt; 缓存结束的位置. */
+    /**&lt; 私有指针, 传递给 read/write/seek/...函数. */
+    void *opaque;           
+
+    int (*read_packet)(void *opaque, uint8_t *buf, int buf_size);
+    int (*write_packet)(void *opaque, uint8_t *buf, int buf_size);
+    int64_t (*seek)(void *opaque, int64_t offset, int whence);
+    /**&lt; 当前缓存文件中的位置 */
+    int64_t pos;
+    int eof_reached;        /**&lt; true if was unable to read due to error or eof */
+    int write_flag;         /**&lt; true if open for writing */
+    int max_packet_size;
+    unsigned long checksum;
+    unsigned char *checksum_ptr;
+    unsigned long (*update_checksum)(unsigned long checksum, const uint8_t *buf, unsigned int size);
+    int error;              /**&lt; contains the error code or 0 if no error happened */
+    /**
+    * 暂停或者恢复播放网络流协议，如 MMS.
+    */
+    int (*read_pause)(void *opaque, int pause);
+    /**
+    * 在指定的流(stream_index) 中寻找给定的时间戳.
+    * 一些不支持字节位置寻找的网络流协议需要该API。
+    */
+    int64_t (*read_seek)(void *opaque, int stream_index,
+                        int64_t timestamp, int flags);
+    int seekable;
+
+    /**
+    * 最大文件大小, 用来限制分配
+    * libavformat 访问，外部不能访问该变量
+    */
+    int64_t maxsize;
+
+    /**
+    * avio_read and avio_write should if possible be satisfied directly
+    * instead of going through a buffer, and avio_seek will always
+    * call the underlying seek function directly.
+    */
+    int direct;
+
+    /**
+    * Bytes read statistic
+    * This field is internal to libavformat and access from outside is not allowed.
+    */
+    int64_t bytes_read;
+
+    /**
+    * seek statistic
+    * This field is internal to libavformat and access from outside is not allowed.
+    */
+    int seek_count;
+
+    /**
+    * 写入统计
+    * This field is internal to libavformat and access from outside is not allowed.
+    */
+    int writeout_count;
+
+    /**
+    * 原本的缓存大小( libavformat 内部字段)
+    * used internally after probing and ensure seekback to reset the buffer size
+    */
+    int orig_buffer_size;
+
+    /**
+    * Threshold to favor readahead over seek.
+    * This is current internal only, do not use from outside.
+    */
+    int short_seek_threshold;
+
+    /**
+    * &apos;,&apos; 分隔，协议白名单
+    */
+    const char *protocol_whitelist;
+
+    /**
+    * &apos;,&apos; 分隔，协议黑名单
+    */
+    const char *protocol_blacklist;
+
+    /** 替代 write_packet 的回调. */
+    int (*write_data_type)(void *opaque, uint8_t *buf, int buf_size,
+                        enum AVIODataMarkerType type, int64_t time);
+    /**
+    * If set, don&apos;t call write_data_type separately for AVIO_DATA_MARKER_BOUNDARY_POINT,
+    * but ignore them and treat them as AVIO_DATA_MARKER_UNKNOWN (to avoid needlessly
+    * small chunks of data returned from the callback).
+    */
+    int ignore_boundary_point;
+
+    /**
+    * Internal, not meant to be used from outside of AVIOContext.
+    */
+    enum AVIODataMarkerType current_type;
+    int64_t last_time;
+
+    /**
+    * A callback that is used instead of short_seek_threshold.
+    * This is current internal only, do not use from outside.
+    */
+    int (*short_seek_get)(void *opaque);
+
+    int64_t written;
+
+    /**
+    * Maximum reached position before a backward seek in the write buffer,
+    * used keeping track of already written data for a later flush.
+    */
+    unsigned char *buf_ptr_max;
+
+    /**
+    * Try to buffer at least this amount of data before flushing it
+    */
+    int min_packet_size;
+} AVIOContext;
+</code></pre><p>AVIOContext 通过 avio_alloc_context(…) 初始化</p>
+<pre><code>AVIOContext* avio_alloc_context    (
+    unsigned char *     buffer,
+    int     buffer_size,
+    int     write_flag,
+    void *     opaque,
+    int(*)(void *opaque, uint8_t *buf, int buf_size)     read_packet,
+    int(*)(void *opaque, uint8_t *buf, int buf_size)     write_packet,
+    int64_t(*)(void *opaque, int64_t offset, int whence)     seek 
+)    
+</code></pre><p>分配和初始化 AVIOContext 来做 I/O 缓存. 使用完后必须调用<br> avio_context_free() 来释放内存</p>
+<p>参数:</p>
+<ul>
+<li><p>buffer：AVIOContext 执行 IO 操作的缓存区. 通过 av_malloc() 先分配大小. 可以通过 libavformat 来释放或使用新的缓冲区替代. AVIOContext 缓冲区里持有当前的缓冲, 之后必须通过 av_free() 来释放.</p>
+</li>
+<li><p>buffer_size：缓冲大小，会影响性能. 对于固定 blocksize 的协议，则要设置为 blocksize. 对于其他情况，典型的大小是一个缓冲页大小, e.g. 4kb.</p>
+</li>
+<li><p>write_flag：1 缓冲区可执行写操作， 0 不能执行写操作</p>
+</li>
+<li>opaque：一个 opaque 指向用户特定数据.</li>
+<li>read_packet：IO的读取回调函数，用于重新填充缓冲区，可以为NULL. 对于流协议, 决不能返回0，而必须返回正确的AVERROR代码.</li>
+<li>write_packet：IO的写回调函数，将缓冲区内容写入, 可为 NULL. 该函数不会修改输入的内容</li>
+<li>seek：寻找指定位置的 seek 函数，可为 NULL.</li>
+</ul>
+<p>通过 av_freep 释放 AVIOContext 指针</p>
+<pre><code>av_freep(&amp;avio_ctx);
+</code></pre><h3 id="Example"><a href="#Example" class="headerlink" title="Example"></a>Example</h3><p>使用 libavformat demuxer，通过自定义一个 AVIOContext 读取 callback 访问多媒体内容.</p>
+<p>完整代码</p>
+<pre><code>struct buffer_data {
+    uint8_t *ptr;
+    size_t size; ///&lt; size left in the buffer
+};
+
+static int read_packet(void *opaque, uint8_t *buf, int buf_size)
+{
+    struct buffer_data *bd = (struct buffer_data *)opaque;
+    buf_size = FFMIN(buf_size, bd-&gt;size);
+    if (!buf_size)
+        return AVERROR_EOF;
+    printf(&quot;ptr:%p size:%zu\n&quot;, bd-&gt;ptr, bd-&gt;size);
+    /* copy internal buffer data to buf */
+    memcpy(buf, bd-&gt;ptr, buf_size);
+    bd-&gt;ptr  += buf_size;
+    bd-&gt;size -= buf_size;
+    return buf_size;
+}
+
+int main(int argc, char *argv[]) {
+    AVFormatContext *fmt_ctx = NULL;
+    AVIOContext *avio_ctx = NULL;
+    uint8_t *buffer = NULL, *avio_ctx_buffer = NULL;
+    size_t buffer_size, avio_ctx_buffer_size = 4096;
+    char *input_filename = NULL;
+    int ret = 0;
+    struct buffer_data bd = { 0 };
+    if (argc != 2) {
+        fprintf(stderr, &quot;usage: %s input_file\n&quot;
+                &quot;API example program to show how to read from a custom buffer &quot;
+                &quot;accessed through AVIOContext.\n&quot;, argv[0]);
+        return 1;
+    }
+    input_filename = argv[1];
+    /* 读取文件内容到缓冲区 */
+    ret = av_file_map(input_filename, &amp;buffer, &amp;buffer_size, 0, NULL);
+    if (ret &lt; 0)
+        goto end;
+    /* 通过 AVIOContext callback 填充 opaque 结构体 */
+    bd.ptr  = buffer;
+    bd.size = buffer_size;
+    if (!(fmt_ctx = avformat_alloc_context())) {
+        ret = AVERROR(ENOMEM);
+        goto end;
+    }
+    // 分配 avio_ctx_buffer 内存空间
+    avio_ctx_buffer = av_malloc(avio_ctx_buffer_size);
+    if (!avio_ctx_buffer) {
+        ret = AVERROR(ENOMEM);
+        goto end;
+    }
+    // 初始化 AVIOContext
+    avio_ctx = avio_alloc_context(avio_ctx_buffer, avio_ctx_buffer_size,
+                                0, &amp;bd, &amp;read_packet, NULL, NULL);
+    if (!avio_ctx) {
+        ret = AVERROR(ENOMEM);
+        goto end;
+    }
+    fmt_ctx-&gt;pb = avio_ctx;
+    ret = avformat_open_input(&amp;fmt_ctx, NULL, NULL, NULL);
+    if (ret &lt; 0) {
+        fprintf(stderr, &quot;Could not open input\n&quot;);
+        goto end;
+    }
+    ret = avformat_find_stream_info(fmt_ctx, NULL);
+    if (ret &lt; 0) {
+        fprintf(stderr, &quot;Could not find stream information\n&quot;);
+        goto end;
+    }
+    av_dump_format(fmt_ctx, 0, input_filename, 0);
+end:
+    // 关闭 AVFormatContext
+    avformat_close_input(&amp;fmt_ctx);
+    /* note: the internal buffer could have changed, and be != avio_ctx_buffer */
+    if (avio_ctx) {
+        // 释放内存
+        av_freep(&amp;avio_ctx-&gt;buffer);
+        av_freep(&amp;avio_ctx);
+    }
+    av_file_unmap(buffer, buffer_size);
+    if (ret &lt; 0) {
+        fprintf(stderr, &quot;Error occurred: %s\n&quot;, av_err2str(ret));
+        return 1;
+    }
+    return 0;
+}
+</code></pre>
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div></div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>Donate</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/wechatpay.jpg" alt="pickerX WeChat Pay">
+        <p>WeChat Pay</p>
+      </div>
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/images/alipay.jpg" alt="pickerX Alipay">
+        <p>Alipay</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/ffmpeg/" rel="tag"># ffmpeg</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2020/01/13/ffmpeg/ffmpeg-AVFrame/" rel="next" title="ffmpeg-AVFrame">
+                <i class="fa fa-chevron-left"></i> ffmpeg-AVFrame
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2020/01/17/ffmpeg/ffmpeg-AVFormatContext/" rel="prev" title="ffmpeg-AVFormatContext">
+                ffmpeg-AVFormatContext <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">pickerX</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">46</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                
+                  <span class="site-state-item-count">12</span>
+                  <span class="site-state-item-name">tags</span>
+                
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#Example"><span class="nav-number">1.</span> <span class="nav-text">Example</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">pickerX</span>
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Gemini</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

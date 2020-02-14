@@ -1,0 +1,1088 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="ffmpeg,">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="本文要介绍的结构体是 AVFormatContext.描述了媒体文件的构成及基本信息，是统领全局的基本结构体，贯穿程序始终，很多函数都要用它作为参数 AVFormatContext 源码比较长，就补贴在这里了，位置在 libavformat/avformat.h,  创建方式AVFormatContext 有两种种创建方式，  avformat_alloc_context(…) avformat_">
+<meta name="keywords" content="ffmpeg">
+<meta property="og:type" content="article">
+<meta property="og:title" content="ffmpeg-AVFormatContext">
+<meta property="og:url" content="http://yoursite.com/2020/01/17/ffmpeg/ffmpeg-AVFormatContext/index.html">
+<meta property="og:site_name" content="Hello,world">
+<meta property="og:description" content="本文要介绍的结构体是 AVFormatContext.描述了媒体文件的构成及基本信息，是统领全局的基本结构体，贯穿程序始终，很多函数都要用它作为参数 AVFormatContext 源码比较长，就补贴在这里了，位置在 libavformat/avformat.h,  创建方式AVFormatContext 有两种种创建方式，  avformat_alloc_context(…) avformat_">
+<meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2020-02-14T12:21:48.429Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="ffmpeg-AVFormatContext">
+<meta name="twitter:description" content="本文要介绍的结构体是 AVFormatContext.描述了媒体文件的构成及基本信息，是统领全局的基本结构体，贯穿程序始终，很多函数都要用它作为参数 AVFormatContext 源码比较长，就补贴在这里了，位置在 libavformat/avformat.h,  创建方式AVFormatContext 有两种种创建方式，  avformat_alloc_context(…) avformat_">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2020/01/17/ffmpeg/ffmpeg-AVFormatContext/">
+
+
+
+
+
+  <title>ffmpeg-AVFormatContext | Hello,world</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="default">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Hello,world</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            Archives
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/01/17/ffmpeg/ffmpeg-AVFormatContext/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="pickerX">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hello,world">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">ffmpeg-AVFormatContext</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-01-17T11:17:07+08:00">
+                2020-01-17
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>本文要介绍的结构体是 AVFormatContext.<br>描述了媒体文件的构成及基本信息，是统领全局的基本结构体，贯穿程序始终，很多函数都要用它作为参数</p>
+<p>AVFormatContext 源码比较长，就补贴在这里了，位置在 libavformat/avformat.h, </p>
+<h2 id="创建方式"><a href="#创建方式" class="headerlink" title="创建方式"></a>创建方式</h2><p>AVFormatContext 有两种种创建方式，</p>
+<ul>
+<li>avformat_alloc_context(…)</li>
+<li>avformat_open_input(…)</li>
+</ul>
+<h3 id="avformat-alloc-context"><a href="#avformat-alloc-context" class="headerlink" title="avformat_alloc_context"></a>avformat_alloc_context</h3><p>在一些场景里，我们自己会通过 avformat_alloc_context 先创建 AVFormatContext，在传给 avformat_alloc_context() 函数之前做一些微调<br>。 一个常见的场景是，我们要自定义读取输入数据的方式来替代 lavf 的内如 I/O 层。 要实现，则要通过 avio_alloc_context() 创建自己的 AVIOContext, 传递读取的回调。 然后将 AVIOContext 赋值给  AVFormatContext 的 pb 字段。  </p>
+<p>函数的定义非常简单，</p>
+<pre><code>AVFormatContext* avformat_alloc_context    (void)
+</code></pre><p>由于在执行 avformat_open_input() 之前，通常是不知道将要读取流的格式的，<br>这样在预先创建 context 就没办法设置 demuxer 私有的选项。代替的方式是，首选项应该包含在 AVDictionary 里传递给 avformat_open_input，完成设置</p>
+<pre><code>AVDictionary *options = NULL;
+av_dict_set(&amp;options, &quot;video_size&quot;, &quot;640x480&quot;, 0);
+av_dict_set(&amp;options, &quot;pixel_format&quot;, &quot;rgb24&quot;, 0);
+if (avformat_open_input(&amp;s, url, NULL, &amp;options) &lt; 0)
+    abort();
+av_dict_free(&amp;options);
+</code></pre><h3 id="avformat-open-input"><a href="#avformat-open-input" class="headerlink" title="avformat_open_input"></a>avformat_open_input</h3><p>可以通过 avformat_open_input(…) 打开指定的文件，并且读取 header 信息到 AVFormatContext。 </p>
+<pre><code>/** 打开一个 stream，读取都首地址
+ * 返回 0：成功，negative AVERROR：失败
+ */
+int avformat_open_input(AVFormatContext ** ps,
+    const char *     url,
+    AVInputFormat * fmt,
+    AVDictionary ** options 
+)    
+</code></pre><p>未打开编解码器，必须使用 avformat_close_input() 关闭流。</p>
+<p>参数：  </p>
+<ul>
+<li>ps：指向用户提供的 AVFormatContext (avformat_alloc_context 分配). 可以为 NULL, 则 AVFormatContext 由该函数自己创建并赋值. 注意，一个用户提供的 AVFormatContext 在出现异常时将会被释放.</li>
+<li>url： 要打开的流 url</li>
+<li>fmt：如果不为 NULL，该参数会强制指定输入的格式.否则自动检测</li>
+<li>options：    dictionary 由 AVFormatContext 和 demuxer-private 选项填充. 当找不到 url 的 stream 时，该参数被销毁，由一个包含 首选项 的 dict。 可为 NULL</li>
+</ul>
+<p><strong>注意:<br>如果要自定义 IO，要预先分配 AVIOContext，然后赋值给 AVFormatContext的 pb 字段，例子查看 AVIOContext一文 .</strong></p>
+<p>一些格式可能没有 header 或者没有存储足够的信息， 这时推荐调用 avformat_find_stream_info() 来读取和解码一些帧来查找丢失的信息。</p>
+<h3 id="Example"><a href="#Example" class="headerlink" title="Example"></a>Example</h3><p>我们通过例子来进一步了解它，</p>
+<h4 id="读取-metadata信息"><a href="#读取-metadata信息" class="headerlink" title="读取 metadata信息"></a>读取 metadata信息</h4><pre><code>#include &lt;stdio.h&gt;
+#include &lt;libavformat/avformat.h&gt;
+#include &lt;libavutil/dict.h&gt;
+int main (int argc, char **argv)
+{
+    AVFormatContext *fmt_ctx = NULL;
+    AVDictionaryEntry *tag = NULL;
+    int ret;
+    if (argc != 2) {
+        printf(&quot;usage: %s &lt;input_file&gt;\n&quot;
+            &quot;example program to demonstrate the use of the libavformat metadata API.\n&quot;
+            &quot;\n&quot;, argv[0]);
+        return 1;
+    }
+    // 打开 argv[1] stream 赋值给 fmt_ctx
+    if ((ret = avformat_open_input(&amp;fmt_ctx, argv[1], NULL, NULL)))
+        return ret;
+    // 从 AVFormatContext 读取 metadata 信息
+    while ((tag = av_dict_get(fmt_ctx-&gt;metadata, &quot;&quot;, tag, AV_DICT_IGNORE_SUFFIX)))
+        printf(&quot;%s=%s\n&quot;, tag-&gt;key, tag-&gt;value);
+    // 关闭 AVFormatContext
+    avformat_close_input(&amp;fmt_ctx);
+    return 0;
+}
+</code></pre><h4 id="Demuxing-amp-decoding"><a href="#Demuxing-amp-decoding" class="headerlink" title="Demuxing &amp; decoding"></a>Demuxing &amp; decoding</h4><p>如何使用 libavformat 和 libavcodec API 来分解和解码音视频data。</p>
+<pre><code>#include &lt;libavutil/imgutils.h&gt;
+#include &lt;libavutil/samplefmt.h&gt;
+#include &lt;libavutil/timestamp.h&gt;
+#include &lt;libavformat/avformat.h&gt;
+
+static AVFormatContext *fmt_ctx = NULL;
+static AVCodecContext *video_dec_ctx = NULL, *audio_dec_ctx;
+static int width, height;
+static enum AVPixelFormat pix_fmt;
+static AVStream *video_stream = NULL, *audio_stream = NULL;
+static const char *src_filename = NULL;
+static const char *video_dst_filename = NULL;
+static const char *audio_dst_filename = NULL;
+static FILE *video_dst_file = NULL;
+static FILE *audio_dst_file = NULL;
+static uint8_t *video_dst_data[4] = {NULL};
+static int      video_dst_linesize[4];
+static int video_dst_bufsize;
+static int video_stream_idx = -1, audio_stream_idx = -1;
+static AVFrame *frame = NULL;
+static AVPacket pkt;
+static int video_frame_count = 0;
+static int audio_frame_count = 0;
+static int refcount = 0;
+static int decode_packet(int *got_frame, int cached)
+{
+    int ret = 0;
+    int decoded = pkt.size;
+    *got_frame = 0;
+    if (pkt.stream_index == video_stream_idx) {
+        /* decode video frame */
+        ret = avcodec_decode_video2(video_dec_ctx, frame, got_frame, &amp;pkt);
+        if (ret &lt; 0) {
+            fprintf(stderr, &quot;Error decoding video frame (%s)\n&quot;, av_err2str(ret));
+            return ret;
+        }
+        if (*got_frame) {
+            if (frame-&gt;width != width || frame-&gt;height != height ||
+                frame-&gt;format != pix_fmt) {
+                /* To handle this change, one could call av_image_alloc again and
+                * decode the following frames into another rawvideo file. */
+                fprintf(stderr, &quot;Error: Width, height and pixel format have to be &quot;
+                        &quot;constant in a rawvideo file, but the width, height or &quot;
+                        &quot;pixel format of the input video changed:\n&quot;
+                        &quot;old: width = %d, height = %d, format = %s\n&quot;
+                        &quot;new: width = %d, height = %d, format = %s\n&quot;,
+                        width, height, av_get_pix_fmt_name(pix_fmt),
+                        frame-&gt;width, frame-&gt;height,
+                        av_get_pix_fmt_name(frame-&gt;format));
+                return -1;
+            }
+            printf(&quot;video_frame%s n:%d coded_n:%d\n&quot;,
+                cached ? &quot;(cached)&quot; : &quot;&quot;,
+                video_frame_count++, frame-&gt;coded_picture_number);
+            /* copy decoded frame to destination buffer:
+            * this is required since rawvideo expects non aligned data */
+            av_image_copy(video_dst_data, video_dst_linesize,
+                        (const uint8_t **)(frame-&gt;data), frame-&gt;linesize,
+                        pix_fmt, width, height);
+            /* write to rawvideo file */
+            fwrite(video_dst_data[0], 1, video_dst_bufsize, video_dst_file);
+        }
+    } else if (pkt.stream_index == audio_stream_idx) {
+        /* decode audio frame */
+        ret = avcodec_decode_audio4(audio_dec_ctx, frame, got_frame, &amp;pkt);
+        if (ret &lt; 0) {
+            fprintf(stderr, &quot;Error decoding audio frame (%s)\n&quot;, av_err2str(ret));
+            return ret;
+        }
+        /* Some audio decoders decode only part of the packet, and have to be
+        * called again with the remainder of the packet data.
+        * Sample: fate-suite/lossless-audio/luckynight-partial.shn
+        * Also, some decoders might over-read the packet. */
+        decoded = FFMIN(ret, pkt.size);
+        if (*got_frame) {
+            size_t unpadded_linesize = frame-&gt;nb_samples * av_get_bytes_per_sample(frame-&gt;format);
+            printf(&quot;audio_frame%s n:%d nb_samples:%d pts:%s\n&quot;,
+                cached ? &quot;(cached)&quot; : &quot;&quot;,
+                audio_frame_count++, frame-&gt;nb_samples,
+                av_ts2timestr(frame-&gt;pts, &amp;audio_dec_ctx-&gt;time_base));
+            /* Write the raw audio data samples of the first plane. This works
+            * fine for packed formats (e.g. AV_SAMPLE_FMT_S16). However,
+            * most audio decoders output planar audio, which uses a separate
+            * plane of audio samples for each channel (e.g. AV_SAMPLE_FMT_S16P).
+            * In other words, this code will write only the first audio channel
+            * in these cases.
+            * You should use libswresample or libavfilter to convert the frame
+            * to packed data. */
+            fwrite(frame-&gt;extended_data[0], 1, unpadded_linesize, audio_dst_file);
+        }
+    }
+    /* If we use frame reference counting, we own the data and need
+    * to de-reference it when we don&apos;t use it anymore */
+    if (*got_frame &amp;&amp; refcount)
+        av_frame_unref(frame);
+    return decoded;
+}
+/** 初始化 AVCodecContext */
+static int open_codec_context(int *stream_idx,
+                            AVCodecContext **dec_ctx, AVFormatContext *fmt_ctx, enum AVMediaType type)
+{
+    int ret, stream_index;
+    AVStream *st;
+    AVCodec *dec = NULL;
+    AVDictionary *opts = NULL;
+    // 根据参数从 AVFormatContext 中找到合适的 stream index
+    ret = av_find_best_stream(fmt_ctx, type, -1, -1, NULL, 0);
+    if (ret &lt; 0) {
+        fprintf(stderr, &quot;Could not find %s stream in input file &apos;%s&apos;\n&quot;,
+                av_get_media_type_string(type), src_filename);
+        return ret;
+    } else {
+        stream_index = ret;
+        // 从 AVFormatContext 拿到AVStream
+        st = fmt_ctx-&gt;streams[stream_index];
+        /* 找到 stream 的解码器 */
+        dec = avcodec_find_decoder(st-&gt;codecpar-&gt;codec_id);
+        if (!dec) {
+            fprintf(stderr, &quot;Failed to find %s codec\n&quot;,
+                    av_get_media_type_string(type));
+            return AVERROR(EINVAL);
+        }
+        /* 为 decoder 分配一个解码器 context */
+        *dec_ctx = avcodec_alloc_context3(dec);
+        if (!*dec_ctx) {
+            fprintf(stderr, &quot;Failed to allocate the %s codec context\n&quot;,
+                    av_get_media_type_string(type));
+            return AVERROR(ENOMEM);
+        }
+        /* 从输入流 Copy 解码参数给输出解码器 context */
+        if ((ret = avcodec_parameters_to_context(*dec_ctx, st-&gt;codecpar)) &lt; 0) {
+            fprintf(stderr, &quot;Failed to copy %s codec parameters to decoder context\n&quot;,
+                    av_get_media_type_string(type));
+            return ret;
+        }
+        /* 初始化 decoders, 是否启用引用计数 */
+        av_dict_set(&amp;opts, &quot;refcounted_frames&quot;, refcount ? &quot;1&quot; : &quot;0&quot;, 0);
+        if ((ret = avcodec_open2(*dec_ctx, dec, &amp;opts)) &lt; 0) {
+            fprintf(stderr, &quot;Failed to open %s codec\n&quot;,
+                    av_get_media_type_string(type));
+            return ret;
+        }
+        *stream_idx = stream_index;
+    }
+    return 0;
+}
+/** 从 采样 format 获取 format */
+static int get_format_from_sample_fmt(const char **fmt,
+                                    enum AVSampleFormat sample_fmt)
+{
+    int i;
+    struct sample_fmt_entry {
+        enum AVSampleFormat sample_fmt;
+        const char *fmt_be, *fmt_le;
+    } sample_fmt_entries[] = {
+        { AV_SAMPLE_FMT_U8,  &quot;u8&quot;,    &quot;u8&quot;    },
+        { AV_SAMPLE_FMT_S16, &quot;s16be&quot;, &quot;s16le&quot; },
+        { AV_SAMPLE_FMT_S32, &quot;s32be&quot;, &quot;s32le&quot; },
+        { AV_SAMPLE_FMT_FLT, &quot;f32be&quot;, &quot;f32le&quot; },
+        { AV_SAMPLE_FMT_DBL, &quot;f64be&quot;, &quot;f64le&quot; },
+    };
+    *fmt = NULL;
+    for (i = 0; i &lt; FF_ARRAY_ELEMS(sample_fmt_entries); i++) {
+        struct sample_fmt_entry *entry = &amp;sample_fmt_entries[i];
+        if (sample_fmt == entry-&gt;sample_fmt) {
+            *fmt = AV_NE(entry-&gt;fmt_be, entry-&gt;fmt_le);
+            return 0;
+        }
+    }
+    fprintf(stderr,
+            &quot;sample format %s is not supported as output format\n&quot;,
+            av_get_sample_fmt_name(sample_fmt));
+    return -1;
+}
+int main (int argc, char **argv)
+{
+    int ret = 0, got_frame;
+    if (argc != 4 &amp;&amp; argc != 5) {
+        fprintf(stderr, &quot;usage: %s [-refcount] input_file video_output_file audio_output_file\n&quot;
+                &quot;API example program to show how to read frames from an input file.\n&quot;
+                &quot;This program reads frames from a file, decodes them, and writes decoded\n&quot;
+                &quot;video frames to a rawvideo file named video_output_file, and decoded\n&quot;
+                &quot;audio frames to a rawaudio file named audio_output_file.\n\n&quot;
+                &quot;If the -refcount option is specified, the program use the\n&quot;
+                &quot;reference counting frame system which allows keeping a copy of\n&quot;
+                &quot;the data for longer than one decode call.\n&quot;
+                &quot;\n&quot;, argv[0]);
+        exit(1);
+    }
+    if (argc == 5 &amp;&amp; !strcmp(argv[1], &quot;-refcount&quot;)) {
+        refcount = 1;
+        argv++;
+    }
+    // 输入输出文件参数
+    src_filename = argv[1];
+    video_dst_filename = argv[2];
+    audio_dst_filename = argv[3];
+    /* 打开文件，初始化 AVFormatContext  */
+    if (avformat_open_input(&amp;fmt_ctx, src_filename, NULL, NULL) &lt; 0) {
+        fprintf(stderr, &quot;Could not open source file %s\n&quot;, src_filename);
+        exit(1);
+    }
+    /* 检索 stream 信息 */
+    if (avformat_find_stream_info(fmt_ctx, NULL) &lt; 0) {
+        fprintf(stderr, &quot;Could not find stream information\n&quot;);
+        exit(1);
+    }
+    // 
+    if (open_codec_context(&amp;video_stream_idx, &amp;video_dec_ctx, fmt_ctx, AVMEDIA_TYPE_VIDEO) &gt;= 0) {
+        video_stream = fmt_ctx-&gt;streams[video_stream_idx];
+        video_dst_file = fopen(video_dst_filename, &quot;wb&quot;);
+        if (!video_dst_file) {
+            fprintf(stderr, &quot;Could not open destination file %s\n&quot;, video_dst_filename);
+            ret = 1;
+            goto end;
+        }
+        /* 分配 image */
+        width = video_dec_ctx-&gt;width;
+        height = video_dec_ctx-&gt;height;
+        pix_fmt = video_dec_ctx-&gt;pix_fmt;
+        ret = av_image_alloc(video_dst_data, video_dst_linesize,
+                            width, height, pix_fmt, 1);
+        if (ret &lt; 0) {
+            fprintf(stderr, &quot;Could not allocate raw video buffer\n&quot;);
+            goto end;
+        }
+        video_dst_bufsize = ret;
+    }
+    if (open_codec_context(&amp;audio_stream_idx, &amp;audio_dec_ctx, fmt_ctx, AVMEDIA_TYPE_AUDIO) &gt;= 0) {
+        audio_stream = fmt_ctx-&gt;streams[audio_stream_idx];
+        audio_dst_file = fopen(audio_dst_filename, &quot;wb&quot;);
+        if (!audio_dst_file) {
+            fprintf(stderr, &quot;Could not open destination file %s\n&quot;, audio_dst_filename);
+            ret = 1;
+            goto end;
+        }
+    }
+    /* dump 输入流信息到 stderr */
+    av_dump_format(fmt_ctx, 0, src_filename, 0);
+    if (!audio_stream &amp;&amp; !video_stream) {
+        fprintf(stderr, &quot;Could not find audio or video stream in the input, aborting\n&quot;);
+        ret = 1;
+        goto end;
+    }
+    frame = av_frame_alloc();
+    if (!frame) {
+        fprintf(stderr, &quot;Could not allocate frame\n&quot;);
+        ret = AVERROR(ENOMEM);
+        goto end;
+    }
+    /* 初始化 packet data 为 NULL, 让 demuxer 完成赋值 */
+    av_init_packet(&amp;pkt);
+    pkt.data = NULL;
+    pkt.size = 0;
+    if (video_stream)
+        printf(&quot;Demuxing video from file &apos;%s&apos; into &apos;%s&apos;\n&quot;, src_filename, video_dst_filename);
+    if (audio_stream)
+        printf(&quot;Demuxing audio from file &apos;%s&apos; into &apos;%s&apos;\n&quot;, src_filename, audio_dst_filename);
+    /* 从 fmt_ctx 读取帧信息 */
+    while (av_read_frame(fmt_ctx, &amp;pkt) &gt;= 0) {
+        AVPacket orig_pkt = pkt;
+        do {
+            ret = decode_packet(&amp;got_frame, 0);
+            if (ret &lt; 0)
+                break;
+            pkt.data += ret;
+            pkt.size -= ret;
+        } while (pkt.size &gt; 0);
+        av_packet_unref(&amp;orig_pkt);
+    }
+    /* flush 缓存的 frames */
+    pkt.data = NULL;
+    pkt.size = 0;
+    do {
+        // 解码
+        decode_packet(&amp;got_frame, 1);
+    } while (got_frame);
+    printf(&quot;Demuxing succeeded.\n&quot;);
+    if (video_stream) {
+        printf(&quot;Play the output video file with the command:\n&quot;
+            &quot;ffplay -f rawvideo -pix_fmt %s -video_size %dx%d %s\n&quot;,
+            av_get_pix_fmt_name(pix_fmt), width, height,
+            video_dst_filename);
+    }
+    // 处理音频流
+    if (audio_stream) {
+        enum AVSampleFormat sfmt = audio_dec_ctx-&gt;sample_fmt;
+        int n_channels = audio_dec_ctx-&gt;channels;
+        const char *fmt;
+        if (av_sample_fmt_is_planar(sfmt)) {
+            const char *packed = av_get_sample_fmt_name(sfmt);
+            printf(&quot;Warning: the sample format the decoder produced is planar &quot;
+                &quot;(%s). This example will output the first channel only.\n&quot;,
+                packed ? packed : &quot;?&quot;);
+            sfmt = av_get_packed_sample_fmt(sfmt);
+            n_channels = 1;
+        }
+        if ((ret = get_format_from_sample_fmt(&amp;fmt, sfmt)) &lt; 0)
+            goto end;
+        printf(&quot;Play the output audio file with the command:\n&quot;
+            &quot;ffplay -f %s -ac %d -ar %d %s\n&quot;,
+            fmt, n_channels, audio_dec_ctx-&gt;sample_rate,
+            audio_dst_filename);
+    }
+end:
+    avcodec_free_context(&amp;video_dec_ctx);
+    avcodec_free_context(&amp;audio_dec_ctx);
+    avformat_close_input(&amp;fmt_ctx);
+    if (video_dst_file)
+        fclose(video_dst_file);
+    if (audio_dst_file)
+        fclose(audio_dst_file);
+    av_frame_free(&amp;frame);
+    av_free(video_dst_data[0]);
+    return ret &lt; 0;
+}
+</code></pre>
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div></div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>Donate</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/wechatpay.jpg" alt="pickerX WeChat Pay">
+        <p>WeChat Pay</p>
+      </div>
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/images/alipay.jpg" alt="pickerX Alipay">
+        <p>Alipay</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/ffmpeg/" rel="tag"># ffmpeg</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2020/01/16/ffmpeg/ffmpeg-AVIOContext/" rel="next" title="ffmpeg-AVIOContext">
+                <i class="fa fa-chevron-left"></i> ffmpeg-AVIOContext
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2020/01/19/ffmpeg/ffmpeg-api/" rel="prev" title="ffmpeg-API划分">
+                ffmpeg-API划分 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">pickerX</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">46</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                
+                  <span class="site-state-item-count">12</span>
+                  <span class="site-state-item-name">tags</span>
+                
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#创建方式"><span class="nav-number">1.</span> <span class="nav-text">创建方式</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#avformat-alloc-context"><span class="nav-number">1.1.</span> <span class="nav-text">avformat_alloc_context</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#avformat-open-input"><span class="nav-number">1.2.</span> <span class="nav-text">avformat_open_input</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Example"><span class="nav-number">1.3.</span> <span class="nav-text">Example</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#读取-metadata信息"><span class="nav-number">1.3.1.</span> <span class="nav-text">读取 metadata信息</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Demuxing-amp-decoding"><span class="nav-number">1.3.2.</span> <span class="nav-text">Demuxing &amp; decoding</span></a></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">pickerX</span>
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Gemini</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
