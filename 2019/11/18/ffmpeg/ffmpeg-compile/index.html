@@ -88,7 +88,7 @@
 <meta property="og:description" content="编译环境MacOS 10.15NDK：android-ndk-r20FFmpeg-4.2.1Android Studio 3.5.1Android Studio 中采用 cmake 编译方式， ndk-build 方式请自行编码。   NDK环境NDK环境配置就比较简单, 下载，解压，配置环境变量，不啰嗦 FFmpeg环境FFmpeg 官网下载 http://ffmpeg.org/download">
 <meta property="og:locale" content="default">
 <meta property="og:image" content="https://trac.ffmpeg.org/ffmpeg-logo.png">
-<meta property="og:updated_time" content="2020-02-13T04:28:59.894Z">
+<meta property="og:updated_time" content="2020-05-03T09:11:43.547Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="ffmpeg-Android so库编译">
 <meta name="twitter:description" content="编译环境MacOS 10.15NDK：android-ndk-r20FFmpeg-4.2.1Android Studio 3.5.1Android Studio 中采用 cmake 编译方式， ndk-build 方式请自行编码。   NDK环境NDK环境配置就比较简单, 下载，解压，配置环境变量，不啰嗦 FFmpeg环境FFmpeg 官网下载 http://ffmpeg.org/download">
@@ -304,7 +304,7 @@
           
           
             <div class="post-gallery-row">
-              <a class="post-gallery-img fancybox" href="https://trac.ffmpeg.org/ffmpeg-logo.png" rel="gallery_ck6m56ogl001wlhxz4nfvcgtg" itemscope="" itemtype="http://schema.org/ImageObject" itemprop="url">
+              <a class="post-gallery-img fancybox" href="https://trac.ffmpeg.org/ffmpeg-logo.png" rel="gallery_ck9qucjda001vgwxz7ldl92w7" itemscope="" itemtype="http://schema.org/ImageObject" itemprop="url">
                 <img src="https://trac.ffmpeg.org/ffmpeg-logo.png" itemprop="contentUrl">
               </a>
             
@@ -340,7 +340,9 @@ NDK=/Users/Picker/tools/android-ndk-r20
 ANDROID_ARMV5_CFLAGS=&quot;-march=armv5te&quot; 
 ANDROID_ARMV7_CFLAGS=&quot;-march=armv7-a&quot;
 ANDROID_ARMV8_CFLAGS=&quot;-march=armv8-a&quot; 
-ANDROID_X86_CFLAGS=&quot;-march=i686 -mtune=intel -mssse3 -mfpmath=sse -m32&quot; 
+ANDROID_X86_CFLAGS=&quot;-march=i686&quot;
+# 虽然官网建议 -mtune=intel -mssse3 -mfpmath=sse -m32 参数
+# 但编译时会异常，无法识别参数
 ANDROID_X86_64_CFLAGS=&quot;-march=x86-64&quot;
 
 SYSROOT=$NDK/toolchains/llvm/prebuilt/darwin-x86_64/sysroot
@@ -440,8 +442,9 @@ configure(){
     else
         ARCH=&quot;i686&quot;
         HOST=x86-linux
-        CC=&quot;$TOOLCHAIN/i686-linux-android16-clang&quot;
-        CCX=&quot;$TOOLCHAIN/i686-linux-android16-clang++&quot;
+        # 编译器要用 i686-linux-android24-clang 的版本，避免寄存器异常
+        CC=&quot;$TOOLCHAIN/i686-linux-android24-clang&quot;
+        CCX=&quot;$TOOLCHAIN/i686-linux-android24-clang++&quot;
         STRIP=&quot;$TOOLCHAIN/i686-linux-android-strip&quot;
         CFLAGS=$ANDROID_X86_CFLAGS
     fi
@@ -759,7 +762,7 @@ target_link_libraries(ffmpeg-lib
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">46</span>
+                  <span class="site-state-item-count">45</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>

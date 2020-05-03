@@ -82,15 +82,15 @@
 <meta name="description" content="RxJava 线程模型分析RxJava的被观察者在使用操作符时可以利用线程调度器–Scheduler来切换线程，例如 Observable.just(&amp;quot;hello&amp;quot;,&amp;quot;Rxjava&amp;quot;)         .observeOn(Schedulers.newThread())         .map(new Function&amp;lt;String, String&amp;">
 <meta name="keywords" content="Android,RxJava">
 <meta property="og:type" content="article">
-<meta property="og:title" content="RxJava源码分析">
-<meta property="og:url" content="http://yoursite.com/2019/09/15/android/RxJava源码分析/index.html">
+<meta property="og:title" content="RxJava-线程调度">
+<meta property="og:url" content="http://yoursite.com/2019/09/15/android/RxJava-线程调度/index.html">
 <meta property="og:site_name" content="Hello,world">
 <meta property="og:description" content="RxJava 线程模型分析RxJava的被观察者在使用操作符时可以利用线程调度器–Scheduler来切换线程，例如 Observable.just(&amp;quot;hello&amp;quot;,&amp;quot;Rxjava&amp;quot;)         .observeOn(Schedulers.newThread())         .map(new Function&amp;lt;String, String&amp;">
 <meta property="og:locale" content="default">
 <meta property="og:image" content="https://user-gold-cdn.xitu.io/2017/8/28/9d6e757cd24bd3370b9b08bf10fc2790?imageView2/0/w/1280/h/960/format/webp/ignore-error/1">
-<meta property="og:updated_time" content="2019-09-16T05:03:22.000Z">
+<meta property="og:updated_time" content="2020-03-14T08:48:13.758Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="RxJava源码分析">
+<meta name="twitter:title" content="RxJava-线程调度">
 <meta name="twitter:description" content="RxJava 线程模型分析RxJava的被观察者在使用操作符时可以利用线程调度器–Scheduler来切换线程，例如 Observable.just(&amp;quot;hello&amp;quot;,&amp;quot;Rxjava&amp;quot;)         .observeOn(Schedulers.newThread())         .map(new Function&amp;lt;String, String&amp;">
 <meta name="twitter:image" content="https://user-gold-cdn.xitu.io/2017/8/28/9d6e757cd24bd3370b9b08bf10fc2790?imageView2/0/w/1280/h/960/format/webp/ignore-error/1">
 
@@ -122,13 +122,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2019/09/15/android/RxJava源码分析/">
+  <link rel="canonical" href="http://yoursite.com/2019/09/15/android/RxJava-线程调度/">
 
 
 
 
 
-  <title>RxJava源码分析 | Hello,world</title>
+  <title>RxJava-线程调度 | Hello,world</title>
   
 
 
@@ -235,7 +235,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/09/15/android/RxJava源码分析/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/09/15/android/RxJava-线程调度/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
       <meta itemprop="name" content="pickerX">
@@ -252,7 +252,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">RxJava源码分析</h1>
+          <h1 class="post-title" itemprop="name headline">RxJava-线程调度</h1>
         
 
         <div class="post-meta">
@@ -745,7 +745,7 @@ flatMap3 没有指定线程，会继续使用之前 Observable 操作符使用�
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">46</span>
+                  <span class="site-state-item-count">45</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
