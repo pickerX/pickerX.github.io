@@ -88,7 +88,7 @@
 <meta property="og:description" content="More Lighter–Coroutines来自 Google Developer 公众号协程的系列文章《在 Android 开发中使用协程》，质量相当高： 在 Android 开发中使用协程 | 背景介绍: 主要会介绍协程是如何工作的，它们主要解决什么问题。 在 Android 开发中使用协程 | 上手指南:主要会介绍如何使用协程来处理任务，并且能在任务开始执行后保持对它的追踪。 在 Andr">
 <meta property="og:locale" content="default">
 <meta property="og:image" content="https://www.runoob.com/wp-content/uploads/2017/05/kotlin_250x250.png">
-<meta property="og:updated_time" content="2020-05-08T06:16:25.179Z">
+<meta property="og:updated_time" content="2020-08-03T06:10:25.883Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Kotlin-coroutines协程">
 <meta name="twitter:description" content="More Lighter–Coroutines来自 Google Developer 公众号协程的系列文章《在 Android 开发中使用协程》，质量相当高： 在 Android 开发中使用协程 | 背景介绍: 主要会介绍协程是如何工作的，它们主要解决什么问题。 在 Android 开发中使用协程 | 上手指南:主要会介绍如何使用协程来处理任务，并且能在任务开始执行后保持对它的追踪。 在 Andr">
@@ -304,7 +304,7 @@
           
           
             <div class="post-gallery-row">
-              <a class="post-gallery-img fancybox" href="https://www.runoob.com/wp-content/uploads/2017/05/kotlin_250x250.png" rel="gallery_ck9xt6gtx0031n0xzrj5f4m5p" itemscope="" itemtype="http://schema.org/ImageObject" itemprop="url">
+              <a class="post-gallery-img fancybox" href="https://www.runoob.com/wp-content/uploads/2017/05/kotlin_250x250.png" rel="gallery_ckde47wsk002zhlxzy99z6y6p" itemscope="" itemtype="http://schema.org/ImageObject" itemprop="url">
                 <img src="https://www.runoob.com/wp-content/uploads/2017/05/kotlin_250x250.png" itemprop="contentUrl">
               </a>
             
@@ -320,6 +320,54 @@
 <p><a href="https://mp.weixin.qq.com/s?__biz=MzAwODY4OTk2Mg==&amp;mid=2652052998&amp;idx=2&amp;sn=18715a7e33b7f7a5878bd301e9f8f935&amp;scene=21#wechat_redirect" target="_blank" rel="noopener">在 Android 开发中使用协程 | 背景介绍</a><br>: 主要会介绍协程是如何工作的，它们主要解决什么问题。</p>
 <p><a href="https://mp.weixin.qq.com/s?__biz=MzAwODY4OTk2Mg==&amp;mid=2652053198&amp;idx=1&amp;sn=423b91055d467c02a1c47608acb76dba&amp;chksm=808cbe8bb7fb379d662b70bf44aa1cabc14481bac24b00a905f09f60055b798595ab0bb48a97&amp;scene=21#wechat_redirect" target="_blank" rel="noopener">在 Android 开发中使用协程 | 上手指南</a><br>:主要会介绍如何使用协程来处理任务，并且能在任务开始执行后保持对它的追踪。</p>
 <p><a href="https://mp.weixin.qq.com/s/p5kp9WfkI_atVn9A2ePb3Q" target="_blank" rel="noopener">在 Android 开发中使用协程 | 代码实战</a><br>:这篇文章通过发送一次性请求来介绍如何使用协程处理在实际编码过程中遇到的问题</p>
+<p><a href="https://mp.weixin.qq.com/s/YttebOHPLd3LR7rAuOYshg" target="_blank" rel="noopener">协程 Flow 最佳实践</a><br><a href="https://mp.weixin.qq.com/s/p5H51RC6QfyyoAcQ1aGRLg" target="_blank" rel="noopener">理解协程、LiveData 和 Flow</a></p>
+<p><a href="https://mp.weixin.qq.com/s/wzSi7UrFK6iQV2MA2OCwew" target="_blank" rel="noopener">协程中的取消和异常 | 核心概念介绍</a><br><a href="https://mp.weixin.qq.com/s/W0hqiQl2mIpnR92qIhDvFA" target="_blank" rel="noopener">在View上使用协程</a></p>
+<h2 id="结构化并发"><a href="#结构化并发" class="headerlink" title="结构化并发"></a>结构化并发</h2><h3 id="优点"><a href="#优点" class="headerlink" title="优点"></a>优点</h3><ul>
+<li>CoroutineScope 会跟踪所有协程，并且可以取消由它所启动的所有协程。</li>
+<li>结构化并发能够保证当某个作用域被取消后，它内部所创建的所有协程也都被取消。</li>
+<li>结构化并发保证了当 suspend 函数返回时，它所处理任务也都已完成。</li>
+<li>coroutineScope 和 supervisorScope 将会等待所有的子协程都完成。</li>
+<li>结构化并发保证当一个协程出错时，它的调用方或作用域会被通知到。</li>
+</ul>
+<h3 id="适用性"><a href="#适用性" class="headerlink" title="适用性"></a>适用性</h3><p>协程在以下两种场景中非常好用，</p>
+<ul>
+<li><p>一次性请求 (one shot requests) 是那种调用一下就请求一下，请求获取到结果后就结束执行；</p>
+</li>
+<li><p>流式请求 (streaming request) 在发出请求后，还一直监听它的变化并返回给调用方，在拿到第一个结果之后它们也不会结束。</p>
+</li>
+</ul>
+<h3 id="并发问题"><a href="#并发问题" class="headerlink" title="并发问题"></a>并发问题</h3><p>kotlin 协程的并发问题，有三个基本的模式可以让我们确保在同一时间只会有一次请求进行:</p>
+<ol>
+<li><p>在启动更多协程之前取消之前的任务；</p>
+</li>
+<li><p>让下一个任务排队等待前一个任务执行完成；</p>
+</li>
+<li><p>如果有一个任务正在执行，返回该任务，而不是启动一个新的任务。</p>
+</li>
+</ol>
+<p>详细参考上面链接</p>
+<h2 id="Best-Practices"><a href="#Best-Practices" class="headerlink" title="Best Practices"></a>Best Practices</h2><p>在实际开发中，我们更多的会采用结构化并发协程，即定义协程时指定 CoroutineScope 。CoroutineScope 会跟踪所有协程，同样它还可以取消由它所启动的所有协程。这在 Android 开发中非常有用，比如它能够在用户离开界面时停止执行协程。</p>
+<p>协程启动方式有两种，</p>
+<ul>
+<li>launch 构建器适合执行 “一劳永逸” 的工作，意思就是说它可以启动新协程而不将结果返回给调用方</li>
+<li>asyn 构建器可启动新协程并允许您使用一个名为 await 的挂起函数返回 result</li>
+</ul>
+<p><strong><em>注意：Kotlin 禁止您创建不能够被追踪的协程，从而避免协程泄漏</em></strong></p>
+<h3 id="delay"><a href="#delay" class="headerlink" title="delay"></a>delay</h3><p>最简单的协程， 通过 Activity 中 lifecycleScope 启动一个协程，delay(xx) 模拟延迟操作，实现常见的 Splash 页面延迟跳转。<br>Fragment 中也有内置的 lifecycleScope 对象可以使用。</p>
+<pre><code>override fun onViewsReady() {
+    // launch 启动协程
+    lifecycleScope.launchWhenResumed { navigateTo() }
+}
+
+private suspend fun navigateTo() {
+    delay(3000L)
+    Intent(this@SplashActivity, LoginActivity::class.java)
+        .run {
+            startActivity(this)
+            this@SplashActivity.finish()
+        }
+}
+</code></pre><h3 id="structured-concurrency"><a href="#structured-concurrency" class="headerlink" title="structured concurrency"></a>structured concurrency</h3><p><strong><em>结构化并发能够保证当某个作用域被取消后，它内部所创建的所有协程也都被取消。</em></strong></p>
 
       
     </div>
@@ -510,7 +558,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#More-Lighter–Coroutines"><span class="nav-number">1.</span> <span class="nav-text">More Lighter–Coroutines</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#More-Lighter–Coroutines"><span class="nav-number">1.</span> <span class="nav-text">More Lighter–Coroutines</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#结构化并发"><span class="nav-number">2.</span> <span class="nav-text">结构化并发</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#优点"><span class="nav-number">2.1.</span> <span class="nav-text">优点</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#适用性"><span class="nav-number">2.2.</span> <span class="nav-text">适用性</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#并发问题"><span class="nav-number">2.3.</span> <span class="nav-text">并发问题</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Best-Practices"><span class="nav-number">3.</span> <span class="nav-text">Best Practices</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#delay"><span class="nav-number">3.1.</span> <span class="nav-text">delay</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#structured-concurrency"><span class="nav-number">3.2.</span> <span class="nav-text">structured concurrency</span></a></li></ol></li></ol></div>
             
 
           </div>
