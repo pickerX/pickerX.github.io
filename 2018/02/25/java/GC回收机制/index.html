@@ -99,7 +99,7 @@
 <meta property="og:image" content="https://www.oracle.com/webfolder/technetwork/tutorials/obe/java/gc01/images/gcslides/Slide7.png">
 <meta property="og:image" content="https://www.oracle.com/webfolder/technetwork/tutorials/obe/java/gc01/images/gcslides/Slide10.png">
 <meta property="og:image" content="https://www.oracle.com/webfolder/technetwork/tutorials/obe/java/gc01/images/gcslides/Slide11.png">
-<meta property="og:updated_time" content="2019-09-06T11:58:11.000Z">
+<meta property="og:updated_time" content="2020-12-07T08:10:39.723Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="GC回收机制">
 <meta name="twitter:description" content="Automatic Garbage CollectionSimple DescribeJava垃圾回收机制的原文定义: Automatic garbage collection is the process of looking at   heap memory, identifying which objects are in use and which are not, and deletin">
@@ -316,7 +316,7 @@
         <h3 id="Automatic-Garbage-Collection"><a href="#Automatic-Garbage-Collection" class="headerlink" title="Automatic Garbage Collection"></a>Automatic Garbage Collection</h3><h4 id="Simple-Describe"><a href="#Simple-Describe" class="headerlink" title="Simple Describe"></a>Simple Describe</h4><p>Java垃圾回收机制的原文定义:</p>
 <p>Automatic garbage collection is the process of looking at   heap memory, identifying which objects are in use and which are not, and deleting the unused objects. An in use object, or a referenced object, means that some part of your program still maintains a pointer to that object. An unused object, or unreferenced object, is no longer referenced by any part of your program. So the memory used by an unreferenced object can be reclaimed.</p>
 <p>垃圾自动回收主要是针对内存模型里的 Java堆, 回收有两个步骤，首先区分对象是否在被使用，然后再删除那些没有使用的对象。对象是否在使用，即程序里的其它地方是否有引用这个的对象来区分对象是否在使用或被引用</p>
-<h4 id="Step1-Marking"><a href="#Step1-Marking" class="headerlink" title="Step1 Marking"></a>Step1 Marking</h4><p>GC中识别对象是否在被使用的步骤，称之为 Marking。 这个过程如果所有对象都需要进行扫描，区分时，是个比较耗时的过程。</p>
+<h4 id="Step1-Marking"><a href="#Step1-Marking" class="headerlink" title="Step1 Marking"></a>Step1 Marking</h4><p>GC中识别对象是否在被使用的步骤，称之为 Marking。 这个过程如果所有对象都需要进行扫描区分，这是个比较耗时的过程。</p>
 <p><img src="https://www.oracle.com/webfolder/technetwork/tutorials/obe/java/gc01/images/gcslides/Slide3.png" alt="Marking"></p>
 <h4 id="Step2-Normal-Deletion"><a href="#Step2-Normal-Deletion" class="headerlink" title="Step2 Normal Deletion"></a>Step2 Normal Deletion</h4><ol>
 <li><p>Normal Deletion<br>移除所有被步骤一Marking的对象，释放空间。同时，内存分配管理者持有释放后可用的空间块引用，会用于新内存的分配</p>
@@ -535,7 +535,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">45</span>
+                  <span class="site-state-item-count">48</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
@@ -548,7 +548,7 @@
               
               <div class="site-state-item site-state-tags">
                 
-                  <span class="site-state-item-count">12</span>
+                  <span class="site-state-item-count">11</span>
                   <span class="site-state-item-name">tags</span>
                 
               </div>
@@ -601,7 +601,7 @@
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2021</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>

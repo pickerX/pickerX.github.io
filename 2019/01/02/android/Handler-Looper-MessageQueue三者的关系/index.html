@@ -87,7 +87,7 @@
 <meta property="og:site_name" content="Hello,world">
 <meta property="og:description" content="Android中，Handler虽然不是四大组件，但用的次数也不比Activity，Service等四大组件少。虽然大家都知道怎么使用Handler，但是我们不能仅仅停留在使用的层面，对其机制的分析会加深我们对Android的理解。当然了，最终的目的就是在面试的时候碾压面试官，本系列将会对Handler机制做详细的分析。 由于篇幅可能比较长，该系列将分文下面几篇文章：  Handler,Messa">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2019-04-15T02:59:39.000Z">
+<meta property="og:updated_time" content="2020-12-19T02:52:12.397Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Handler,Looper,MessageQueue三者的关系">
 <meta name="twitter:description" content="Android中，Handler虽然不是四大组件，但用的次数也不比Activity，Service等四大组件少。虽然大家都知道怎么使用Handler，但是我们不能仅仅停留在使用的层面，对其机制的分析会加深我们对Android的理解。当然了，最终的目的就是在面试的时候碾压面试官，本系列将会对Handler机制做详细的分析。 由于篇幅可能比较长，该系列将分文下面几篇文章：  Handler,Messa">
@@ -359,7 +359,7 @@ objects associated with a thread&apos;s MessageQueue.
     mCallback = callback;
     mAsynchronous = async;
 }
-</code></pre><p>溢出标识FIND_POTENTIAL_LEAKS默认是flase, 故会先执行 Looper.myLooper, 发现就只调用了ThreadLocal的get方法返回一个Looper</p>
+</code></pre><p>溢出标识FIND_POTENTIAL_LEAKS默认是flase, 故会先执行 Looper.myLooper, 发现就只调用了ThreadLocal的get方法返回一个Looper`</p>
 <pre><code>public static Looper myLooper() {
     return sThreadLocal.get();
 }
@@ -391,8 +391,8 @@ public T get() {
 }
 
 /**
-    * Gets Values instance for this thread and variable type.
-    */
+* Gets Values instance for this thread and variable type.
+*/
 Values values(Thread current) {
     return current.localValues;
 }
@@ -703,7 +703,7 @@ private static void prepare(boolean quitAllowed) {
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">45</span>
+                  <span class="site-state-item-count">48</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
@@ -716,7 +716,7 @@ private static void prepare(boolean quitAllowed) {
               
               <div class="site-state-item site-state-tags">
                 
-                  <span class="site-state-item-count">12</span>
+                  <span class="site-state-item-count">11</span>
                   <span class="site-state-item-name">tags</span>
                 
               </div>
@@ -769,7 +769,7 @@ private static void prepare(boolean quitAllowed) {
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2021</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>

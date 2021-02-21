@@ -87,7 +87,7 @@
 <meta property="og:site_name" content="Hello,world">
 <meta property="og:description" content="首先认识关于内存的两个重要知识  内存溢出（Out of Memory）：系统会给每个APP分配内存也就是Heap Size值。当APP占用的内存加上我们申请的内存资源超过了Dalvik虚拟机的最大内存时就会抛出的Out Of Memory异常。 内存泄漏（Memory Leak）：当一个对象不在使用了，本应该被垃圾回收器（JVM）回收。但是这个对象由于被其他正在使用的对象所持有，造成无法被回收的">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2020-06-03T03:02:53.887Z">
+<meta property="og:updated_time" content="2021-01-13T03:11:22.874Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="内存管理-优化篇">
 <meta name="twitter:description" content="首先认识关于内存的两个重要知识  内存溢出（Out of Memory）：系统会给每个APP分配内存也就是Heap Size值。当APP占用的内存加上我们申请的内存资源超过了Dalvik虚拟机的最大内存时就会抛出的Out Of Memory异常。 内存泄漏（Memory Leak）：当一个对象不在使用了，本应该被垃圾回收器（JVM）回收。但是这个对象由于被其他正在使用的对象所持有，造成无法被回收的">
@@ -327,10 +327,9 @@
 <h3 id="不合理使用Context造成内存泄漏"><a href="#不合理使用Context造成内存泄漏" class="headerlink" title="不合理使用Context造成内存泄漏"></a>不合理使用Context造成内存泄漏</h3><p>单例模式造成的内存泄漏，如 Context 的使用，单例中传入的是 Activity，在关闭 Activity时，因单例持有Activity 的引用, 导致Activity 无法被回收。</p>
 <p>建议使用 application 替代 Activity， 或者 activity.getApplicationContext() 获取 context</p>
 <h3 id="WebView造成内存泄露"><a href="#WebView造成内存泄露" class="headerlink" title="WebView造成内存泄露"></a>WebView造成内存泄露</h3><p>关于 WebView 的内存泄露，因为 WebView 在加载网页后会长期占用内存而不能被释放，因此我们在 Activity 销毁后把 webview 从父控件内 remove ，同时调用它的 destory() 方法来销毁它以释放内存。</p>
-<h3 id="String-频繁的字符串拼接"><a href="#String-频繁的字符串拼接" class="headerlink" title="String 频繁的字符串拼接"></a>String 频繁的字符串拼接</h3><p>严格的讲，String拼接只能归结到内存抖动中，因为产生的String副本能够被GC，不会造成内存泄露。</p>
-<p>使用 StringBuffer 或者 StringBuilder 代替 String，可以在一定程度上避免OOM和内存抖动。</p>
+<h3 id="String-频繁的字符串拼接"><a href="#String-频繁的字符串拼接" class="headerlink" title="String 频繁的字符串拼接"></a>String 频繁的字符串拼接</h3><p>严格的讲，String拼接只能归结到内存抖动中，因为产生的String副本能够被GC，不会造成内存泄露。<br>使用 StringBuffer 或者 StringBuilder 代替 String，可以在一定程度上避免OOM和内存抖动。</p>
 <h3 id="MVP架构不合理应用"><a href="#MVP架构不合理应用" class="headerlink" title="MVP架构不合理应用"></a>MVP架构不合理应用</h3><p>在 MVP 的架构中，通常 Presenter 要同时持有 View 和 Model 的引用，如果在 Activity 退出的时候，Presenter 正在进行一个耗时操作，那么 Presenter 的生命周期会比 Activity 长，导致 Activity 无法回收，造成内存泄漏</p>
-<p>解决方法：，在 onDestory 方法中把 presenter 中的 相关资源销毁，如停止线程等等</p>
+<p>解决方法：在 onDestory 方法中把 presenter 中的 相关资源销毁，如停止线程等等</p>
 <h3 id="其他方式调整"><a href="#其他方式调整" class="headerlink" title="其他方式调整"></a>其他方式调整</h3><p>gradle 配置，heapsize会增大2-3倍，缓解OOM的发生</p>
 <pre><code>android:largeHeap=&quot;true&quot;
 </code></pre><p>修改 JVM 配置 -XXM等等</p>
@@ -356,7 +355,7 @@
 <li>优化布局，ConstraintLayout 减少布局嵌套等等</li>
 <li>移除多余的背景</li>
 <li>GPU检测工具，优化布局</li>
-<li>自定义view时，clipRect和clipPath 只在限定范围内绘制</li>
+<li>自定义view时，clipRect 和 clipPath 只在限定范围内绘制</li>
 <li>启用严格模式，异步处理耗时，删除冗余资源，操作，</li>
 </ul>
 <h3 id="集合优化"><a href="#集合优化" class="headerlink" title="集合优化"></a>集合优化</h3><p>不必要的内崔浪费也是我们开发中着重要优化的地方<br>针对 Java 原生集合 Map 的优化，在数据量1000以内时，使用 Google Android 推荐的集合</p>
@@ -373,14 +372,14 @@ android.support.v4.util.CircularArray&lt;E&gt;
 </code></pre><p>简单介绍下ArrayMap原理：</p>
 <pre><code>内部存储是使用两个数组，一个存储 key 的 hash 值，一个存储 value 值
 
-当你想获取某个value的时候，ArrayMap会计算输入key转换过后的hash值，然后对hash数组使用二分查找法寻找到对应的index
+当你想获取某个value的时候，ArrayMap 会计算输入key转换过后的hash值，然后对hash数组使用二分查找法寻找到对应的index
 
 然后我们可以通过这个index在另外一个数组中直接访问到需要的键值对。
 </code></pre><p>这些集合都比Java原生的集合更适合在移动设备上使用，在内存和效率上都做了很多优化。跟 Java集合相比有以下不同：</p>
 <p>数据结构不同  </p>
 <ul>
 <li>ArrayMap 和 SparseArray 采用的都是两个数组，Android专门针对内存优化而设计的  </li>
-<li>HashMap采用的是数据 + 链表 + 红黑树  </li>
+<li>HashMap采用的是数据 + 链表 或 红黑树  </li>
 </ul>
 <p>内存优化  </p>
 <ul>
@@ -417,7 +416,7 @@ android.support.v4.util.CircularArray&lt;E&gt;
 <li>会额外增加 12~16 bytes 给数组</li>
 </ul>
 <h2 id="线程优化"><a href="#线程优化" class="headerlink" title="线程优化"></a>线程优化</h2><p>线程的创建和销毁会带来比较大的性能开销。因此在频繁使用线程的场景下，优化也很有必要。<br>查看项目中是否存在随意 new Thread() ，线程缺乏管理的情况。使用 AsyncTask 或者线程池对线程进行管理，可以提升 APP的 性能。另外，推荐使用 Rxjava 来实现异步操作，既方便又优雅。</p>
-<p>在项目中异常：<br>RxJava 毫秒级定期执行线程任务时，内存直接暴走,线程数暴增， 最终采用线程池定期执行任务，或者 interval 操作符</p>
+<p>在项目中异常：<br>RxJava 毫秒级定期执行线程任务时，内存直接暴走,线程数暴增，最终采用线程池定期执行任务，或者 interval 操作符</p>
 <h2 id="电量优化"><a href="#电量优化" class="headerlink" title="电量优化"></a>电量优化</h2><p><a href="https://ticooops.github.io/2018/10/14/android/Battery-historian%E7%94%B5%E9%87%8F%E4%BC%98%E5%8C%96/" target="_blank" rel="noopener">电量监测-BatteryHistorian</a><br>项目优化点：<br>手机待机后需要时时同步各种数据，使用WakeLock操作，导致耗电增加。采用 JobScheduler 方案来优化，在手机待机的时候不主动做任何同步，交由 JobScheduler 在条件允许下只做数次同步即可，在唤醒手机时做必要的同步即可，大大节省了 CPU 的使用，节省流量，网络的使用，耗电量显著下降</p>
 <h2 id="网络优化"><a href="#网络优化" class="headerlink" title="网络优化"></a>网络优化</h2><p><a href="https://mp.weixin.qq.com/s/CBLp6iEUbSBZ2cSAT6trWw" target="_blank" rel="noopener">浅谈移动端网络优</a></p>
 
@@ -568,7 +567,7 @@ android.support.v4.util.CircularArray&lt;E&gt;
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">45</span>
+                  <span class="site-state-item-count">48</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
@@ -581,7 +580,7 @@ android.support.v4.util.CircularArray&lt;E&gt;
               
               <div class="site-state-item site-state-tags">
                 
-                  <span class="site-state-item-count">12</span>
+                  <span class="site-state-item-count">11</span>
                   <span class="site-state-item-name">tags</span>
                 
               </div>
@@ -634,7 +633,7 @@ android.support.v4.util.CircularArray&lt;E&gt;
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2021</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>

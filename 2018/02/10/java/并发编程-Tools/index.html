@@ -88,7 +88,7 @@
 <meta property="og:description" content="常用于并发处理的集合Queues，ConcurrentHashMap，ConcurrentSkipListMap，ConcurrentSkipListSet，CopyOnWriteArrayList，CopyOnWriteArraySet， 这些集合都比较好理解和使用，不多bb。本文介绍一些比较难接触的并发处理类 工具类Semaphore信号量，一个经典的并发工具，常用于限制访问资源的线程数量">
 <meta property="og:locale" content="default">
 <meta property="og:image" content="http://incdn1.b0.upaiyun.com/2015/04/f65cc83b7b4664916fad5d1398a36005.png">
-<meta property="og:updated_time" content="2019-10-18T14:31:41.000Z">
+<meta property="og:updated_time" content="2020-12-08T07:09:11.576Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="并发编程-工具类">
 <meta name="twitter:description" content="常用于并发处理的集合Queues，ConcurrentHashMap，ConcurrentSkipListMap，ConcurrentSkipListSet，CopyOnWriteArrayList，CopyOnWriteArraySet， 这些集合都比较好理解和使用，不多bb。本文介绍一些比较难接触的并发处理类 工具类Semaphore信号量，一个经典的并发工具，常用于限制访问资源的线程数量">
@@ -425,7 +425,7 @@ class WorkerRunnable implements Runnable {
 </code></pre><p>CountDownLatch面试题:  </p>
 <p>解释一下CountDownLatch概念?<br>CountDownLatch 和CyclicBarrier的不同之处?<br>给出一些CountDownLatch使用的例子?<br>CountDownLatch 类中主要的方法?  </p>
 <h4 id="CyclicBarrier"><a href="#CyclicBarrier" class="headerlink" title="CyclicBarrier"></a><a href="https://developer.android.google.cn/reference/java/util/concurrent/CyclicBarrier" target="_blank" rel="noopener">CyclicBarrier</a></h4><p>是一个同步工具类，它允许一组线程互相等待，直到到达某个公共屏障点，与CountDownLatch不同的是该barrier在释放等待线程后可以重用。 CyclicBarrier支持一个可选的Runnable命令，在一组线程中的最后一个线程到达之后（但在释放所有线程之前），该命令只在每个屏障点运行一次。若在继续所有参与线程之前更新共享状态，此屏障操作很有用。    </p>
-<p>CyclicBarrier的一些关键方法</p>
+<p>CyclicBarrier 的一些关键方法</p>
 <pre><code>public CyclicBarrier(int parties, Runnable barrierAction)
 public CyclicBarrier(int parties)
 
@@ -532,7 +532,7 @@ public int await(long timeout, TimeUnit unit) throws InterruptedException, Broke
     // allow threads to start and deregister self
     phaser.arriveAndDeregister();
 }
-</code></pre><p>可以通过覆盖onAdvance来实现让多个线程把某些任务执行固定的次数。</p>
+</code></pre><p>可以通过重写 onAdvance 来实现让多个线程把某些任务执行固定的次数。</p>
 <pre><code>void startTasks(List&lt;Runnable&gt; tasks, final int iterations) {
     final Phaser phaser = new Phaser() {
         protected boolean onAdvance(int phase, int registeredParties) {
@@ -779,7 +779,7 @@ while (!phaser.isTerminated())
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">45</span>
+                  <span class="site-state-item-count">48</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
@@ -792,7 +792,7 @@ while (!phaser.isTerminated())
               
               <div class="site-state-item site-state-tags">
                 
-                  <span class="site-state-item-count">12</span>
+                  <span class="site-state-item-count">11</span>
                   <span class="site-state-item-name">tags</span>
                 
               </div>
@@ -845,7 +845,7 @@ while (!phaser.isTerminated())
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2021</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>

@@ -1,0 +1,803 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Hexo, NexT">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="App启动过程App启动过程点击桌面App图标,Launcher进程采用Binder IPC向system_server进程发起startActivity请求system_server进程接收到请求后,向zygote进程发送创建进程的请求Zygote进程fork出新的子进程,即App进程App进程,通过Binder IPC向sytem_server进程发起attachApplication请求sy">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Framework浅析">
+<meta property="og:url" content="http://yoursite.com/2020/12/19/android/Framework浅析/index.html">
+<meta property="og:site_name" content="Hello,world">
+<meta property="og:description" content="App启动过程App启动过程点击桌面App图标,Launcher进程采用Binder IPC向system_server进程发起startActivity请求system_server进程接收到请求后,向zygote进程发送创建进程的请求Zygote进程fork出新的子进程,即App进程App进程,通过Binder IPC向sytem_server进程发起attachApplication请求sy">
+<meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2020-12-19T02:52:12.398Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Framework浅析">
+<meta name="twitter:description" content="App启动过程App启动过程点击桌面App图标,Launcher进程采用Binder IPC向system_server进程发起startActivity请求system_server进程接收到请求后,向zygote进程发送创建进程的请求Zygote进程fork出新的子进程,即App进程App进程,通过Binder IPC向sytem_server进程发起attachApplication请求sy">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2020/12/19/android/Framework浅析/">
+
+
+
+
+
+  <title>Framework浅析 | Hello,world</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="default">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Hello,world</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            Archives
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/12/19/android/Framework浅析/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="pickerX">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hello,world">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Framework浅析</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-12-19T10:51:33+08:00">
+                2020-12-19
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>App启动过程<br>App启动过程<br>点击桌面App图标,Launcher进程采用Binder IPC向system_server进程发起startActivity请求<br>system_server进程接收到请求后,向zygote进程发送创建进程的请求<br>Zygote进程fork出新的子进程,即App进程<br>App进程,通过Binder IPC向sytem_server进程发起attachApplication请求<br>system_server进程在收到请求后，进行一系列准备工作后,再通过binder IPC向App进程发送scheduleLaunchActivity请求<br>App进程的binder线程（ApplicationThread）在收到请求后,通过handler向主线程发送LAUNCH_ACTIVITY消息<br>主线程在收到Message后，通过发射机制创建目标Activity,并回调Activity.onCreate()等方法<br>App便正式启动，开始进入Activity生命周期，执行完onCreate/onStart/onResume方法，UI渲染结束后便可以看到App的主界面<br>Android开机流程<br>Android开机流程<br>BootLoader引导<br>当按开机键的时候，引导芯片开始从固化在ROM的预设代码开始执行，然后加载引导程序到RAM<br>BootLoader，又称为引导程序。它是在操作系统运行之前运行的一段程序<br>BootLoader负责初始化软件运行所需要的最小硬件环境，最后加载内核到内存</p>
+<p>启动Kernel<br>这个入口的函数是start_kernel函数<br>start_kernel函数执行到最后调用了reset_init函数进行后续的初始化<br>start_kernel最终启动用户空间的init程序</p>
+<p>启动Android<br>当初始化内核之后，init进程负责解析init.rc配置文件, 就会启动一个相当重要的祖先进程，也就是init进程，在Linux中所有的进程都是由init进程直接或间接fork出来的</p>
+<ul>
+<li>/system/bin/app_process_Zygote服务启动的进程名</li>
+<li>–start-system-server 表明Zygote启动完成后，需要启动System_Server进程</li>
+<li>socket zygote stream 666在Zygote启动时，创建一个权限为666的socket。此socket用来请求zygote创建新进程</li>
+<li>socket的fd保存在名称为”ANDROID_SOCKET_zygote”的环境变量中<br>init进程负责创建系统中最关键的几个核心daemon(守护)进程，尤其是zygote和System_Server进程</li>
+</ul>
+<ol>
+<li>zygote进程 android启动的第一个Dalvik 虚拟机，它将负责启动Java世界的进程</li>
+<li>zygote虚拟机启动子进程system_server，同时也可以看出zygote中定义了一个Socket,绑定666端口，用于接收ActivityManagerService启动应用程序的请求</li>
+<li>System_Server进程  Binder通信的基础，它还提供了property service（属性服务），类似于windows系统的注册表服务</li>
+<li>系统里面重要的服务都是在这个进程里面开启的，例如AMS, WindowsManager, PackageManagerService等等都是由这个System_Server fork出来的</li>
+<li>在System_Server进程开启的时候，就会初始化ActivityManagerService 。同时，会加载本地系统的服务库，调用createSystemContext()创建系统上下文，创建ActivityThread及开启各种服务等等</li>
+<li>system_server中开启了核心系统服务，并将系统服务添加到ServiceManager中，然后系统进入SystemReady状态<br>启动Home Activity</li>
+</ol>
+<p>在systemReady状态，ActivityManagerService会与zygote的Socket通信，请求启动Home<br>zygote收到AMS的连接请求后，执行runSelectLoopMode处理请求<br>zygote处理请求会通过forkAndSpecialize启动新的应用进程，并最终启动Home<br>概况</p>
+<ol>
+<li>系统加电，执行bootloader。Bootloader负责初始化软件运行的最小硬件环境，最后加载内核到内存</li>
+<li>内核加载到内存后，进入内核引导阶段，在内核引导的最后，调用start_kernel进入内核启动阶段。start_kernel最终启动用户空间的init程序</li>
+<li>init负责解析init.rc配置文件，开启系统守护进程。2个最重要的守护进程是zygote进程和serverManager进程。zygote是android启动的第一个Dalvik虚拟机，ServiceManager服务是Binder通信的基础</li>
+<li>zygote虚拟机启动子进程system_server，在system_server中启动了核心系统服务，并将系统服务添加到ServiceManager中，然后系统进入SystemReady状态</li>
+<li>在SystemReady状态，ActivityManagerService与zygote中的socket通信，通过zygote启动home应用，进入系统界面</li>
+</ol>
+<ul>
+<li>从步骤3开始, init启动后，上层的实现</li>
+</ul>
+<ol>
+<li>init启动的核心Daemon服务包括Android的第一个Dalvik虚拟机Zygote</li>
+<li>zygote定义一个socket,用于接受ActivityManangerService启动应用的请求</li>
+<li>zygote通过fork系统调用创建system_server进程</li>
+<li>在system_server进程中，将会启动系统核心服务以及其他服务</li>
+<li>系统服务启动后会注册到ServiceManager中，用于Binder通信</li>
+<li>ActivityManagerService进入systemReady状态</li>
+<li>在systemReady状态,ActivityManangerService会与zygote的Socket通信，请求启动Home</li>
+<li>zygote收到AMS的连接请求后，执行runSelectLoopMode处理请求</li>
+<li>zygote处理请求会通过forkAndSpecialize启动新的应用进程，并最终启动Home<br>Handler机制与底层实现原理<br>概念<br>Message - Message代表一个行为what或者一串动作Runnable, 每一个消息在加入消息队列时,都有明确的目标Handler<br>ThreadLocal - 线程本地存储区（Thread Local Storage，简称为TLS），每个线程都有自己的私有的本地存储区域，不同线程之间彼此不能访问对方的TLS区域。ThreadLocal的作用是提供线程内的局部变量TLS,这种变量在线程的生命周期内起作用,每一个线程有他自己所属的值(线程隔离)<br>MessageQueue (C层与Java层都有实现) - 以队列的形式对外提供插入和删除的工作, 其内部结构是以双向链表的形式存储消息的<br>Looper (C层与Java层都有实现) - Looper是循环的意思,它负责从消息队列中循环的取出消息然后把消息交给Handler处理<br>Handler - 消息的真正处理者, 具备获取消息、发送消息、处理消息、移除消息等功能<br>普通的线程是没有looper的，如果需要looper对象，那么必须要先调用Looper.prepare方法，而且一个线程只能有一个looper<br>Handler是如何完成跨线程通信的</li>
+</ol>
+<ul>
+<li>Android中采用的是Linux中的管道通信</li>
+<li>关于管道，简单来说，管道就是一个文件</li>
+<li>在管道的两端，分别是两个打开文件文件描述符，这两个打开文件描述符都是对应同一个文件，其中一个是用来读的，别一个是用来写的</li>
+<li>消息队列创建时，会调用JNI函数，初始化NativeMessageQueue对象。NativeMessageQueue则会初始化Looper对象</li>
+<li>Looper的作用就是，当Java层的消息队列中没有消息时，就使Android应用程序主线程进入等待状态，而当Java层的消息队列中来了新的消息后，就唤醒Android应用程序的主线程来处理这个消息<br>整个消息机制流程</li>
+</ul>
+<p>image<br>Handler通过sendMessage()发送Message到MessageQueue队列<br>Looper通过loop()，不断提取出达到触发条件的Message，并将Message交给target来处理<br>经过dispatchMessage()后，交回给Handler的handleMessage()来进行相应地处理<br>将Message加入MessageQueue时，处往管道写入字符，可以会唤醒loop线程；如果MessageQueue中没有Message，并处于Idle状态，则会执行IdelHandler接口中的方法，往往用于做一些清理性地工作<br>ContentProvider原理<br>Android绘制原理<br>Activity的window组成，Activity内部有个Window成员，它的实例为PhoneWindow，PhoneWindow有个内部类是DecorView，这个DecorView就是存放布局文件的，里面有TitleActionBar和我们setContentView传入进去的layout布局文件</p>
+<p>image<br>Window类时一个抽象类，提供绘制窗口的API<br>PhoneWindow是继承Window的一个具体的类，该类内部包含了一个DecorView对象，该DectorView对象是所有应用窗口(Activity界面)的根View<br>DecorView继承FrameLayout，里面id=content的就是我们传入的布局视图<br>ContentView必须是一个ViewGroup<br>ViewGroup 开始递归执行以下逻辑进行绘制</p>
+<ul>
+<li>measure, 递归测量view的大小。有3种测量模式<ul>
+<li>MeasureSpec.EXACTLY表示确定大小</li>
+<li>MeasureSpec.AT_MOST表示最大大小</li>
+<li>MeasureSpec.UNSPECIFIED不确定</li>
+</ul>
+</li>
+<li>layout，递归布局view的位置</li>
+<li>draw，递归绘制view<ul>
+<li>ViewRootImpl中的代码会创建一个Canvas对象，然后调用View的draw()方法来执行具体的绘制<br>AsyncTask源码分析<br>Binder机制及底层实现<br>进程空间分配</li>
+</ul>
+</li>
+</ul>
+<p>进程间，用户空间的数据不可共享，所以用户空间 = 不可共享空间<br>进程间，内核空间的数据可共享，所以内核空间 = 可共享空间<br>进程内用户与内核进行交互称为系统调用<br>Binder跨进程通信（IPC）的原理</p>
+<p>image<br>先通过进程间的内核空间进行数据交互<br>再通过进程内的用户空间&amp;内核空间进行数据交互，从而实现进程间的用户空间的数据交互<br>而Binder，就是充当连接两个进程(内核空间)的通道<br>使用步骤:<br>注册服务</p>
+<ul>
+<li>Server进程向Binder驱动发起服务注册请求</li>
+<li>Binder驱动将注册请求转发给ServiceManager进程</li>
+<li>ServiceManager进程添加该服务</li>
+<li><p>此时ServiceManager进程拥有该服务信息<br>获取服务</p>
+</li>
+<li><p>Client向Binder驱动发起获取服务的请求，传递要获取的服务名称(service name)</p>
+</li>
+<li>Binder驱动将该请求转发给ServiceManager进程</li>
+<li>ServiceManager查找到Client需要的Server对应的服务信息</li>
+<li>通过Binder驱动将上述服务信息返回给Client进程</li>
+<li><p>此时client进程与server进程已经建立了连接<br>使用服务</p>
+</li>
+<li><p>Client进程将参数数据发到Server进程</p>
+<ol>
+<li>client 进程将需要的传送的数据放到client进程的共享内存;(当前线程被挂起)</li>
+<li>Binder驱动从client的共享内存中读取数据，并根据ServiceManager进程里面的Server信息找到对应的Server进程</li>
+<li>Binder驱动将数据copy到Server进程的共享内存里，并通知Server进程解包</li>
+</ol>
+</li>
+<li>Server进程根据Client进程要求，调用目标方法<ol>
+<li>接到Binder驱动通知后，Server进程从线程池中取出线程，进行数据解包和调用目标方法</li>
+<li>将最终方法结果写到自己的共享内存</li>
+</ol>
+</li>
+<li>Server进程将目标方法的结果，返回给Client进程<ol>
+<li>Binder驱动程序将Server进程的共享内存里面的数据(方法执行结果) copy 到client进程的共享内存</li>
+<li>通知client进程获得返回结果(此时client进程之前被挂起的线程被重新唤醒)<br>image<br>Client进程、Server进程 &amp; Service Manager 进程之间的交互 都必须通过Binder驱动（使用 open 和 ioctl文件操作函数），而非直接交互<br>Client进程、Server进程 &amp; Service Manager进程属于进程空间的用户空间，不可进行进程间交互<br>Binder驱动 属于 进程空间的 内核空间，可进行进程间 &amp; 进程内交互</li>
+</ol>
+</li>
+</ul>
+<p>image</p>
+<p>Binder驱动 &amp; Service Manager进程 属于 Android基础架构（即系统已经实现好了）；而Client 进程 和 Server 进程 属于Android应用层（需要开发者自己实现）</p>
+<p>image<br>ActivityThread工作原理<br>Window 、WMS的工作原理<br>ThreadLocal原理，实现及如何保证Local属性<br>每个Thread维护一个ThreadLocalMap映射表，这个映射表的key是ThreadLocal实例本身，value是真正需要存储的Object</p>
+<p>Android线程有没有上限<br>android本身就是linux系统 所以查看命令和linux一样</p>
+<p>Android内存限制<br>dalvik.vm.heapstartsize 表示 初始内存大小是8m<br>dalvik.vm.heapgrowthlimit 表示标准内存大小是96m 一般应用都是这么大<br>dalvik.vm.heapsize 表示 在manifest配置文件中application标签下配置 android:largeHeap=”true”时的内存大小</p>
+<p>Android apk大小限制<br>apk安装包大小理论上没有限制。但是各个应用商店为了有大小限制google play 要求小于50M , 扩展包可以扩展到2g<br>压测: 800M的apk是没问题的只是安装的时间比较长。1.6G的apk包则把手机弄死机</p>
+<p>线程池有没有上限<br>ThreadPoolExecutor构造函数的maximumPoolSize决定</p>
+<p>AndroidToast原理分析<br>Art和Dalvik对比<br>ART 的机制与 Dalvik 不同。在Dalvik下，应用每次运行的时候，字节码都需要通过即时编译器（just in time ，JIT）转换为机器码，这会拖慢应用的运行效率，而在ART 环境中，应用在第一次安装的时候，字节码就会预先编译成机器码，使其成为真正的本地应用。这个过程叫做预编译（AOT,Ahead-Of-Time）。这样的话，应用的启动(首次)和执行都会变得更加快速。</p>
+<p>BlockCanaryEx原理<br>即整个应用的主线程，只有这一个looper，不管有多少handler，最后都会回到这里</p>
+<p>public static void loop() {<br>    …</p>
+<pre><code>for (;;) {
+    ...
+
+    // This must be in a local variable, in case a UI event sets the logger
+    Printer logging = me.mLogging;
+    if (logging != null) {
+        logging.println(&quot;&gt;&gt;&gt;&gt;&gt; Dispatching to &quot; + msg.target + &quot; &quot; +
+                msg.callback + &quot;: &quot; + msg.what);
+    }
+
+    msg.target.dispatchMessage(msg);
+
+    if (logging != null) {
+        logging.println(&quot;&lt;&lt;&lt;&lt;&lt; Finished to &quot; + msg.target + &quot; &quot; + msg.callback);
+    }
+
+    ...
+}
+</code></pre><p>}<br>设置Printer对象,判断是否超过预期时间，notifyLog</p>
+<p>Android GC探究<br>虚拟机原理，如何自己设计一个虚拟机(内存管理，类加载，双亲委派)<br>对于Activity 的 onCreate 等生命周期的函数为什么不会因为 Looper.loop()里的死循环卡死而永无机会执行<br>View 的绘制到底是怎样完成的，它又为什么不会因为 Looper.loop()里的死循环卡死而永无机会刷新<br>子线程真的不能刷新UI</p>
+<p>作者：willin<br>链接：<a href="https://www.jianshu.com/p/2f95ab717078" target="_blank" rel="noopener">https://www.jianshu.com/p/2f95ab717078</a><br>来源：简书<br>著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div></div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>Donate</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/wechatpay.jpg" alt="pickerX WeChat Pay">
+        <p>WeChat Pay</p>
+      </div>
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/images/alipay.jpg" alt="pickerX Alipay">
+        <p>Alipay</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2020/02/14/ffmpeg/ffmpeg-结构体汇总/" rel="next" title="ffmpeg-结构体汇总">
+                <i class="fa fa-chevron-left"></i> ffmpeg-结构体汇总
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2021/01/15/android/Activity-Window-View的关系/" rel="prev" title="Activity & Window & View的关系">
+                Activity & Window & View的关系 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+
+      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">pickerX</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">48</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                
+                  <span class="site-state-item-count">11</span>
+                  <span class="site-state-item-name">tags</span>
+                
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">pickerX</span>
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Gemini</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

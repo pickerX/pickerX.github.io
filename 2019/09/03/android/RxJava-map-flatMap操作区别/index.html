@@ -87,7 +87,7 @@
 <meta property="og:site_name" content="Hello,world">
 <meta property="og:description" content="map， flatmap 操作符在 RxJava 里都是用于数据类型转换 相同点:参数相同, 都是使用 Function(入参，返回值) 进行转换（将一个类型依据程序逻辑转换成另一种类型，根据入参和返回值）,都能在转换后直接被 subscribe 不同点：返回参数不同 map返回的是 Function&amp;lt;? super T, ? extends R&amp;gt; R 类型， flatmap返回的是F">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2020-03-14T08:52:05.984Z">
+<meta property="og:updated_time" content="2020-12-15T03:29:45.604Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="RxJava-map&amp;flatMap操作区别">
 <meta name="twitter:description" content="map， flatmap 操作符在 RxJava 里都是用于数据类型转换 相同点:参数相同, 都是使用 Function(入参，返回值) 进行转换（将一个类型依据程序逻辑转换成另一种类型，根据入参和返回值）,都能在转换后直接被 subscribe 不同点：返回参数不同 map返回的是 Function&amp;lt;? super T, ? extends R&amp;gt; R 类型， flatmap返回的是F">
@@ -307,7 +307,7 @@
 <li>flatmap返回的是Function&lt;? super T, ? extends ObservableSource&lt;? extends R&gt;&gt;, 包含R类型的 ObservableSource 对象</li>
 </ol>
 <h4 id="使用方式不同"><a href="#使用方式不同" class="headerlink" title="使用方式不同,"></a>使用方式不同,</h4><ol>
-<li>map只能单一转换，单一只的是只能一对一进行转换, map被订阅时每传递一个事件执行一次onNext方法   </li>
+<li>map只能单一转换，单一指的是只能一对一进行转换, map被订阅时每传递一个事件执行一次onNext方法   </li>
 <li>flatmap多用于多对多，一对多，再被转化为多个时，一般利用from/just进行一一分发，被订阅时将所有数据传递完毕汇总到一个Observable然后一一执行onNext方法</li>
 </ol>
 <h3 id="Sample"><a href="#Sample" class="headerlink" title="Sample"></a>Sample</h3><p>map 测试</p>
@@ -552,7 +552,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">45</span>
+                  <span class="site-state-item-count">48</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
@@ -565,7 +565,7 @@
               
               <div class="site-state-item site-state-tags">
                 
-                  <span class="site-state-item-count">12</span>
+                  <span class="site-state-item-count">11</span>
                   <span class="site-state-item-name">tags</span>
                 
               </div>
@@ -618,7 +618,7 @@
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2021</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>

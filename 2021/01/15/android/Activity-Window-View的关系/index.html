@@ -1,0 +1,979 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Hexo, NexT">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="onCreate() - Window 创建过程 在 Activity 创建过程中执行 scheduleLaunchActivity() 之后便调用到了 handleLaunchActivity() 方法。 ActivityThread.handleLaunchActivity()：  private void handleLaunchActivity(ActivityClientRecord r">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Activity &amp; Window &amp; View的关系">
+<meta property="og:url" content="http://yoursite.com/2021/01/15/android/Activity-Window-View的关系/index.html">
+<meta property="og:site_name" content="Hello,world">
+<meta property="og:description" content="onCreate() - Window 创建过程 在 Activity 创建过程中执行 scheduleLaunchActivity() 之后便调用到了 handleLaunchActivity() 方法。 ActivityThread.handleLaunchActivity()：  private void handleLaunchActivity(ActivityClientRecord r">
+<meta property="og:locale" content="default">
+<meta property="og:image" content="https://imgconvert.csdnimg.cn/aHR0cDovL2ltZy5ibG9nLmNzZG4ubmV0LzIwMTgwMzAxMTAyMjExNDkz">
+<meta property="og:image" content="https://imgconvert.csdnimg.cn/aHR0cDovL2ltZy5ibG9nLmNzZG4ubmV0LzIwMTgwMzAxMTAyMjUyOTk1">
+<meta property="og:image" content="https://imgconvert.csdnimg.cn/aHR0cDovL2ltZy5ibG9nLmNzZG4ubmV0LzIwMTgwMzAxMTAyMzE3ODMx">
+<meta property="og:updated_time" content="2021-01-15T03:29:18.050Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Activity &amp; Window &amp; View的关系">
+<meta name="twitter:description" content="onCreate() - Window 创建过程 在 Activity 创建过程中执行 scheduleLaunchActivity() 之后便调用到了 handleLaunchActivity() 方法。 ActivityThread.handleLaunchActivity()：  private void handleLaunchActivity(ActivityClientRecord r">
+<meta name="twitter:image" content="https://imgconvert.csdnimg.cn/aHR0cDovL2ltZy5ibG9nLmNzZG4ubmV0LzIwMTgwMzAxMTAyMjExNDkz">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2021/01/15/android/Activity-Window-View的关系/">
+
+
+
+
+
+  <title>Activity & Window & View的关系 | Hello,world</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="default">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Hello,world</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            Archives
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2021/01/15/android/Activity-Window-View的关系/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="pickerX">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hello,world">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Activity & Window & View的关系</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2021-01-15T10:20:01+08:00">
+                2021-01-15
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h3 id="onCreate-Window-创建过程"><a href="#onCreate-Window-创建过程" class="headerlink" title="onCreate() - Window 创建过程"></a>onCreate() - Window 创建过程</h3><p><img src="https://imgconvert.csdnimg.cn/aHR0cDovL2ltZy5ibG9nLmNzZG4ubmV0LzIwMTgwMzAxMTAyMjExNDkz" alt="onCreate() - Window 创建过程"></p>
+<p>在 Activity 创建过程中执行 scheduleLaunchActivity() 之后便调用到了 handleLaunchActivity() 方法。</p>
+<pre><code>ActivityThread.handleLaunchActivity()：
+
+private void handleLaunchActivity(ActivityClientRecord r, Intent customIntent) {
+    handleConfigurationChanged(null, null);
+    //初始化 WindowManagerService，主要是获取到 WindowManagerService 代理对象
+    WindowManagerGlobal.initialize();
+    //详情见下面分析
+    Activity a = performLaunchActivity(r, customIntent);
+
+    if (a != null) {
+        r.createdConfig = new Configuration(mConfiguration);
+        //详见下面分析 [onResume() - Window 显示过程]
+        handleResumeActivity(r.token, false, r.isForward,
+                !r.activity.mFinished &amp;&amp; !r.startsNotResumed);
+        ...
+    }
+    ...
+}
+
+...
+private Activity performLaunchActivity(ActivityClientRecord r, Intent customIntent) {
+    ...
+    Activity activity = null;
+    //获取 ClassLoader
+    java.lang.ClassLoader cl = r.packageInfo.getClassLoader();
+    //创建目标 Activity 对象
+    activity = mInstrumentation.newActivity(
+            cl, component.getClassName(), r.intent);
+    StrictMode.incrementExpectedActivityCount(activity.getClass());
+    r.intent.setExtrasClassLoader(cl);
+    r.intent.prepareToEnterProcess();
+    if (r.state != null) {
+        r.state.setClassLoader(cl);
+    }
+
+    //创建 Application 对象
+    Application app = r.packageInfo.makeApplication(false, mInstrumentation);
+    if (activity != null) {
+        Context appContext = createBaseContextForActivity(r, activity);
+        CharSequence title = r.activityInfo.loadLabel(appContext.getPackageManager());
+        Configuration config = new Configuration(mCompatConfiguration);
+        //详情见下面分析
+        activity.attach(appContext, this, getInstrumentation(), r.token,
+                r.ident, app, r.intent, r.activityInfo, title, r.parent,
+                r.embeddedID, r.lastNonConfigurationInstances, config,
+                r.referrer, r.voiceInteractor);
+        ...
+        //回调 Activity.onCreate()
+        if (r.isPersistable()) {
+            mInstrumentation.callActivityOnCreate(activity, r.state, r.persistentState);
+        } else {
+            mInstrumentation.callActivityOnCreate(activity, r.state);
+        }
+        ...
+    return activity;
+}
+
+...
+
+final void attach(Context context, ActivityThread aThread, Instrumentation instr, IBinder token, int ident, Application application, Intent intent, ActivityInfo info, CharSequence title, Activity parent, String id, NonConfigurationInstances lastNonConfigurationInstances, Configuration config, String referrer, IVoiceInteractor voiceInteractor) {
+    attachBaseContext(context);
+
+    mWindow = new PhoneWindow(this); //创建 PhoneWindow
+    mWindow.setCallback(this);
+    mWindow.setOnWindowDismissedCallback(this);
+    mWindow.getLayoutInflater().setPrivateFactory(this);
+    ...
+    mApplication = application; //所属的 Application
+    ...
+    //设置并获取 WindowManagerImpl 对象
+    mWindow.setWindowManager(
+            (WindowManager)context.getSystemService(Context.WINDOW_SERVICE),
+            mToken, mComponent.flattenToString(),
+            (info.flags &amp; ActivityInfo.FLAG_HARDWARE_ACCELERATED) != 0);
+    if (mParent != null) {
+        mWindow.setContainer(mParent.getWindow());
+    }
+    mWindowManager = mWindow.getWindowManager();
+    mCurrentConfig = config;
+}
+</code></pre><p>可看出 Activity 里新建一个 PhoneWindow 对象。在 Android 中，Window 是个抽象的概念， Android 中 Window 的具体实现类是 PhoneWindow，Activity 和 Dialog 中的 Window 对象都是 PhoneWindow。</p>
+<p>同时得到一个 WindowManager 对象，WindowManager 是一个抽象类，这个 WindowManager 的具体实现是在 WindowManagerImpl 中，对比 Context 和 ContextImpl。</p>
+<p>Window.setWindowManager()：</p>
+<pre><code>public void setWindowManager(WindowManager wm, IBinder appToken, String appName, boolean hardwareAccelerated) { 
+    ...    
+    mWindowManager = ((WindowManagerImpl)wm).createLocalWindowManager(this);
+    ...
+}
+</code></pre><p>每个 Activity 会有一个 WindowManager 对象，这个 mWindowManager 就是和 WindowManagerService 进行通信，也是 WindowManagerService 识别 View 具体属于那个 Activity 的关键，创建时传入 IBinder 类型的 mToken。</p>
+<pre><code>mWindow.setWindowManager(..., mToken, ..., ...)
+</code></pre><p>这个 Activity 的 mToken， 是一个 IBinder，WindowManagerService 就是通过这个 IBinder 来管理 Activity 里的 View。</p>
+<p>回调 Activity.onCreate() 后，会执行 setContentView() 方法将我们写的 Layout 布局页面设置给 Activity。</p>
+<p>Activity.setContentView()：    </p>
+<pre><code>public void setContentView(@LayoutRes int layoutResID) {
+    getWindow().setContentView(layoutResID);        
+    initWindowDecorActionBar();    
+}
+</code></pre><p>PhoneWindow.setContentView()：</p>
+<pre><code>public void setContentView(int layoutResID) {
+    ...    
+    installDecor(); 
+    ... 
+}
+
+private void installDecor() {    
+    // 根据不同的 Theme，创建不同的 DecorView，DecorView 是一个 FrameLayout 
+}
+</code></pre><p>这时只是创建了 PhoneWindow，和 DecorView，但目前二者也没有任何关系，产生关系是在 ActivityThread.performResumeActivity 中，再调用 r.activity.performResume()，调用 r.activity.makeVisible，将 DecorView 添加到当前的 Window 上。</p>
+<h3 id="onResume-Window-显示过程"><a href="#onResume-Window-显示过程" class="headerlink" title="onResume() - Window 显示过程"></a>onResume() - Window 显示过程</h3><p>Activity 与 PhoneWindow 与 DecorView 关系图：<br><img src="https://imgconvert.csdnimg.cn/aHR0cDovL2ltZy5ibG9nLmNzZG4ubmV0LzIwMTgwMzAxMTAyMjUyOTk1" alt="onResume() - Window 显示过程"></p>
+<p>ActivityThread.handleResumeActivity()：</p>
+<pre><code>final void handleResumeActivity(IBinder token, boolean clearHide, boolean isForward, boolean reallyResume) {
+//执行到 onResume()
+ActivityClientRecord r = performResumeActivity(token, clearHide);
+
+if (r != null) {
+    final Activity a = r.activity;
+    boolean willBeVisible = !a.mStartedActivity;
+    ...
+    if (r.window == null &amp;&amp; !a.mFinished &amp;&amp; willBeVisible) {
+        r.window = r.activity.getWindow();
+        View decor = r.window.getDecorView();
+        decor.setVisibility(View.INVISIBLE);
+        ViewManager wm = a.getWindowManager();
+        WindowManager.LayoutParams l = r.window.getAttributes();
+        a.mDecor = decor;
+        l.type = WindowManager.LayoutParams.TYPE_BASE_APPLICATION;
+        l.softInputMode |= forwardBit;
+        if (a.mVisibleFromClient) {
+            a.mWindowAdded = true;
+            wm.addView(decor, l);
+        }
+
+    }
+    ...
+    if (!r.activity.mFinished &amp;&amp; willBeVisible
+            &amp;&amp; r.activity.mDecor != null &amp;&amp; !r.hideForNow) {
+        ...
+        mNumVisibleActivities++;
+        if (r.activity.mVisibleFromClient) {
+            //添加视图，详见下面分析
+            r.activity.makeVisible(); 
+        }
+    }
+
+    //resume 完成
+    if (reallyResume) {
+            ActivityManagerNative.getDefault().activityResumed(token);
+    }
+} else {
+    ...
+}
+}
+
+
+public final ActivityClientRecord performResumeActivity(IBinder token, boolean clearHide) {
+    ActivityClientRecord r = mActivities.get(token);
+    if (r != null &amp;&amp; !r.activity.mFinished) {
+        ...
+        //回调 onResume()
+        r.activity.performResume();
+        ...
+    }
+    return r;
+}
+
+void makeVisible() {
+    if (!mWindowAdded) {
+        ViewManager wm = getWindowManager();
+        //详见下面分析
+        wm.addView(mDecor, getWindow().getAttributes());
+        mWindowAdded = true;
+    }
+    mDecor.setVisibility(View.VISIBLE);
+}
+</code></pre><p>WindowManager 的 addView 的具体实现在 WindowManagerImpl 中，而 WindowManagerImpl 的 addView 又会调用 WindowManagerGlobal.addView()。</p>
+<p>WindowManagerGlobal.addView()：</p>
+<pre><code>public void addView(View view, ViewGroup.LayoutParams params, Display display, Window parentWindow) {
+    ...
+    ViewRootImpl root = new ViewRootImpl(view.getContext(), display);        
+    view.setLayoutParams(wparams);    
+    mViews.add(view);    
+    mRoots.add(root);    
+    mParams.add(wparams);        
+    root.setView(view, wparams, panelParentView);
+    ...
+}
+</code></pre><p>这个过程创建一个 ViewRootImpl，并将之前创建的 DecoView 作为参数传入，以后 DecoView 的事件都由 ViewRootImpl 来管理了，比如，DecoView 上添加 View，删除 View。ViewRootImpl 实现了 ViewParent 这个接口，这个接口最常见的一个方法是 requestLayout()。</p>
+<p>ViewRootImpl 是个 ViewParent，在 DecoView 添加的 View 时，就会将 View 中的 ViewParent 设为 DecoView 所在的 ViewRootImpl，View 的 ViewParent 相同时，理解为这些 View 在一个 View 链上。所以每当调用 View 的 requestLayout()时，其实是调用到 ViewRootImpl，ViewRootImpl 会控制整个事件的流程。可以看出一个 ViewRootImpl 对添加到 DecoView 的所有 View 进行事件管理。</p>
+<p>ViewRootImpl：</p>
+<pre><code>public ViewRootImpl(Context context, Display display) {
+    mContext = context;
+    //获取 IWindowSession 的代理类
+    mWindowSession = WindowManagerGlobal.getWindowSession();
+    mDisplay = display;
+    mThread = Thread.currentThread(); //主线程
+    mWindow = new W(this); 
+    mChoreographer = Choreographer.getInstance();
+    ...
+}
+
+public void setView(View view, WindowManager.LayoutParams attrs, View panelParentView) {
+    synchronized (this) {
+        ...
+        //通过 Binder 调用，进入 system 进程的 Session
+        res = mWindowSession.addToDisplay(mWindow, mSeq, mWindowAttributes,
+            getHostVisibility(), mDisplay.getDisplayId(),
+            mAttachInfo.mContentInsets, mAttachInfo.mStableInsets,
+            mAttachInfo.mOutsets, mInputChannel);
+        ...
+    }
+}
+</code></pre><p>WindowManagerGlobal</p>
+<pre><code>public static IWindowSession getWindowSession() {
+    synchronized (WindowManagerGlobal.class) {
+        if (sWindowSession == null) {
+            try {
+                //获取 InputManagerService 的代理类
+                InputMethodManager imm = InputMethodManager.getInstance();
+                //获取 WindowManagerService 的代理类
+                IWindowManager windowManager = getWindowManagerService();
+                //经过 Binder 调用，最终调用 WindowManagerService
+                sWindowSession = windowManager.openSession(
+                        new IWindowSessionCallback.Stub() {...},
+                        imm.getClient(), imm.getInputContext());
+            } catch (RemoteException e) {
+                ...
+            }
+        }
+        return sWindowSession
+    }
+}
+</code></pre><p>通过 binder 调用进入 system_server 进程。<br>Session：</p>
+<pre><code>final class Session extends IWindowSession.Stub implements IBinder.DeathRecipient {
+
+    public int addToDisplay(IWindow window, int seq, WindowManager.LayoutParams attrs, int viewVisibility, int displayId, Rect outContentInsets, Rect outStableInsets, Rect outOutsets, InputChannel outInputChannel) {
+        //详情见下面
+        return mService.addWindow(this, window, seq, attrs, viewVisibility, displayId,
+                outContentInsets, outStableInsets, outOutsets, outInputChannel);
+    }
+}
+</code></pre><p>WindowManagerService</p>
+<pre><code>public int addWindow(Session session, IWindow client, int seq, WindowManager.LayoutParams attrs, int viewVisibility, int displayId, Rect outContentInsets, Rect outStableInsets, Rect outOutsets, InputChannel outInputChannel) {
+    ...
+    WindowToken token = mTokenMap.get(attrs.token);
+    //创建 WindowState
+    WindowState win = new WindowState(this, session, client, token,
+                attachedWindow, appOp[0], seq, attrs, viewVisibility, displayContent);
+    ...
+    //调整 WindowManager 的 LayoutParams 参数
+    mPolicy.adjustWindowParamsLw(win.mAttrs);
+    res = mPolicy.prepareAddWindowLw(win, attrs);
+    addWindowToListInOrderLocked(win, true);
+    // 设置 input
+    mInputManager.registerInputChannel(win.mInputChannel, win.mInputWindowHandle);
+    // 创建 Surface 与 SurfaceFlinger 通信，详见下面[SurfaceFlinger 图形系统]
+    win.attach();
+    mWindowMap.put(client.asBinder(), win);
+
+    if (win.canReceiveKeys()) {
+        //当该窗口能接收按键事件，则更新聚焦窗口
+        focusChanged = updateFocusedWindowLocked(UPDATE_FOCUS_WILL_ASSIGN_LAYERS,
+                false /*updateInputWindows*/);
+    }
+    assignLayersLocked(displayContent.getWindowList());
+    ...
+}
+</code></pre><p>创建 Surface 的过程详见：SurfaceFlinger 图形系统</p>
+<p>Activity 中 Window 创建过程：<br><img src="https://imgconvert.csdnimg.cn/aHR0cDovL2ltZy5ibG9nLmNzZG4ubmV0LzIwMTgwMzAxMTAyMzE3ODMx" alt="Activity 中 Window 创建过程"></p>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>Window 是什么？<br>Window 是 Android 中窗口的宏观定义，主要是管理 View 的创建，以及与 ViewRootImpl 的交互，将 Activity 与 View 解耦。</p>
+<p>Activity 与 PhoneWindow 与 DecorView 之间什么关系？<br>一个 Activity 对应一个 Window 也就是 PhoneWindow，一个 PhoneWindow 持有一个 DecorView 的实例，DecorView 本身是一个 FrameLayout。</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div></div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>Donate</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/wechatpay.jpg" alt="pickerX WeChat Pay">
+        <p>WeChat Pay</p>
+      </div>
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/images/alipay.jpg" alt="pickerX Alipay">
+        <p>Alipay</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2020/12/19/android/Framework浅析/" rel="next" title="Framework浅析">
+                <i class="fa fa-chevron-left"></i> Framework浅析
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2021/01/16/android/Handler-Looper为什么不会造成卡顿/" rel="prev" title="Handler_Looper为什么不会造成卡顿">
+                Handler_Looper为什么不会造成卡顿 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">pickerX</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">48</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                
+                  <span class="site-state-item-count">11</span>
+                  <span class="site-state-item-name">tags</span>
+                
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#onCreate-Window-创建过程"><span class="nav-number">1.</span> <span class="nav-text">onCreate() - Window 创建过程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#onResume-Window-显示过程"><span class="nav-number">2.</span> <span class="nav-text">onResume() - Window 显示过程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#总结"><span class="nav-number">3.</span> <span class="nav-text">总结</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">pickerX</span>
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Gemini</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

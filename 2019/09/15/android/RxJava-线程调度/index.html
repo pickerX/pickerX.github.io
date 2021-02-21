@@ -88,7 +88,7 @@
 <meta property="og:description" content="RxJava 线程模型分析RxJava的被观察者在使用操作符时可以利用线程调度器–Scheduler来切换线程，例如 Observable.just(&amp;quot;hello&amp;quot;,&amp;quot;Rxjava&amp;quot;)         .observeOn(Schedulers.newThread())         .map(new Function&amp;lt;String, String&amp;">
 <meta property="og:locale" content="default">
 <meta property="og:image" content="https://user-gold-cdn.xitu.io/2017/8/28/9d6e757cd24bd3370b9b08bf10fc2790?imageView2/0/w/1280/h/960/format/webp/ignore-error/1">
-<meta property="og:updated_time" content="2020-03-14T08:48:13.758Z">
+<meta property="og:updated_time" content="2020-12-07T04:45:17.556Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="RxJava-线程调度">
 <meta name="twitter:description" content="RxJava 线程模型分析RxJava的被观察者在使用操作符时可以利用线程调度器–Scheduler来切换线程，例如 Observable.just(&amp;quot;hello&amp;quot;,&amp;quot;Rxjava&amp;quot;)         .observeOn(Schedulers.newThread())         .map(new Function&amp;lt;String, String&amp;">
@@ -340,7 +340,7 @@ public final void subscribe(Observer&lt;? super T&gt; observer) {
     subscribeActual(observer);
     ...
 }
-</code></pre><p>可以看到，最后会执行 subscribeActual 方法，但是该方法实际上是一个抽象方法<br>。 也就是说，会执行 subscribe 上一步链式所创建的 Observable 实现，那我们往链式的上游看，即示例代码的 observeOn(Schedulers.io())</p>
+</code></pre><p>可以看到，最后会执行 subscribeActual 方法，但是该方法实际上是一个抽象方法。也就是说，会执行 subscribe 上一步链式所创建的 Observable 实现，那我们往链式的上游看，即示例代码的 observeOn(Schedulers.io())</p>
 <h3 id="线程调度-observeOn"><a href="#线程调度-observeOn" class="headerlink" title="线程调度 observeOn"></a>线程调度 observeOn</h3><p>首先，先说结论：</p>
 <ul>
 <li>observeOn(scheduler) 接收一个 Scheduler 参数，用来指定后续操作运行在特定的线程调度器 Scheduler 上。  </li>
@@ -358,12 +358,16 @@ public final Observable&lt;T&gt; observeOn(Scheduler scheduler, boolean delayErr
 }
 </code></pre><p>这时综上所述，你会发现示例里 subscribe 执行的其实就是 ObservableObserveOn 的 subscribeActual 实现。<br>这个设计就很巧妙了，采用 装饰者模式 + 责任链模式 的方式设计出简洁便利的API。</p>
 <p>继续看 subscribeActual 代码，</p>
-<pre><code>public ObservableObserveOn(ObservableSource&lt;T&gt; source, Scheduler scheduler, boolean delayError, int bufferSize) {
-    // source 即上游事件对象
-    super(source);
-    this.scheduler = scheduler;
-    this.delayError = delayError;
-    this.bufferSize = bufferSize;
+<pre><code>public ObservableObserveOn(
+    ObservableSource&lt;T&gt; source, 
+    Scheduler scheduler, 
+    boolean delayError, 
+    int bufferSize) {
+        // source 即上游事件对象
+        super(source);
+        this.scheduler = scheduler;
+        this.delayError = delayError;
+        this.bufferSize = bufferSize;
 }
 
 @Override
@@ -374,14 +378,13 @@ protected void subscribeActual(Observer&lt;? super T&gt; observer) {
     } else {
         // 线程调度器创建任务封装 Scheduler.Worker
         Scheduler.Worker w = scheduler.createWorker();
-        // 上游事件对象订阅下游事件 observer 的  ObserveOnObserver 封装
+        // 上游事件对象订阅下游事件 observer(被封装为ObserveOnObserver对象)  
         source.subscribe(new ObserveOnObserver&lt;T&gt;(observer, w, delayError, bufferSize));
     }
 }
 </code></pre><p>ObserveOnObserver 是 ObservableObserveOn 的内部类，实现了 Observer、Runnable 接口。<br>此时，如果你稍微看一下其他操作符的实现时，你会发现执行流程基本是一致的，<br>因此，再一次综上所述，我们逆向层层递推，当推到链式反应的第一步时，此时的上游事件订阅下游事件，变成了当前事件(没有上游事件了)订阅下游事件，如示例中的 Observable.create()，</p>
 <pre><code>public final class ObservableCreate&lt;T&gt; extends Observable&lt;T&gt; {
 // source 即 Observable.create 时的 ObservableOnSubscribe 实现
-
 final ObservableOnSubscribe&lt;T&gt; source;
 
 public ObservableCreate(ObservableOnSubscribe&lt;T&gt; source) {
@@ -745,7 +748,7 @@ flatMap3 没有指定线程，会继续使用之前 Observable 操作符使用�
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">45</span>
+                  <span class="site-state-item-count">48</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
@@ -758,7 +761,7 @@ flatMap3 没有指定线程，会继续使用之前 Observable 操作符使用�
               
               <div class="site-state-item site-state-tags">
                 
-                  <span class="site-state-item-count">12</span>
+                  <span class="site-state-item-count">11</span>
                   <span class="site-state-item-name">tags</span>
                 
               </div>
@@ -811,7 +814,7 @@ flatMap3 没有指定线程，会继续使用之前 Observable 操作符使用�
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2021</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>

@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="Java,Kotlin,">
+  <meta name="keywords" content="Hexo, NexT">
 
 
 
@@ -79,18 +79,17 @@
 
 
 
-<meta name="description" content="Kotlin是一种针对Java 平台的新编程语言。Kotlin简洁、安全、务实，并且专注于与Java代码的互操作性。它几乎可以用在现在Java使用的任何地方：服务端开发、Android应用等等。Kotlin 可以很好地和所有现存的Java库和框架一起工作，而且性能和Java旗鼓相当。 兼容性： Kotlin 与 JDK 6 完全兼容，保障了 Kotlin 应用程序可以在较旧的 Android 设备">
-<meta name="keywords" content="Java,Kotlin">
+<meta name="description" content="我们在点击Launch桌面的图标第一次启动Activity时，会最终走到ActivityThread的main方法，在main方法里面创建Looper和MessageQueue 处理主线程的消息，然后 Looper.loop() 方法进入死循环，我们的 Activity 的生命周期都是通过 Handler 机制处理的，包括 onCreate、onResume等方法 public static vo">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Kotlin与Java的区别">
-<meta property="og:url" content="http://yoursite.com/2019/09/06/kotlin/Kotlin与Java的区别/index.html">
+<meta property="og:title" content="Handler_Looper为什么不会造成卡顿">
+<meta property="og:url" content="http://yoursite.com/2021/01/16/android/Handler-Looper为什么不会造成卡顿/index.html">
 <meta property="og:site_name" content="Hello,world">
-<meta property="og:description" content="Kotlin是一种针对Java 平台的新编程语言。Kotlin简洁、安全、务实，并且专注于与Java代码的互操作性。它几乎可以用在现在Java使用的任何地方：服务端开发、Android应用等等。Kotlin 可以很好地和所有现存的Java库和框架一起工作，而且性能和Java旗鼓相当。 兼容性： Kotlin 与 JDK 6 完全兼容，保障了 Kotlin 应用程序可以在较旧的 Android 设备">
+<meta property="og:description" content="我们在点击Launch桌面的图标第一次启动Activity时，会最终走到ActivityThread的main方法，在main方法里面创建Looper和MessageQueue 处理主线程的消息，然后 Looper.loop() 方法进入死循环，我们的 Activity 的生命周期都是通过 Handler 机制处理的，包括 onCreate、onResume等方法 public static vo">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2019-09-06T03:23:13.000Z">
+<meta property="og:updated_time" content="2021-01-16T08:30:36.570Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Kotlin与Java的区别">
-<meta name="twitter:description" content="Kotlin是一种针对Java 平台的新编程语言。Kotlin简洁、安全、务实，并且专注于与Java代码的互操作性。它几乎可以用在现在Java使用的任何地方：服务端开发、Android应用等等。Kotlin 可以很好地和所有现存的Java库和框架一起工作，而且性能和Java旗鼓相当。 兼容性： Kotlin 与 JDK 6 完全兼容，保障了 Kotlin 应用程序可以在较旧的 Android 设备">
+<meta name="twitter:title" content="Handler_Looper为什么不会造成卡顿">
+<meta name="twitter:description" content="我们在点击Launch桌面的图标第一次启动Activity时，会最终走到ActivityThread的main方法，在main方法里面创建Looper和MessageQueue 处理主线程的消息，然后 Looper.loop() 方法进入死循环，我们的 Activity 的生命周期都是通过 Handler 机制处理的，包括 onCreate、onResume等方法 public static vo">
 
 
 
@@ -120,13 +119,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2019/09/06/kotlin/Kotlin与Java的区别/">
+  <link rel="canonical" href="http://yoursite.com/2021/01/16/android/Handler-Looper为什么不会造成卡顿/">
 
 
 
 
 
-  <title>Kotlin与Java的区别 | Hello,world</title>
+  <title>Handler_Looper为什么不会造成卡顿 | Hello,world</title>
   
 
 
@@ -233,7 +232,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/09/06/kotlin/Kotlin与Java的区别/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2021/01/16/android/Handler-Looper为什么不会造成卡顿/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
       <meta itemprop="name" content="pickerX">
@@ -250,7 +249,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">Kotlin与Java的区别</h1>
+          <h1 class="post-title" itemprop="name headline">Handler_Looper为什么不会造成卡顿</h1>
         
 
         <div class="post-meta">
@@ -262,8 +261,8 @@
               
                 <span class="post-meta-item-text">Posted on</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-09-06T11:12:26+08:00">
-                2019-09-06
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2021-01-16T16:23:56+08:00">
+                2021-01-16
               </time>
             
 
@@ -300,12 +299,61 @@
       
 
       
-        <p>Kotlin是一种针对Java 平台的新编程语言。Kotlin简洁、安全、务实，并且专注于与Java代码的互操作性。它几乎可以用在现在Java使用的任何地方：服务端开发、Android应用等等。Kotlin 可以很好地和所有现存的Java库和框架一起工作，而且性能和Java旗鼓相当。</p>
-<p><strong>兼容性：</strong> Kotlin 与 JDK 6 完全兼容，保障了 Kotlin 应用程序可以在较旧的 Android 设备上运行而无任何问题。Kotlin 工具在 Android Studio 中会完全支持，并且兼容 Android 构建系统。  </p>
-<p><strong>性能：</strong> 由于非常相似的字节码结构，Kotlin 应用程序的运行速度与 Java 类似。 随着 Kotlin 对内联函数的支持，使用 lambda 表达式的代码通常比用 Java 写的代码运行得更快。</p>
-<p><strong>互操作性：</strong> Kotlin 可与 Java 进行 100％ 的互操作，允许在 Kotlin 应用程序中使用所有现有的 Android 库 。这包括注解处理，所以数据绑定与 Dagger 也是一样。<br><strong>占用：</strong> Kotlin 具有非常紧凑的运行时库，可以通过使用 ProGuard 进一步减少。 在实际应用程序中，Kotlin 运行时只增加几百个方法以及 .apk 文件不到 100K 大小。  </p>
-<p><strong>编译时长：</strong> Kotlin 支持高效的增量编译，所以对于清理构建会有额外的开销，增量构建通常与 Java 一样快或者更快。  </p>
-<p><strong>学习曲线：</strong> 对于 Java 开发人员，Kotlin 入门很容易。包含在 Kotlin 插件中的自动 Java 到 Kotlin 的转换器有助于迈出第一步。Kotlin 心印 通过一系列互动练习提供了语言主要功能的指南。</p>
+        <p>我们在点击Launch桌面的图标第一次启动Activity时，会最终走到ActivityThread的main方法，在main方法里面创建Looper和MessageQueue 处理主线程的消息，然后 Looper.loop() 方法进入死循环，我们的 Activity 的生命周期都是通过 Handler 机制处理的，包括 onCreate、onResume等方法</p>
+<pre><code>public static void main(String[] args) {
+
+    ``````
+    Looper.prepareMainLooper();// 创建Looper和MessageQueue对象，用于处理主线程的消息
+
+    ActivityThread thread = new ActivityThread();
+    thread.attach(false);// 建立Binder通道 (创建新线程)
+
+    if (sMainThreadHandler == null) {
+        sMainThreadHandler = thread.getHandler();
+    }
+
+    Trace.traceEnd(Trace.TRACE_TAG_ACTIVITY_MANAGER);
+    Looper.loop();
+
+    // 如果能执行下面方法，说明应用崩溃或者是退出了...
+    throw new RuntimeException(&quot;Main thread loop unexpectedly exited&quot;);
+}
+</code></pre><p>下面是 loop 方法循环</p>
+<pre><code>/**
+ * Run the message queue in this thread. Be sure to call
+ * {@link #quit()} to end the loop.
+ */
+public static void loop() {
+    final Looper me = myLooper();
+    if (me == null) {
+        throw new RuntimeException(&quot;No Looper; Looper.prepare() wasn&apos;t called on this thread.&quot;);
+    }
+    final MessageQueue queue = me.mQueue;
+    // Make sure the identity of this thread is that of the local process,
+    // and keep track of what that identity token actually is.
+    Binder.clearCallingIdentity();
+    final long ident = Binder.clearCallingIdentity();
+    for (;;) {
+        Message msg = queue.next(); // might block
+        if (msg == null) {
+            // No message indicates that the message queue is quitting.
+            return;
+        }
+        // This must be in a local variable, in case a UI event sets the logger
+        Printer logging = me.mLogging;
+        if (logging != null) {
+            logging.println(&quot;&gt;&gt;&gt;&gt;&gt; Dispatching to &quot; + msg.target + &quot; &quot; +
+                    msg.callback + &quot;: &quot; + msg.what);
+        }
+
+        msg.target.dispatchMessage(msg);
+
+        msg.recycleUnchecked();
+    }
+}
+</code></pre><p>通过创建一个for死循环来处理消息 msg.target.dispatchMessage(msg);</p>
+<h3 id="那为什么不会造成应用卡死？"><a href="#那为什么不会造成应用卡死？" class="headerlink" title="那为什么不会造成应用卡死？"></a>那为什么不会造成应用卡死？</h3><p>对于线程即是一段可执行的代码，当可执行代码执行完成后，线程生命周期便该终止了，线程退出。而对于主线程肯定不能运行一段时间后就自动结束了，那么如何保证一直存活呢？？简单的做法就是可执行代码能一直执行下去，死循环便能保证不会被退出，例如：binder线程也是采用死循环方法，通过循环方式不同与Binder驱动进行读写操作，当然并非简单的死循环，无消息时会休眠，但是死循环又如何处理其他事物呢？？通过创建新的线程。真正卡死主线程操作的是在回调方法 onCreate、onStart、onResume 等操作时间过长，会导致掉帧甚至ANR，Looper.loop()本身不会导致应用卡死。</p>
+<h3 id="主线程的死循环一直运行会不会特别消耗CPU资源呢？"><a href="#主线程的死循环一直运行会不会特别消耗CPU资源呢？" class="headerlink" title="主线程的死循环一直运行会不会特别消耗CPU资源呢？"></a>主线程的死循环一直运行会不会特别消耗CPU资源呢？</h3><p>其实不然这里就涉及到Linux pipe/epoll机制，简单说就是在主线程的MessageQueue没有消息时，便阻塞在loop的queue.next()中的nativePollOnce()方法里，此时主线程会释放CPU资源进入休眠状态，直到下个消息到达或者有事务发生，通过往pipe管道写端写入数据来唤醒主线程工作。这里采用的epoll机制，是一种IO多路复用机制，可以同时监控多个描述符，当某个描述符就绪(读或写就绪)，则立刻通知相应程序进行读或写操作，本质同步I/O，即读写是阻塞的。 所以说，主线程大多数时候都是处于休眠状态，并不会消耗大量CPU资源。    </p>
 
       
     </div>
@@ -350,14 +398,6 @@
 
     <footer class="post-footer">
       
-        <div class="post-tags">
-          
-            <a href="/tags/Java/" rel="tag"># Java</a>
-          
-            <a href="/tags/Kotlin/" rel="tag"># Kotlin</a>
-          
-        </div>
-      
 
       
       
@@ -367,8 +407,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2019/09/05/android/Glide源码研究/" rel="next" title="Glide源码研究">
-                <i class="fa fa-chevron-left"></i> Glide源码研究
+              <a href="/2021/01/15/android/Activity-Window-View的关系/" rel="next" title="Activity & Window & View的关系">
+                <i class="fa fa-chevron-left"></i> Activity & Window & View的关系
               </a>
             
           </div>
@@ -377,8 +417,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2019/09/06/android/蓝牙传输基础/" rel="prev" title="蓝牙传输基础">
-                蓝牙传输基础 <i class="fa fa-chevron-right"></i>
+              <a href="/2021/01/26/framework/framework学习のWMS服务/" rel="prev" title="framework学习のWMS服务">
+                framework学习のWMS服务 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -431,8 +471,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
             
@@ -447,7 +496,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">45</span>
+                  <span class="site-state-item-count">48</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
@@ -460,7 +509,7 @@
               
               <div class="site-state-item site-state-tags">
                 
-                  <span class="site-state-item-count">12</span>
+                  <span class="site-state-item-count">11</span>
                   <span class="site-state-item-name">tags</span>
                 
               </div>
@@ -484,6 +533,22 @@
       </section>
 
       
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#那为什么不会造成应用卡死？"><span class="nav-number">1.</span> <span class="nav-text">那为什么不会造成应用卡死？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#主线程的死循环一直运行会不会特别消耗CPU资源呢？"><span class="nav-number">2.</span> <span class="nav-text">主线程的死循环一直运行会不会特别消耗CPU资源呢？</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
 
       
 
@@ -497,7 +562,7 @@
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2021</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>
