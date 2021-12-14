@@ -79,18 +79,18 @@
 
 
 
-<meta name="description" content="Android中，Handler虽然不是四大组件，但用的次数也不比Activity，Service等四大组件少。虽然大家都知道怎么使用Handler，但是我们不能仅仅停留在使用的层面，对其机制的分析会加深我们对Android的理解。当然了，最终的目的就是在面试的时候碾压面试官，本系列将会对Handler机制做详细的分析。 由于篇幅可能比较长，该系列将分文下面几篇文章：  Handler,Messa">
+<meta name="description" content="好理解 Android 的消息机制，就是要理解 Handler 机制，Android中，Handler虽然不是四大组件，但用的次数也不比Activity，Service等四大组件少。虽然大家都知道怎么使用Handler，但是我们不能仅仅停留在使用的层面，对其机制的分析会加深我们对Android的理解。当然了，最终的目的就是在面试的时候碾压面试官，本系列将会对Handler机制做详细的分析。 Han">
 <meta name="keywords" content="Android">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Handler,Looper,MessageQueue三者的关系">
-<meta property="og:url" content="http://yoursite.com/2019/01/02/android/Handler-Looper-MessageQueue三者的关系/index.html">
+<meta property="og:title" content="Android消息机制">
+<meta property="og:url" content="http://yoursite.com/2019/01/02/android/Handler-Android消息机制/index.html">
 <meta property="og:site_name" content="Hello,world">
-<meta property="og:description" content="Android中，Handler虽然不是四大组件，但用的次数也不比Activity，Service等四大组件少。虽然大家都知道怎么使用Handler，但是我们不能仅仅停留在使用的层面，对其机制的分析会加深我们对Android的理解。当然了，最终的目的就是在面试的时候碾压面试官，本系列将会对Handler机制做详细的分析。 由于篇幅可能比较长，该系列将分文下面几篇文章：  Handler,Messa">
+<meta property="og:description" content="好理解 Android 的消息机制，就是要理解 Handler 机制，Android中，Handler虽然不是四大组件，但用的次数也不比Activity，Service等四大组件少。虽然大家都知道怎么使用Handler，但是我们不能仅仅停留在使用的层面，对其机制的分析会加深我们对Android的理解。当然了，最终的目的就是在面试的时候碾压面试官，本系列将会对Handler机制做详细的分析。 Han">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2020-12-19T02:52:12.397Z">
+<meta property="og:updated_time" content="2021-12-14T14:15:38.166Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Handler,Looper,MessageQueue三者的关系">
-<meta name="twitter:description" content="Android中，Handler虽然不是四大组件，但用的次数也不比Activity，Service等四大组件少。虽然大家都知道怎么使用Handler，但是我们不能仅仅停留在使用的层面，对其机制的分析会加深我们对Android的理解。当然了，最终的目的就是在面试的时候碾压面试官，本系列将会对Handler机制做详细的分析。 由于篇幅可能比较长，该系列将分文下面几篇文章：  Handler,Messa">
+<meta name="twitter:title" content="Android消息机制">
+<meta name="twitter:description" content="好理解 Android 的消息机制，就是要理解 Handler 机制，Android中，Handler虽然不是四大组件，但用的次数也不比Activity，Service等四大组件少。虽然大家都知道怎么使用Handler，但是我们不能仅仅停留在使用的层面，对其机制的分析会加深我们对Android的理解。当然了，最终的目的就是在面试的时候碾压面试官，本系列将会对Handler机制做详细的分析。 Han">
 
 
 
@@ -120,13 +120,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2019/01/02/android/Handler-Looper-MessageQueue三者的关系/">
+  <link rel="canonical" href="http://yoursite.com/2019/01/02/android/Handler-Android消息机制/">
 
 
 
 
 
-  <title>Handler,Looper,MessageQueue三者的关系 | Hello,world</title>
+  <title>Android消息机制 | Hello,world</title>
   
 
 
@@ -233,7 +233,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/01/02/android/Handler-Looper-MessageQueue三者的关系/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/01/02/android/Handler-Android消息机制/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
       <meta itemprop="name" content="pickerX">
@@ -250,7 +250,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">Handler,Looper,MessageQueue三者的关系</h1>
+          <h1 class="post-title" itemprop="name headline">Android消息机制</h1>
         
 
         <div class="post-meta">
@@ -300,7 +300,14 @@
       
 
       
-        <p>Android中，Handler虽然不是四大组件，但用的次数也不比Activity，Service等四大组件少。虽然大家都知道怎么使用Handler，但是我们不能仅仅停留在使用的层面，对其机制的分析会加深我们对Android的理解。当然了，最终的目的就是在面试的时候碾压面试官，本系列将会对Handler机制做详细的分析。</p>
+        <p>好理解 Android 的消息机制，就是要理解 Handler 机制，Android中，Handler虽然不是四大组件，但用的次数也不比Activity，Service等四大组件少。虽然大家都知道怎么使用Handler，但是我们不能仅仅停留在使用的层面，对其机制的分析会加深我们对Android的理解。当然了，最终的目的就是在面试的时候碾压面试官，本系列将会对Handler机制做详细的分析。</p>
+<p>Handler 消息机制主要包含三个内容，</p>
+<ul>
+<li>Handler,</li>
+<li>Looper,</li>
+<li>MessageQueue</li>
+</ul>
+<p>三者共同组成 Android 的消息机制，缺一不可    </p>
 <p>由于篇幅可能比较长，该系列将分文下面几篇文章：</p>
 <ol>
 <li><a href="http://www.jianshu.com/p/408d550c4c77" target="_blank" rel="noopener">Handler,MessageQueue,与Looper三者关系分析</a>  </li>
@@ -308,7 +315,7 @@
 <li><a href="http://www.jianshu.com/p/95ff2b82ff38" target="_blank" rel="noopener">IntentService源码分析</a>  </li>
 <li><a href="http://www.jianshu.com/p/26d0a03e5a35" target="_blank" rel="noopener">Handler常见应用场景和常见问题分析</a></li>
 </ol>
-<h3 id="Handler-MessageQueue-Looper的关系分析"><a href="#Handler-MessageQueue-Looper的关系分析" class="headerlink" title="Handler,MessageQueue,Looper的关系分析"></a>Handler,MessageQueue,Looper的关系分析</h3><p>要理清这三者的暧昧关系，我们先分别简单介绍一下它们</p>
+<h3 id="Handler-MessageQueue-Looper-的关系分析"><a href="#Handler-MessageQueue-Looper-的关系分析" class="headerlink" title="Handler,MessageQueue,Looper 的关系分析"></a>Handler,MessageQueue,Looper 的关系分析</h3><p>要理清这三者的暧昧关系，我们先分别简单介绍一下它们</p>
 <h4 id="Handler"><a href="#Handler" class="headerlink" title="Handler"></a>Handler</h4><pre><code>A Handler allows you to send and process Message and Runnable
 objects associated with a thread&apos;s MessageQueue.
 </code></pre><p>如官网描述的，我们可以用Handler发送并处理Message对象或者一个Runnable对象，并关联到一个线程的消息队列里，即MessageQueue，而关联的线程就是创建Handler的线程。</p>
@@ -317,7 +324,7 @@ objects associated with a thread&apos;s MessageQueue.
 <li>在未来某个时间点上处理Message或者执行Runnable</li>
 <li>将需要执行的操作通过Handler发送消息在其他线程里执行</li>
 </ol>
-<h3 id="Lopper"><a href="#Lopper" class="headerlink" title="Lopper"></a>Lopper</h3><p>通常线程默认是不具备循环处理消息的能力的，我们也不能直接在子线程里 new Handler 的，而Looper就是用来给线程提供循环处理消息能力的类。<br>当我们需要循环处理消息时，我们在创建Handler的线程里调用Looper.prepare()准备好Looper，之后再调用Looper.loop()开始循环处理消息。<br>如果我们是在主线程创建的Handler，就不需要做上面的两个操作了，因为主线程已经帮我们处理好了</p>
+<h3 id="Lopper"><a href="#Lopper" class="headerlink" title="Lopper"></a>Lopper</h3><p>通常线程默认是不具备循环处理消息的能力的，我们直接在子线程里 new Handler 后，子线程也不会有处理消息的能力。这时候就需要 Looper，用来给线程提供循环处理消息能力的组件。<br>当我们需要循环处理消息时，我们在创建 Handler 的线程里调用 Looper.prepare() 初始化好 Looper，之后再调用 Looper.loop() 就可以开始循环处理消息了。<br>如果我们是在主线程创建的Handler，就不需要做上面的两个操作了，因为主线程已经帮我们处理好了</p>
 <p>一个经典的用法如下</p>
 <pre><code>class LooperThread extends Thread {
     public Handler mHandler;
@@ -334,12 +341,12 @@ objects associated with a thread&apos;s MessageQueue.
         Looper.loop();
     }
 }
-</code></pre><h3 id="MessageQueue"><a href="#MessageQueue" class="headerlink" title="MessageQueue"></a>MessageQueue</h3><p>顾名思义，消息队列。持有Handler发送的消息列表，我们可以使用<br>Looper.myQueue()来拿到这个对象。</p>
+</code></pre><h3 id="MessageQueue"><a href="#MessageQueue" class="headerlink" title="MessageQueue"></a>MessageQueue</h3><p>顾名思义，消息队列。持有Handler发送的消息列表，我们可以使用 Looper.myQueue() 来拿到这个对象。</p>
 <p>除了上面的三个大头外，还有一个虽然也很重要，但我们不用对他做太多文章，因为它只起到承载信息的作用，也就是我们的Message对象。Handler发送和处理的对象都是它，可能你会说Handler的方法里不一定要使用Message来发送呀，不着急，等等分析源码的时候我们就为什么这么说了</p>
 <h3 id="工作原理"><a href="#工作原理" class="headerlink" title="工作原理"></a>工作原理</h3><p>当我们创建Handler时，每个Handler实例都会关联一个线程以及这个线程的消息队列，这个线程指的就是创建Handler的线程。</p>
 <p>怎么理解呢？ 其实很简单，Android里线程无非就是主线程(或UI线程)和子线程，从这点入手，我们就可以理解，如果在主线程创建Handler，会关联到主线程以及主线程里的消息队列, 子线程创建的Handler会关联到子线程以及子线程的消息队列</p>
 <p>具体是怎么实现的呢？我们从源码入手看看端倪，</p>
-<h4 id="初始化"><a href="#初始化" class="headerlink" title="初始化"></a>初始化</h4><p>当我们new Handler()时，会调用到下面这个构造方法，其中 Callback是null，async是false</p>
+<h4 id="初始化"><a href="#初始化" class="headerlink" title="初始化"></a>初始化</h4><p>当我们new Handler()时，会调用到下面这个构造方法，其中 Callback 是 null，async是false</p>
 <pre><code>public Handler(Callback callback, boolean async) {
     if (FIND_POTENTIAL_LEAKS) {
         final Class&lt;? extends Handler&gt; klass = getClass();
@@ -359,11 +366,11 @@ objects associated with a thread&apos;s MessageQueue.
     mCallback = callback;
     mAsynchronous = async;
 }
-</code></pre><p>溢出标识FIND_POTENTIAL_LEAKS默认是flase, 故会先执行 Looper.myLooper, 发现就只调用了ThreadLocal的get方法返回一个Looper`</p>
+</code></pre><p>溢出标识 FIND_POTENTIAL_LEAKS 默认是flase, 故会先执行 Looper.myLooper, 发现就只调用了 ThreadLocal 的 get 方法返回一个 Looper 对象</p>
 <pre><code>public static Looper myLooper() {
     return sThreadLocal.get();
 }
-</code></pre><p>ThreadLocal里的get实现</p>
+</code></pre><p>ThreadLocal 里的get实现</p>
 <pre><code>/**
     * Returns the value of this variable for the current thread. If an entry
     * doesn&apos;t yet exist for this variable on this thread, this method will
@@ -396,7 +403,7 @@ public T get() {
 Values values(Thread current) {
     return current.localValues;
 }
-</code></pre><p>我们看到，获取到当前的线程并取得其ThreadLocal.Values成员变量, 而这个成员变量的初始化的地方也就是在这个get方法里调用initializeValues(currentThread)</p>
+</code></pre><p>我们看到，Thread.currentThread 拿到当前线程并取得其 ThreadLocal.Values 类型的 localValues 成员变量, 而这个成员变量的初始化的地方也就是在这个get方法里调用 initializeValues(currentThread)</p>
 <pre><code>/**
  * Creates Values instance for this thread and variable type.
  */
@@ -419,8 +426,8 @@ private void initializeTable(int capacity) {
     this.clean = 0;
     this.maximumLoad = capacity * 2 / 3; // 2/3
 }
-</code></pre><p>ThreadLocal和Value功能就是提供一个Map功能的Object数组来存储数据。</p>
-<p>初始化完线程的ThreadLocal.Value后，Looper.myLooper() 最后会调用 ThreadLocal get方法里的 values.getAfterMiss(this)</p>
+</code></pre><p>ThreadLocal 和 Value功能就是提供一个类似 Map 功能的 Object 数组来存储数据。</p>
+<p>初始化完线程的 ThreadLocal.Value 后，Looper.myLooper() 最后会调用 ThreadLocal get方法里的 values.getAfterMiss(this)</p>
 <pre><code>/**
     * Gets value for given ThreadLocal after not finding it in the first
     * slot.
@@ -453,7 +460,8 @@ Object getAfterMiss(ThreadLocal&lt;?&gt; key) {
 <pre><code>protected T initialValue() {
     return null;
 }
-</code></pre><p>什么鬼，看了这么久return一个null…好吧，那就null吧。<br>我们回过头来看Handler的初始化，会发现由于mLooper为null会抛出一个RuntimeException</p>
+</code></pre><p>shit! 看了这么久return一个null…好吧，那就null吧。  </p>
+<p>我们回过头来看 Handler 的初始化，会发现由于 mLooper 为 null 会抛出一个 RuntimeException</p>
 <pre><code>Can&apos;t create handler inside thread that has not called Looper.prepare()
 </code></pre><p>所以，我们不得不先调用 Looper.prepare()</p>
 <pre><code>/**
@@ -465,7 +473,7 @@ private static void prepare(boolean quitAllowed) {
     }
     sThreadLocal.set(new Looper(quitAllowed));
 }
-</code></pre><p>可以看到，在这里给Looper里的ThreadLocal初始化了一个Looper，这样当我们调用 Looper.myLooper()的时候，其实就是从ThreadLocal里取出在这里初始化的Looper。<br>好，接着我们看Looper的初始化</p>
+</code></pre><p>可以看到，在这里给 ThreadLocal 初始化了一个Looper，这样当我们调用 Looper.myLooper() 的时候，其实就是从 ThreadLocal 里取出在这里初始化的Looper。<br>好，接着我们看 Looper 的初始化</p>
 <pre><code>private Looper(boolean quitAllowed) {
     mQueue = new MessageQueue(quitAllowed);
     mThread = Thread.currentThread();
@@ -506,7 +514,7 @@ private static void prepare(boolean quitAllowed) {
     }
     return enqueueMessage(queue, msg, uptimeMillis);
 }
-</code></pre><p>最终呢，就会调用enqueueMessage方法，将Message入栈到Looper里的MessageQueue</p>
+</code></pre><p>最终呢，就会调用 enqueueMessage 方法，将Message入栈到Looper里的MessageQueue</p>
 <pre><code>private boolean enqueueMessage(MessageQueue queue, Message msg, long uptimeMillis) {
     msg.target = this;
     if (mAsynchronous) {
@@ -515,8 +523,8 @@ private static void prepare(boolean quitAllowed) {
     return queue.enqueueMessage(msg, uptimeMillis);
 }
 </code></pre><p>MessageQueue 队列的实现，原理是使用Message链表，有兴趣的同学可以自己去研究一下，我们就不做过多的阐述。<br>这样发送消息的过程到这里也基本完结了</p>
-<h4 id="处理消息"><a href="#处理消息" class="headerlink" title="处理消息"></a>处理消息</h4><p>你还记得吗？当我们在子线程里创建Handler的时候，都会在run方法里调用Looper.loop()方法，异步处理Message对象。如果是在主线程创建的Handler就不是异步了，因为它关联的线程是主线程，Handler的handlerMessage回调是在主线程里执行的。  </p>
-<p>最后，我们来看看Handler最核心的实现，消息的处理 Looper.loop(),<br>忽略非消息处理的代码后如下</p>
+<h4 id="处理消息"><a href="#处理消息" class="headerlink" title="处理消息"></a>处理消息</h4><p>你还记得吗？当我们在子线程里创建Handler的时候，都会在run方法里调用Looper.loop()方法，异步处理Message对象。如果是在主线程创建的Handler就不是异步了，因为它关联的线程是主线程，Handler 的 handlerMessage 回调是在主线程里执行的。  </p>
+<p>最后，我们来看看 Handler 最核心的实现，消息的处理 Looper.loop(),<br>忽略非消息处理的代码后如下</p>
 <pre><code>public static void loop() {
     ...
     // 获取消息队列
@@ -537,7 +545,7 @@ private static void prepare(boolean quitAllowed) {
         msg.recycleUnchecked();
     }
 }
-</code></pre><p>看着是不是挺简单的呢？ 一个for死循环，通过MessageQueue的阻塞方法next 读取下一个Message。<br>取出来的Message会拿到target成员变量，即Handler,调用dispatchMessage，分发消息。Handler里的分发呢？</p>
+</code></pre><p>看着是不是挺简单的呢？ 一个for死循环，通过 MessageQueue 的阻塞方法next 读取下一个Message。<br>取出来的 Message 会拿到 target 成员变量，即 Handler, 调用 dispatchMessage，分发消息。Handler里的分发呢？</p>
 <pre><code>public void dispatchMessage(Message msg) {
     if (msg.callback != null) {
         handleCallback(msg);
@@ -703,7 +711,7 @@ private static void prepare(boolean quitAllowed) {
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">48</span>
+                  <span class="site-state-item-count">52</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
@@ -716,7 +724,7 @@ private static void prepare(boolean quitAllowed) {
               
               <div class="site-state-item site-state-tags">
                 
-                  <span class="site-state-item-count">11</span>
+                  <span class="site-state-item-count">14</span>
                   <span class="site-state-item-name">tags</span>
                 
               </div>
@@ -749,7 +757,7 @@ private static void prepare(boolean quitAllowed) {
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#Handler-MessageQueue-Looper的关系分析"><span class="nav-number">1.</span> <span class="nav-text">Handler,MessageQueue,Looper的关系分析</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Handler"><span class="nav-number">1.1.</span> <span class="nav-text">Handler</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Lopper"><span class="nav-number">2.</span> <span class="nav-text">Lopper</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#MessageQueue"><span class="nav-number">3.</span> <span class="nav-text">MessageQueue</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#工作原理"><span class="nav-number">4.</span> <span class="nav-text">工作原理</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#初始化"><span class="nav-number">4.1.</span> <span class="nav-text">初始化</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#发送消息"><span class="nav-number">4.2.</span> <span class="nav-text">发送消息</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#处理消息"><span class="nav-number">4.3.</span> <span class="nav-text">处理消息</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#Handler-MessageQueue-Looper-的关系分析"><span class="nav-number">1.</span> <span class="nav-text">Handler,MessageQueue,Looper 的关系分析</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Handler"><span class="nav-number">1.1.</span> <span class="nav-text">Handler</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Lopper"><span class="nav-number">2.</span> <span class="nav-text">Lopper</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#MessageQueue"><span class="nav-number">3.</span> <span class="nav-text">MessageQueue</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#工作原理"><span class="nav-number">4.</span> <span class="nav-text">工作原理</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#初始化"><span class="nav-number">4.1.</span> <span class="nav-text">初始化</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#发送消息"><span class="nav-number">4.2.</span> <span class="nav-text">发送消息</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#处理消息"><span class="nav-number">4.3.</span> <span class="nav-text">处理消息</span></a></li></ol></li></ol></div>
             
 
           </div>
