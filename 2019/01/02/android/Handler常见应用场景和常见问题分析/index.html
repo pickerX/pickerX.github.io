@@ -87,7 +87,7 @@
 <meta property="og:site_name" content="Hello,world">
 <meta property="og:description" content="Handler应用场景根据前几篇的分析，根据实际的开发，我们可以总结出以下Handler的使用场景 最简单的消息发送主线程使用Handler， 主线程里或子线程里发送消息，或延迟发送消息的方式更新UI如，启动应用时Splash页面的延迟2，3秒后，跳转到主页面加载完页面的各个控件后，再加载线程下载图片，最后更新图片等等 private static final int WHAT_UPDATE_IC">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2019-10-18T14:31:12.000Z">
+<meta property="og:updated_time" content="2021-12-14T14:23:40.581Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Handler常见应用场景和常见问题分析">
 <meta name="twitter:description" content="Handler应用场景根据前几篇的分析，根据实际的开发，我们可以总结出以下Handler的使用场景 最简单的消息发送主线程使用Handler， 主线程里或子线程里发送消息，或延迟发送消息的方式更新UI如，启动应用时Splash页面的延迟2，3秒后，跳转到主页面加载完页面的各个控件后，再加载线程下载图片，最后更新图片等等 private static final int WHAT_UPDATE_IC">
@@ -473,7 +473,7 @@ private void sendDownloadTask(String downloadUrl) {
         return content;
     }
 }
-</code></pre><h4 id="结合IntentService的使用"><a href="#结合IntentService的使用" class="headerlink" title="结合IntentService的使用"></a>结合IntentService的使用</h4><p>使用IntentService处理耗时的任务相对比较简单，我们来个有难度的，结合AlarmManager的调度，息屏唤醒IntentService定时处理任务的案例来讲<br>当我们的应用进入后台activity栈的时候，注册并启动AlarmManager任务</p>
+</code></pre><h4 id="结合IntentService的使用"><a href="#结合IntentService的使用" class="headerlink" title="结合IntentService的使用"></a>结合IntentService的使用</h4><p>使用IntentService处理耗时的任务相对比较简单，我们来一个常用的应用。结合AlarmManager的调度，息屏唤醒 IntentService 定时处理任务的案例来讲。当我们的应用进入后台activity栈的时候，注册并启动AlarmManager任务</p>
 <pre><code>private static final String ACTION_WAKE_UP = &quot;com.doze.cpu.wakeup&quot;;
 
 public static void registerAlarm(Context context, int wakeType) {
@@ -499,7 +499,7 @@ private static void schedule(Context context) {
             break;
     }
 }
-</code></pre><p>定时5分钟发送一个Action为com.doze.cpu.wakeup的广播，我们的广播需要继承 WakefulBroadcastReceiver， 在onReceive里，调用startWakefulService方法，会创建一个1分钟的WakeLock，唤醒cpu处理我们的任务，我们的任务在IntentService处理最好不过了，处理完就销毁，不会有多余的占用</p>
+</code></pre><p>定时5分钟发送一个Action为 com.doze.cpu.wakeup 的广播，我们的广播需要继承 WakefulBroadcastReceiver， 在onReceive里，调用 startWakefulService 方法，会创建一个1分钟的 WakeLock，唤醒 cpu 处理我们的任务，我们的任务在 IntentService 处理最好不过了，处理完就销毁，不会有多余的占用</p>
 <pre><code>public class WakeCPUReceiver extends WakefulBroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
@@ -509,7 +509,7 @@ private static void schedule(Context context) {
         schedule(context);
     }
 }
-</code></pre><p>startWakefulService的源码</p>
+</code></pre><p>startWakefulService 的源码</p>
 <pre><code>public static ComponentName startWakefulService(Context context, Intent intent) {
     synchronized (mActiveWakeLocks) {
         int id = mNextId;
@@ -533,7 +533,7 @@ private static void schedule(Context context) {
         return comp;
     }
 }
-</code></pre><p>在IntentService里，我们在onHandleIntent处理我们的任务后，再调用<br>WakefulBroadcastReceiver的静态方法completeWakefulIntent，释放WakeLock，减少电量的消耗</p>
+</code></pre><p>在IntentService里，我们在 onHandleIntent 处理我们的任务后，再调用<br>WakefulBroadcastReceiver 的静态方法 completeWakefulIntent，释放 WakeLock，减少电量的消耗</p>
 <pre><code>public class WorkService extends IntentService {
     ...
     @Override
@@ -543,7 +543,7 @@ private static void schedule(Context context) {
         WakeCPUReceiver.completeWakefulIntent(intent);
     }
 }
-</code></pre><p>completeWakefulIntent源码</p>
+</code></pre><p>completeWakefulIntent 源码</p>
 <pre><code>public static boolean completeWakefulIntent(Intent intent) {
     final int id = intent.getIntExtra(EXTRA_WAKE_LOCK_ID, 0);
     if (id == 0) {
@@ -567,7 +567,7 @@ private static void schedule(Context context) {
     }
 }
 </code></pre><h3 id="Handler的溢出问题"><a href="#Handler的溢出问题" class="headerlink" title="Handler的溢出问题"></a>Handler的溢出问题</h3><p>虽然Handler很好用，但由于它可以延迟发送消息，在我们延迟启动其他组件，或者使用Activity的引用调用一些方法时，如果在延迟的过程中，Activity finish掉了，这时候就会抛出溢出的异常了。<br>所以，我们在onDestroy的时候，记得 调用removeCallbacks，removeMessages等移除消息的方法来解决这个问题。  </p>
-<p>Handler机制如何保证消息不错乱？<br>handler机制中多个handler共有一个looper不会错乱是因为在handler 发送消息的时候，会将当前的handler对象绑定到message的target属性上，然后在Looper取到消息后通过msg.target拿到之前的handler对象，然后调用handler的handleMessage方法。  </p>
+<p>Handler 机制如何保证消息不错乱？<br>handler 机制中多个 handler 共有一个 looper 不会错乱是因为在 handler 发送消息的时候，会将当前的 handler 对象绑定到message 的 target 属性上，然后在 Looper 取到消息后通过 msg.target 拿到之前的 handler 对象，然后调用handler的handleMessage 方法。  </p>
 <p>消息延迟的原理？<br>handler发送延迟消息，会将当前的延迟时间绑定到msg的when属性上，然后在循环MessageQueue获取msg时判断如果当前有延迟就进行阻塞，通过计时器计算时间，时间通过系统启动计算时间，然后等待阻塞时间结束之后将其唤醒，在阻塞过程中会将之后的消息放在消息队列的头部去处理。</p>
 <p>同一个线程中可以有多个Handler，只有一个Looper，而MessageQueue在looper中初始化的，所以也只有一个MessageQueue。因此对应关系是：Handler：Looper = 多对一，Looper：MeesageQueue = 一对一，Handler：MessageQueue = 多对一。</p>
 <p>Looper中的死循环为什么不会引器主线程ANR？<br>可以说整个应用的生命周期都是在looper.loop()控制之下的（在应用启动的入口main函数中初始化ActivityThread，Handler，Looper，然后通过handler和looper去控制初始化应用）。而looper.loop采用的是Linux的管道机制，在没有消息的时候会进入阻塞状态，释放CPU执行权，等待被唤醒。真正会卡死主线程的操作是在回调方法onCreate/onStart/onResume等操作时间过长，会导致掉帧，甚至发生ANR，looper.loop本身不会导致应用卡死。</p>
@@ -719,7 +719,7 @@ private static void schedule(Context context) {
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">52</span>
+                  <span class="site-state-item-count">53</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
